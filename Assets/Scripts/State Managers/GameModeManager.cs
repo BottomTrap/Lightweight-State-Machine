@@ -40,7 +40,7 @@ public class GameModeManager : StateManager
             );
         #endregion
 
-        #region Action State
+        #region Action States
 
         //Action State will change to action state conditions, like controlling the selected player and attacking once things etc
         //IN CONDITION : Clicking on a player character while CP>0;
