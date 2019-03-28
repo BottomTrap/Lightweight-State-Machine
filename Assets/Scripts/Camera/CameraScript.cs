@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Runtime.InteropServices.WindowsRuntime;
 
 
 namespace RG
@@ -27,9 +27,10 @@ namespace RG
 
 
 
-        private Transform
-            playerTransform; //Public variable to store a reference to the player transform from ObjectClick.cs when delegate is activated
-
+       // private Transform
+          //
+          // playerTransform; //Public variable to store a reference to the player transform from ObjectClick.cs when delegate is activated
+          public Transform playerTransform;
 
         [Header("State Bools")] public bool orthoOn = true;
         public bool transitionning = false;
@@ -71,7 +72,7 @@ namespace RG
             //animator = GetComponent<Animator>();
         }
 
-        public Transform PlayerClicked(int commandPoints)
+        public bool PlayerClicked(int commandPoints)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -82,18 +83,22 @@ namespace RG
                 {
                     if (hit.transform.tag == "PlayerUnit" && commandPoints > 0)
                     {
-                        return hit.transform;
+                        playerTransform = hit.transform;
+                        return true;
+
                     }
+
+                    return false;
                 }
 
-                return null;
+                return false;
             }else
 
-            return null;
+            return false;
         }
         void Start()
         {
-            playerTransform = target.transform;
+            //playerTransform = target.transform;
             //***Delegate subscription 
             //ObjectClick.characterSelectDelegate += CamTrans;
             //PlayerMovement.viewChangeDelegate += AimViewOn;
@@ -121,12 +126,12 @@ namespace RG
             blender.BlendToMatrix(ortho, 1f, 8, true);
 
             // 
-            orthoOn = true;
+           // orthoOn = true;
         }
 
         void Update()
         {
-
+           
         }
 
         //void LateUpdate() //NOTE TO SELF : LATE UPDATE DOES WEIRD THINGS WHEN ITS WITH UPDATE SIMULTANEOUSLY 
@@ -166,8 +171,8 @@ namespace RG
             Vector3 direction = playerTransform.position - transform.position;
             Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-            transitionning = false;
-            orthoOn = false;
+            //transitionning = false;
+            //orthoOn = false;
         }
 
         public void IsoCameraTransition()
@@ -261,6 +266,7 @@ namespace RG
 
         public void AimView()
         {
+            rotator = playerTransform.GetChild(0).transform;
             //reticle or corshair or whatever control and appearance
             // aim and orientation animation when models ready 
             //that's about it
@@ -278,12 +284,12 @@ namespace RG
 
             rotator.eulerAngles = new Vector3(g.x, rotator.eulerAngles.y, rotator.eulerAngles.z);
 
-            target.eulerAngles = e;
+            playerTransform.eulerAngles = e;
         }
-
-        public void AimViewOn()
-        {
-            aimView = !aimView;
-        }
+       //
+       //public void AimViewOn()
+       //{
+       //    aimView = !aimView;
+       //}
     }
 }

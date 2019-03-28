@@ -21,14 +21,35 @@ public class MenuAction : StateAction
 
     public override bool Execute()
     {
-        if (gameManager.endTurn = false)
+        Debug.Log("menu state");
+        Time.timeScale = 0;
+        gameManager.endTurnPrompt.gameObject.SetActive(true);
+        if (gameManager.endTurn)     
         {
-            return false;
+            if (gameManager.previousState == gameManager.GetState("actionState") || gameManager.previousState == gameManager.GetState("aimState"))
+            {
+                Time.timeScale = 1.0f;
+                gameManager.cameraScript.IsoCameraTransition();
+
+                gameManager.SetState(isoState);
+                gameManager.endTurnPrompt.gameObject.SetActive(false);
+                return true;
+            }
+
+            if (gameManager.previousState == gameManager.GetState("tacticState"))
+            {
+               //Activates the end PHASE Menu prompt, that leads the game into enemy phase
+               //Leads to "Watch State" Until GAME AI Finishes
+            }
         }
-        else
-        {
-           gameManager.SetState(isoState);
-           return true;
-        }
+
+        //if (gameManager.previousState == gameManager.GetState("actionState"))
+        //{
+        //    gameManager.cameraScript.IsoCameraTransition();
+        //    
+        //    gameManager.SetState(isoState);
+        //}
+
+        return false;
     }
 }

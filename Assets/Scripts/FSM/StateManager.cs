@@ -7,6 +7,7 @@ namespace SA
 	public abstract class StateManager : MonoBehaviour
 	{
 		public State currentState;
+        public State previousState;
 		protected Dictionary<string, State> allStates = new Dictionary<string, State>();
 
 		public State GetState(string stateId)
@@ -23,6 +24,7 @@ namespace SA
 				Debug.LogError(targetId + " was not found");
 			}
 
+            previousState = currentState;
 			currentState = targetState;
 		}
 

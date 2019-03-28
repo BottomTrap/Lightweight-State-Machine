@@ -22,23 +22,27 @@ public class PerspectiveChange : StateAction
 
     public override bool Execute()
     {
-       
-        if (states.cameraScript.PlayerClicked(states.commandPoints) != null && states.currentState ==states.GetState("tacticState")) //change key down to player selected or something
+        //states.playerTransform = states.cameraScript.PlayerClicked(states.commandPoints);
+       states.cameraScript.IsoMovement();
+        if (states.cameraScript.PlayerClicked(states.commandPoints) && states.currentState == states.GetState("tacticState") ) //change key down to player selected or something
         {
             states.cameraScript.CameraTransition();
-            states.cameraScript.CameraMovement();
-            Debug.Log("perspective state");
+            //states.cameraScript.CameraMovement(states.cameraScript.PlayerClicked(states.commandPoints)); //I want to update this!!
+            //Debug.Log(states.currentState);
             states.commandPoints -= 1;
             states.SetState(perspectiveState);
             return true;
-        }else if (Input.GetKeyDown(KeyCode.Escape) && states.currentState == states.GetState("actionState")) //change key down to menu input pressed
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) ) //change key down to menu input pressed
         {
             //Debug.Log("ortho state");
             //states.cameraScript.orthoOn = true;
             //states.cameraScript.IsoCameraTransition();
             states.SetState(menuState);
+            return true;
         }
 
+       
         return false;
     }
 }

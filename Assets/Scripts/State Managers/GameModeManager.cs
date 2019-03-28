@@ -8,8 +8,11 @@ public class GameModeManager : StateManager
 {
 
     public CameraScript cameraScript;
+    public PlayerMovement playerScript;
     public int commandPoints;
-    public bool endTurn = false;
+    public bool endTurn= false;
+    public Transform endTurnPrompt;
+    public Transform playerTransform;
 
     protected override void Init()
     {
@@ -33,9 +36,9 @@ public class GameModeManager : StateManager
                        new PerspectiveChange(this,"tacticState","actionState","menuState"), 
                   //GO TO ACTION STATE
                 //2// The state Action will activate
-                    new MenuAction(this,"tacticState","actionState","aimState"), 
+                    //new MenuAction(this,"tacticState","actionState","aimState"), 
                         //GO TO MENU STATE
-                  
+                        
             }
             );
         #endregion
@@ -48,7 +51,7 @@ public class GameModeManager : StateManager
         State ActionState = new State(
             new StateAction[]
             {
-
+                new PlayerControlsAction(this,"aimState","tacticState","menuState")
             },
             new StateAction[]
             {
@@ -56,17 +59,18 @@ public class GameModeManager : StateManager
                     //IsoPerspectiveChange
                     //IsoCameraMovement
                 //GO TO TACTIC STATE!!
-                new PerspectiveChange(this,"tacticState","actionState","menuState"), 
+                //new PerspectiveChange(this,"tacticState","actionState","menuState"),
+                 
                 //2//The stateAction will activate
                     //AimMode Camera Controls
                     // Deactivate player controls
-                new AimAction(), 
+                //new AimAction(), 
                 //GO TO AIM STATE
 
                 //3//The stateAction will activate
                     //Deactivate PlayerMovement and controls
                     //Activate Menu Prompt
-                    new MenuAction(this,"tacticState","actionState","aimState"), 
+                    //new MenuAction(this,"tacticState","actionState","aimState"), 
                 //GO TO MENU STATE
             }
             );
@@ -88,11 +92,11 @@ public class GameModeManager : StateManager
                 //1// The stateAction will activate 
                        // Activate player controls
                        //Perspective Camera
-                       new PerspectiveChange(this,"tacticState","actionState","menuState"), 
+                        
                  //ACTIVATE ACTION STATE
                 //2// The stateAction will activate
                         //MENU STATE
-                        new MenuAction(this,"tacticState","actionState","aimState"), 
+                        new AimAction(this,"menuState","actionState"), 
             }
             );
         #endregion
@@ -106,11 +110,13 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-
+                new MenuAction(this,"tacticState","actionState","aimState")
             }
             );
 
 #endregion
+
+
 
 
         allStates.Add("tacticState",TacticsState);

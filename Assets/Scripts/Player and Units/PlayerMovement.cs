@@ -22,17 +22,19 @@ namespace RG
 
 
         private Vector3 lastPosition;
-        private float distanceTraveled;
-        public bool didHit = true;
+        public float distanceTraveled;
+        public bool didHit;
         private bool aiming = false;
 
         private PlayerStats playerstats;
         public bool isClicked=false;
 
+        public Texture crosshair;
 
-        public delegate void ViewChangeDelegate();
+        public bool drawcrosshair;
+        //public delegate void ViewChangeDelegate();
 
-        public static event ViewChangeDelegate viewChangeDelegate;
+        //public static event ViewChangeDelegate viewChangeDelegate;
 
         private void Awake()
         {
@@ -44,51 +46,58 @@ namespace RG
 
         private void FixedUpdate()
         {
-            if (isClicked)
-            {
+            
+            
                 //didHit = false;   // IT GETS CALLED EVERYTIME, WONT WORK
                 distanceTraveled += Vector3.Distance(transform.position, lastPosition);
                 lastPosition = transform.position;
-                Rotate();
-                if (distanceTraveled < playerstats.AP.BaseValue * 10f)
-                {
-                    Movement();
-                }
+                //Rotate();
+              // if (distanceTraveled < playerstats.AP.BaseValue * 10f)
+              // {
+              //     Movement();
+              // }
+              Debug.Log(didHit);
+                //if (!didHit)
+                //{
+                //    if (Input.GetKeyDown(KeyCode.R) )
+                //    {
+                //        Attack();
+                //    }
 
-                if (!didHit)
-                {
-                    if (Input.GetKeyDown(KeyCode.R) && !aiming)
-                    {
-                        Attack();
-                    }
+                   //if (Input.GetKeyDown(KeyCode.Tab))
+                   //{
+                   //    aiming = !aiming;
+                   //
+                   //    RangedAttack();
+                   //}
 
-                    if (Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        aiming = !aiming;
+                //}
+            
+        }
 
-                        RangedAttack();
-                    }
-
-                }
+        public void Attack()
+        {
+            Debug.Log("Attack");
+            //animator.SetTrigger("Attack");
+            
+        }
+        void OnGUI()
+        {
+            if (drawcrosshair)
+            {
+                if (Time.time != 0 && Time.timeScale != 0)
+                    GUI.DrawTexture(
+                        new Rect(Screen.width / 2 - (crosshair.width * 0.5f),
+                            Screen.height / 2 - (crosshair.height * 0.5f), crosshair.width, crosshair.height),
+                        crosshair);
             }
         }
-
-        void Attack()
+        public void RangedAttack()
         {
-            animator.SetTrigger("Attack");
-            didHit = true;
+           //Instantiate bullet in corsair position
         }
 
-        void RangedAttack()
-        {
-            //Get to the aim view
-            //Get to the aim control
-            //then push R button or Attack button elli houa
-            viewChangeDelegate();
-            //aiming = !aiming;
-        }
-
-        void Movement()
+        public void Movement()
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -103,7 +112,7 @@ namespace RG
 
         }
 
-        void Rotate()
+        public void Rotate()
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
