@@ -8,12 +8,38 @@ public class AI_Manager : StateManager
 {
     protected override void Init()
     {
-        State AiTacticsState;
+        State AiTacticsState = new State(
+          new  StateAction[]{
 
-        State AiActionState;
+        },
+          new StateAction[]
+          {
 
-        State AiAimState;
+          }
+          );
 
-        State MenuState;
+        State AiActionState =new State(
+            new StateAction[]
+            {
+
+            },
+            new StateAction[]
+            {
+
+            }
+            );
+
+        State AiAimState = new State(
+            new StateAction[]
+            {
+
+            },
+            new StateAction[]
+            {
+
+            }
+            );
+
+        //State MenuState;
     }
 }
