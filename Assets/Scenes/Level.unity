@@ -125,11 +125,12 @@ GameObject:
   - component: {fileID: 63794239}
   - component: {fileID: 63794237}
   - component: {fileID: 63794236}
-  - component: {fileID: 63794235}
+  - component: {fileID: 63794242}
   - component: {fileID: 63794238}
+  - component: {fileID: 63794235}
   m_Layer: 0
-  m_Name: PlayerUnit (1)
-  m_TagString: PlayerUnit
+  m_Name: EnemyUnit
+  m_TagString: EnemyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,16 +144,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 63794234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24df5506e2b48314792a9f2c8f6f52e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 300
-  turnSpeed: 3.5
-  distanceTraveled: 0
-  didHit: 1
-  isClicked: 0
-  crosshair: {fileID: 0}
-  drawcrosshair: 0
+  scripts:
+  - {fileID: 0}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
 --- !u!143 &63794236
 CharacterController:
   m_ObjectHideFlags: 0
@@ -183,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89fc3c61fea02854db08364f06c821f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterClass: 100
+  CharacterClass: 400
   Strength:
     BaseValue: 0
   Defense:
@@ -267,6 +271,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63794242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63794234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e7162d3e82f0a44d90d160542869b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &138450619
 GameObject:
   m_ObjectHideFlags: 0
