@@ -3,40 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using SA;
 using RG;
-using Panda;
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks;
 
-public class EnemyUnit : MonoBehaviour
+
+public class EnemyUnit : Conditional
 {
-    private PlayerStats playerStats;
-   
+    private int commandPoints = 6;
+
     private void Update()
-    {
-        playerStats = (PlayerStats) GetComponent(typeof(PlayerStats));
-
-    }
-
-    private void FixedUpdate()
     {
         
 
     }
 
-    [Task]
-    void IdleShoot()
+    public override TaskStatus OnUpdate()
     {
+        if (commandPoints > 0)
+        {
+            return TaskStatus.Success;
+        }else
+        return TaskStatus.Failure;
 
     }
 
-    [Task]
-    void IsHealthLessThan(float health)
+    public override void OnEnd()
     {
-
-    }
-
-    [Task]
-    void MoveTo()
-    {
-
+        if (commandPoints > 0)
+            commandPoints -= 1;
     }
 
 

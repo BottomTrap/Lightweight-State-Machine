@@ -11,7 +11,9 @@ public class GameModeManager : StateManager
     public PlayerMovement playerScript;
     public int commandPoints;
     public bool endTurn= false;
+    public bool endPhase = false;
     public Transform endTurnPrompt;
+    public Transform endPhasePrompt;
     public Transform playerTransform;
 
     protected override void Init()
@@ -114,15 +116,28 @@ public class GameModeManager : StateManager
             }
             );
 
+        #endregion
+
+
+        #region Enemy Phase
+        State EnemyPhase = new State(
+            new StateAction[]
+            {
+
+            },
+            new StateAction[]
+            {
+
+            }
+            );
 #endregion
-
-
 
 
         allStates.Add("tacticState",TacticsState);
         allStates.Add("actionState",ActionState);
         allStates.Add("menuState",MenuState);
         allStates.Add("aimState",AimState);
+        allStates.Add("EnemyPhase",EnemyPhase);
         
         SetState("tacticState");
     }
@@ -132,7 +147,25 @@ public class GameModeManager : StateManager
         endTurn = true;
     }
 
+    public void EndPhasePrompt()
+    {
+        endPhase = true;
+    }
 
+    public void SetTacticsState()
+    {
+        SetState("tacticState");
+    }
+
+    public void SetActionState()
+    {
+        SetState("actionState");
+    }
+
+    public void SetAimState()
+    {
+
+    }
     private void FixedUpdate()
     {
         FixedTick();
@@ -141,5 +174,6 @@ public class GameModeManager : StateManager
     private void Update()
     {
         Tick();
+        Debug.Log(currentState);
     }
 }
