@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+//using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using RG;
+using Panda;
 
 
 //[RequireComponent(typeof(Animator))]
@@ -32,9 +34,7 @@ namespace RG
         public Texture crosshair;
 
         public bool drawcrosshair;
-        //public delegate void ViewChangeDelegate();
-
-        //public static event ViewChangeDelegate viewChangeDelegate;
+       
 
         private void Awake()
         {
@@ -46,33 +46,10 @@ namespace RG
 
         private void FixedUpdate()
         {
-            
-            
-                //didHit = false;   // IT GETS CALLED EVERYTIME, WONT WORK
-                distanceTraveled += Vector3.Distance(transform.position, lastPosition);
-                lastPosition = transform.position;
-                //Rotate();
-              // if (distanceTraveled < playerstats.AP.BaseValue * 10f)
-              // {
-              //     Movement();
-              // }
-              Debug.Log(didHit);
-                //if (!didHit)
-                //{
-                //    if (Input.GetKeyDown(KeyCode.R) )
-                //    {
-                //        Attack();
-                //    }
-
-                   //if (Input.GetKeyDown(KeyCode.Tab))
-                   //{
-                   //    aiming = !aiming;
-                   //
-                   //    RangedAttack();
-                   //}
-
-                //}
-            
+             distanceTraveled += Vector3.Distance(transform.position, lastPosition);
+             lastPosition = transform.position;
+                
+             Debug.Log(didHit);
         }
 
         public void Attack()
@@ -106,10 +83,6 @@ namespace RG
             movement = transform.TransformDirection(movement);
 
             characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
-
-
-
-
         }
 
         public void Rotate()
@@ -127,9 +100,20 @@ namespace RG
             }
         }
 
-        //void OnMouseDown()
-        //{
-        //    isClicked = true;
-        //}
+
+        #region Tasks
+
+        [Task]
+        public bool IsHealthLessThan(float health)
+        {
+            return this.playerstats.Health.Value < health;
+        }
+
+    
+        
+
+        #endregion
+
+
     }
 }

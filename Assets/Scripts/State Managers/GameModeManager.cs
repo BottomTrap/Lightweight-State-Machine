@@ -127,7 +127,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-
+                new EnemyPhaseAction(this,"tacticState"), 
             }
             );
 #endregion

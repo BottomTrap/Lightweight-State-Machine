@@ -19,6 +19,14 @@ public class EnemyPhaseAction : StateAction
 
     public override bool Execute()
     {
-        throw new System.NotImplementedException();
+        if (gameManager.commandPoints <= 0)
+        {
+            gameManager.SetState(tacticState);
+            return true;
+        }
+
+
+
+        return true;
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using riadh.Stats;
+using UnityEditor;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -16,8 +18,8 @@ public class PlayerStats : MonoBehaviour
     }
     public Classes CharacterClass;
 
-    
-    public CharacterStat Strength, Defense, Speed,AP,Health;
+
+    public CharacterStat Strength, Defense, Speed, AP, Health, Range;
 
    
     
@@ -33,6 +35,7 @@ public class PlayerStats : MonoBehaviour
                     Speed = new CharacterStat(7);
                     AP = new CharacterStat(7);
                     Health = new CharacterStat(6);
+                    Range = new CharacterStat(5);
                     break;
                 }
             case Classes.Gunner:
@@ -42,6 +45,7 @@ public class PlayerStats : MonoBehaviour
                     Speed = new CharacterStat(5);
                     AP = new CharacterStat(4);
                     Health = new CharacterStat(10);
+                    Range = new CharacterStat(13);
                     break;
                 }
             case Classes.Ninja:
@@ -51,6 +55,7 @@ public class PlayerStats : MonoBehaviour
                     Speed = new CharacterStat(10);
                     AP = new CharacterStat(14);
                     Health = new CharacterStat(6);
+                    Range = new CharacterStat(10);
                     break;
                 }
             case Classes.Underling:
@@ -60,6 +65,7 @@ public class PlayerStats : MonoBehaviour
                     Speed = new CharacterStat(6);
                     AP = new CharacterStat(6);
                     Health = new CharacterStat(6);
+                    Range = new CharacterStat(6);
                     break;
                 }
             case Classes.UnderlingBoss:
@@ -69,6 +75,7 @@ public class PlayerStats : MonoBehaviour
                     Speed = new CharacterStat(4);
                     AP = new CharacterStat(5);
                     Health = new CharacterStat(7);
+                    Range = new CharacterStat(5);
                     break;
                 }
         }
