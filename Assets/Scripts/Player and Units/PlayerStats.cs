@@ -17,12 +17,14 @@ public class PlayerStats : MonoBehaviour
         UnderlingBoss = 500,
     }
     public Classes CharacterClass;
-
+    
 
     public CharacterStat Strength, Defense, Speed, AP, Health, Range;
 
-   
+    public float startHealth;
+
     
+    public bool isAlive = true;
 
     private void Start()
     {
@@ -79,7 +81,8 @@ public class PlayerStats : MonoBehaviour
                     break;
                 }
         }
-        
+
+        startHealth = this.Health.Value;
 
     }
 }

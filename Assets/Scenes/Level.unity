@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 63794237}
   - component: {fileID: 63794236}
   - component: {fileID: 63794238}
+  - component: {fileID: 63794235}
   m_Layer: 0
   m_Name: EnemyUnit
   m_TagString: EnemyUnit
@@ -212,6 +213,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &63794235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63794234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14289ab8193155847bb0c030e94897f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
+  Visibles: []
+  target: {fileID: 0}
+  hasPlayed: 0
+  isAlive: 1
+  score: 0
+  fov: 90
+  aiModes: 0
 --- !u!143 &63794236
 CharacterController:
   m_ObjectHideFlags: 0
@@ -255,6 +276,8 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  startHealth: 0
+  isAlive: 1
 --- !u!136 &63794238
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -976,6 +999,7 @@ GameObject:
   - component: {fileID: 751721320}
   - component: {fileID: 751721319}
   - component: {fileID: 751721318}
+  - component: {fileID: 751721323}
   m_Layer: 0
   m_Name: EnemyUnit (3)
   m_TagString: EnemyUnit
@@ -1054,6 +1078,8 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  startHealth: 0
+  isAlive: 1
 --- !u!23 &751721321
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1099,6 +1125,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751721316}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &751721323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751721316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14289ab8193155847bb0c030e94897f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
+  Visibles: []
+  target: {fileID: 0}
+  hasPlayed: 0
+  isAlive: 1
+  score: 0
+  fov: 90
+  aiModes: 0
 --- !u!1 &974551576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,6 +2011,7 @@ GameObject:
   - component: {fileID: 1804540082}
   - component: {fileID: 1804540081}
   - component: {fileID: 1804540080}
+  - component: {fileID: 1804540085}
   m_Layer: 0
   m_Name: EnemyUnit (2)
   m_TagString: EnemyUnit
@@ -2043,6 +2090,8 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  startHealth: 0
+  isAlive: 1
 --- !u!23 &1804540083
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2088,6 +2137,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804540078}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1804540085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804540078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14289ab8193155847bb0c030e94897f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
+  Visibles: []
+  target: {fileID: 0}
+  hasPlayed: 0
+  isAlive: 1
+  score: 0
+  fov: 90
+  aiModes: 0
 --- !u!1 &1816594649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2140,8 +2209,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1ef8b28e1d5ee42889f21da4af362b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitsArrayTransforms: []
   UnitsList: []
   SeenPlayersTransforms: []
+  commandPoints: 6
 --- !u!4 &1816594652
 Transform:
   m_ObjectHideFlags: 0
@@ -2174,6 +2245,7 @@ GameObject:
   - component: {fileID: 1827323252}
   - component: {fileID: 1827323251}
   - component: {fileID: 1827323250}
+  - component: {fileID: 1827323255}
   m_Layer: 0
   m_Name: EnemyUnit (1)
   m_TagString: EnemyUnit
@@ -2252,6 +2324,8 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  startHealth: 0
+  isAlive: 1
 --- !u!23 &1827323253
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2297,6 +2371,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827323248}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1827323255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827323248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14289ab8193155847bb0c030e94897f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
+  Visibles: []
+  target: {fileID: 0}
+  hasPlayed: 0
+  isAlive: 1
+  score: 0
+  fov: 90
+  aiModes: 0
 --- !u!1 &1934620887
 GameObject:
   m_ObjectHideFlags: 0
