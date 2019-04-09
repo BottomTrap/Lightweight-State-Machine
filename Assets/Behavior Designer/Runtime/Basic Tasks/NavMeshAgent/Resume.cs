@@ -32,7 +32,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityNavMeshAgent
                 return TaskStatus.Failure;
             }
 
-            navMeshAgent.Resume();
+            navMeshAgent.isStopped = false;
 
             return TaskStatus.Success;
         }

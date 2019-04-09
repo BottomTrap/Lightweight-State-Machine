@@ -42,8 +42,13 @@ public class PerspectiveChange : StateAction
             states.SetState(menuState);
             return true;
         }
+        if (states.commandPoints <= 0)
+        {
+            states.SetState(menuState);
+            return true;
+        }
 
-       
+
         return false;
     }
 }

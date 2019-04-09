@@ -8,22 +8,26 @@ using BehaviorDesigner.Runtime;
 public class EnemyPhaseAction : StateAction
 {
     private GameModeManager gameManager;
-    private string tacticState;
+    private EnemyPhaseManager enemyAiManager;
+    private readonly string tacticState;
+    private readonly string tacticsAiState;
 
-    public EnemyPhaseAction(GameModeManager gameManager, string tacticState)
+
+    public EnemyPhaseAction(GameModeManager gameManager, string tacticState, string tacticsAiState)
     {
         this.gameManager = gameManager;
         this.tacticState = tacticState;
+        this.tacticsAiState = tacticsAiState;
     }
 
 
     public override bool Execute()
     {
-        if (gameManager.commandPoints <= 0)
+        if (enemyAiManager.enemyUnitsScript.commandPoints <= 0)
         {
-            gameManager.SetState(tacticState);
-            return true;
+            gameManager.SetState(tacticsAiState);
         }
+        else enemyAiManager.SetState(tacticsAiState);
 
 
 

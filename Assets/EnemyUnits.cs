@@ -12,7 +12,7 @@ public class EnemyUnits : MonoBehaviour
     public Transform[] UnitsArrayTransforms;
     public List<Transform> UnitsList = new List<Transform>();
     public List<Transform> SeenPlayersTransforms= new List<Transform>();
-    public int commandPoints;
+    public int commandPoints=6;
 
 
 
@@ -29,7 +29,6 @@ public class EnemyUnits : MonoBehaviour
             if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive)
             {
                 UnitsList.Add(UnitsArrayTransforms[i]);
-                
             }
             else
                 continue;
@@ -218,7 +217,7 @@ public class EnemyUnits : MonoBehaviour
         }
 
         return true;
-    }
+    } //Get players in range, even behind
 
     public List<Transform> PlayersInViewTransforms()
     {
@@ -240,7 +239,7 @@ public class EnemyUnits : MonoBehaviour
         }
 
         return returnTransforms;
-    }
+    }  //Get players in view from the inRange players
 
     
 }

@@ -1,4 +1,4 @@
-#if !UNITY_5_0
+
 
 using UnityEngine.Networking;
 
@@ -12,4 +12,3 @@ namespace BehaviorDesigner.Runtime.Tasks.Basic.UnityNetwork
         }
     }
 }
-#endif

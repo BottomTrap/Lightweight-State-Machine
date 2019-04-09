@@ -17,7 +17,16 @@ public class PlayerStats : MonoBehaviour
         UnderlingBoss = 500,
     }
     public Classes CharacterClass;
-    
+
+    public enum Skills
+    {
+        Cure=100,
+        Barrier =200,
+        Invisible =300,
+        DeathBlow=400,
+        CritHitUp=500,
+    }
+    public Skills CharacterSkills;
 
     public CharacterStat Strength, Defense, Speed, AP, Health, Range;
 

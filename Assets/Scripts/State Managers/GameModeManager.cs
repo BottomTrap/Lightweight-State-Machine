@@ -9,6 +9,7 @@ public class GameModeManager : StateManager
 
     public CameraScript cameraScript;
     public PlayerMovement playerScript;
+    public EnemyUnits enemyAiScript;
     public int commandPoints;
     public bool endTurn= false;
     public bool endPhase = false;
@@ -112,7 +113,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new MenuAction(this,"tacticState","actionState","aimState")
+                new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase")
             }
             );
 
@@ -127,7 +128,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new EnemyPhaseAction(this,"tacticState"), 
+                new EnemyPhaseAction(this,"tacticState","tacticAiState"), 
             }
             );
 #endregion

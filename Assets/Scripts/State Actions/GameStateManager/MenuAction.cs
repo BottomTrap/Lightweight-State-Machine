@@ -10,13 +10,15 @@ public class MenuAction : StateAction
     private readonly string isoState;
     private readonly string perspectiveState;
     private readonly string aimState;
+    private readonly string enemyState;
 
-    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState)
+    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState)
     {
         this.gameManager = gameManager;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.aimState = aimState;
+        this.enemyState = enemyState;
     }
 
     public override bool Execute()
@@ -57,7 +59,7 @@ public class MenuAction : StateAction
             //Leads to "Watch State" Until GAME AI Finishes
             if (gameManager.endPhase)
             {
-                gameManager.SetState("EnemyPhase");
+                gameManager.SetState(enemyState);
                 return true;
             }
         }
