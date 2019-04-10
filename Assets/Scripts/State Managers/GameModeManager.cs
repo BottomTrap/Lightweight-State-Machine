@@ -25,7 +25,7 @@ public class GameModeManager : StateManager
     
 
 
-    #region Tactics State
+        #region Tactics State
     //Tactics State will change all tactics state conditions
     //IN CONDITION: Clicking on the menu prompt to end the turn
     //OUT CONDITION : Clicking on a player to go to action state
@@ -123,7 +123,6 @@ public class GameModeManager : StateManager
             );
 
         #endregion
-
 
         #region Enemy Phase
         State EnemyPhase = new State(
