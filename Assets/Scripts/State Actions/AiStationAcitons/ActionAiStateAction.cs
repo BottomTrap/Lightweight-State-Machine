@@ -7,11 +7,11 @@ using RG;
 
 public class ActionAiStateAction : StateAction
 {
-    private readonly EnemyPhaseManager enemyPhaseManager;
+    private readonly GameModeManager enemyPhaseManager;
     private readonly string tacticAiState;
     private readonly string menuState;
 
-    public ActionAiStateAction (EnemyPhaseManager enemyPhaseManager, string tacticAiState,string menuState)
+    public ActionAiStateAction (GameModeManager enemyPhaseManager, string tacticAiState,string menuState)
     {
         this.enemyPhaseManager = enemyPhaseManager;
         this.tacticAiState = tacticAiState;
@@ -20,6 +20,13 @@ public class ActionAiStateAction : StateAction
 
     public override bool Execute()
     {
+        Debug.Log("AI ACTION");
+        Debug.Log(enemyPhaseManager.enemyUnitsScript.commandPoints);
+        var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
+        //camera follow the action happening
+        AI.Action();
+        enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
+        enemyPhaseManager.SetState(tacticAiState);
         //make sure all the actions are being made 
         //get unto tactics state after the unit finished its actions and some half a second delay
         //IEnumarator? Coroutine? to be determined

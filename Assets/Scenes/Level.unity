@@ -206,6 +206,8 @@ GameObject:
   - component: {fileID: 63794236}
   - component: {fileID: 63794238}
   - component: {fileID: 63794235}
+  - component: {fileID: 63794243}
+  - component: {fileID: 63794242}
   m_Layer: 0
   m_Name: EnemyUnit
   m_TagString: EnemyUnit
@@ -264,6 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharacterClass: 400
+  CharacterSkills: 0
   Strength:
     BaseValue: 0
   Defense:
@@ -351,6 +354,37 @@ Transform:
   m_Father: {fileID: 1816594652}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63794242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63794234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43d1f1f352eb794099cba703c1caa1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &63794243
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63794234}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &66103551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1034,8 @@ GameObject:
   - component: {fileID: 751721319}
   - component: {fileID: 751721318}
   - component: {fileID: 751721323}
+  - component: {fileID: 751721325}
+  - component: {fileID: 751721324}
   m_Layer: 0
   m_Name: EnemyUnit (3)
   m_TagString: EnemyUnit
@@ -1066,6 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharacterClass: 500
+  CharacterSkills: 0
   Strength:
     BaseValue: 0
   Defense:
@@ -1145,6 +1182,37 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+--- !u!114 &751721324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751721316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43d1f1f352eb794099cba703c1caa1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &751721325
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751721316}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &974551576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,12 +1540,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraScript: {fileID: 534669906}
   playerScript: {fileID: 0}
+  enemyAiScript: {fileID: 0}
   commandPoints: 6
   endTurn: 0
   endPhase: 0
   endTurnPrompt: {fileID: 1623759376}
   endPhasePrompt: {fileID: 974551577}
   playerTransform: {fileID: 0}
+  enemyUnitsScript: {fileID: 1816594651}
 --- !u!4 &1198235064
 Transform:
   m_ObjectHideFlags: 0
@@ -2012,6 +2082,8 @@ GameObject:
   - component: {fileID: 1804540081}
   - component: {fileID: 1804540080}
   - component: {fileID: 1804540085}
+  - component: {fileID: 1804540087}
+  - component: {fileID: 1804540086}
   m_Layer: 0
   m_Name: EnemyUnit (2)
   m_TagString: EnemyUnit
@@ -2078,6 +2150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharacterClass: 400
+  CharacterSkills: 0
   Strength:
     BaseValue: 0
   Defense:
@@ -2157,6 +2230,37 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+--- !u!114 &1804540086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804540078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43d1f1f352eb794099cba703c1caa1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1804540087
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804540078}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1816594649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,6 +2316,7 @@ MonoBehaviour:
   UnitsArrayTransforms: []
   UnitsList: []
   SeenPlayersTransforms: []
+  currentUnit: {fileID: 0}
   commandPoints: 6
 --- !u!4 &1816594652
 Transform:
@@ -2246,6 +2351,8 @@ GameObject:
   - component: {fileID: 1827323251}
   - component: {fileID: 1827323250}
   - component: {fileID: 1827323255}
+  - component: {fileID: 1827323257}
+  - component: {fileID: 1827323256}
   m_Layer: 0
   m_Name: EnemyUnit (1)
   m_TagString: EnemyUnit
@@ -2312,6 +2419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharacterClass: 400
+  CharacterSkills: 0
   Strength:
     BaseValue: 0
   Defense:
@@ -2391,6 +2499,37 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+--- !u!114 &1827323256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827323248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43d1f1f352eb794099cba703c1caa1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1827323257
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827323248}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1934620887
 GameObject:
   m_ObjectHideFlags: 0

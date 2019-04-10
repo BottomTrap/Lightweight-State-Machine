@@ -12,21 +12,25 @@ public class EnemyUnits : MonoBehaviour
     public Transform[] UnitsArrayTransforms;
     public List<Transform> UnitsList = new List<Transform>();
     public List<Transform> SeenPlayersTransforms= new List<Transform>();
+    public Transform currentUnit;
     public int commandPoints=6;
+    public int originalCommandPoints;
 
 
 
     private void Awake()
     {
-        GetChildObjectsAndPlayerTransforms();
+        originalCommandPoints = commandPoints;
+        GetChildObjectsTransforms();
     }
 
-    void GetChildObjectsAndPlayerTransforms()
+    public void GetChildObjectsTransforms()
     {
         UnitsArrayTransforms = GetComponentsInChildren<Transform>();
         for (int i = 0; i < UnitsArrayTransforms.Length; i++)
         {
-            if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive)
+            if (UnitsArrayTransforms[i] == this.transform) continue;
+            if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive && !UnitsList.Contains(UnitsArrayTransforms[i]))
             {
                 UnitsList.Add(UnitsArrayTransforms[i]);
             }
@@ -36,25 +40,26 @@ public class EnemyUnits : MonoBehaviour
     }
    
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
-    Transform ChooseUnitTurn(List<Transform> unitsList)
+    public Transform ChooseUnitTurn()
     {
-        Transform chosenTransform=unitsList[Mathf.RoundToInt(Random.Range(0,unitsList.Count))];
+        Transform chosenTransform=UnitsList[Mathf.RoundToInt(Random.Range(0,UnitsList.Count))];
         int previousScore=0;
-        for (int i = 0; i < unitsList.Count; i++)
+        for (int i = 0; i < UnitsList.Count; i++)
         {
             
             int score = 0;
-            score += hasPlayed(unitsList[i]) + IsThreatened(unitsList[i]) +
-                     DistancefromVisibleUnits(unitsList[i], SeenPlayersTransforms) + AlliesLeft(unitsList[i]) +
-                     UnitsThatThisCanKill(unitsList[i], SeenPlayersTransforms);
+            score += hasPlayed(UnitsList[i]) + IsThreatened(UnitsList[i]) +
+                     DistancefromVisibleUnits(UnitsList[i], SeenPlayersTransforms) + AlliesLeft(UnitsList[i]) +
+                     UnitsThatThisCanKill(UnitsList[i], SeenPlayersTransforms);
             
             if (i - 1 < 0) continue;
             if (score > previousScore)
             {
                 
-                chosenTransform = unitsList[i];
+                chosenTransform = UnitsList[i];
                 if (score < 3)
                 {
+                    chosenTransform.GetComponent<AI>().target = chosenTransform;
                     chosenTransform.GetComponent<AI>().aiModes=AI.AiModes.Cure;
                 }
 
@@ -85,7 +90,7 @@ public class EnemyUnits : MonoBehaviour
 
 
     #region EnemyAIChoiceFactors
-    int hasPlayed(Transform unit)
+    public int hasPlayed(Transform unit)
     {
         if (unit.GetComponent<AI>().hasPlayed)
         {
@@ -97,7 +102,7 @@ public class EnemyUnits : MonoBehaviour
         }
     }
 
-    int IsThreatened(Transform unit)
+    public int IsThreatened(Transform unit)
     {
         if ((unit.GetComponent<PlayerStats>().Health.Value / unit.GetComponent<PlayerStats>().startHealth) / 100.0 <
             50.0)
@@ -110,7 +115,7 @@ public class EnemyUnits : MonoBehaviour
         }
     }
 
-    int DistancefromVisibleUnits(Transform unit, List<Transform> seenPlayerTransforms)
+    public int DistancefromVisibleUnits(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn = 0;
         List<Transform> sortedList =
@@ -131,7 +136,7 @@ public class EnemyUnits : MonoBehaviour
         return finalreturn;
     }
 
-    int AlliesLeft(Transform unit)
+    public int AlliesLeft(Transform unit)
     {
         int finalreturn = 0;
         for (int i = 0; i < UnitsList.Count; i++)
@@ -152,7 +157,7 @@ public class EnemyUnits : MonoBehaviour
     }
 
 
-    int UnitsThatThisCanKill(Transform unit, List<Transform> seenPlayerTransforms)
+    public int UnitsThatThisCanKill(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn=0;
         for (int i=0; i < seenPlayerTransforms.Count; i++)
@@ -167,7 +172,7 @@ public class EnemyUnits : MonoBehaviour
     }
 
 
-    bool CanKill(Transform unit, Transform playerTransform)
+    public bool CanKill(Transform unit, Transform playerTransform)
     {
         if ((unit.GetComponent<PlayerStats>().Strength.Value /
              playerTransform.GetComponent<PlayerStats>().Defense.Value) >=
@@ -183,7 +188,7 @@ public class EnemyUnits : MonoBehaviour
 #endregion
 
 
-    Transform GetLowestHP(List<Transform> transforms)
+    public Transform GetLowestHP(List<Transform> transforms)
     {
         Transform chosenTransform;
         chosenTransform = transforms[0];
@@ -204,19 +209,22 @@ public class EnemyUnits : MonoBehaviour
 
 
     //TO START EVERYTIME WE WANT TO CHOOSE A UNIT TO USE // MEANING BEFORE ChooseUnitTurn() 
-    [Task]
-    public bool GetPlayersInRange(float AP, float range, Transform currentUnit)
+    
+    public void GetPlayersInRange( )
     {
-        Collider[] seenPlayerColliders = Physics.OverlapSphere(currentUnit.position, AP + range);
-        int i = 0;
-        while (i < seenPlayerColliders.Length)
+        for (int j = 0; j < UnitsList.Count; j++)
         {
-            if(seenPlayerColliders[i].gameObject.tag =="PlayerUnit")
-            SeenPlayersTransforms.Add(seenPlayerColliders[i].transform);
-            i++;
+            Collider[] seenPlayerColliders = Physics.OverlapSphere(UnitsList[j].position, UnitsList[j].GetComponent<PlayerStats>().AP.Value + UnitsList[j].GetComponent<PlayerStats>().Range.Value);
+            int i = 0;
+            while (i < seenPlayerColliders.Length)
+            {
+                if (seenPlayerColliders[i].gameObject.tag == "PlayerUnit")
+                    SeenPlayersTransforms.Add(seenPlayerColliders[i].transform);
+                i++;
+            }
         }
 
-        return true;
+
     } //Get players in range, even behind
 
     public List<Transform> PlayersInViewTransforms()

@@ -7,24 +7,43 @@ using RG;
 public class TacticAiStateAction : StateAction
 {
 
-    private EnemyPhaseManager enemyManager;
+    private GameModeManager enemyManager;
     private readonly string actionAiState;
     private readonly string menuState;
+    private readonly string tacticState;
 
-    public TacticAiStateAction(EnemyPhaseManager enemyManager, string actionAiState, string menuState)
+    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState,string tacticState)
     {
         this.enemyManager = enemyManager;
         this.actionAiState = actionAiState;
         this.menuState = menuState;
+        this.tacticState = tacticState;
     }
 
     public override bool Execute()
     {
+        Debug.Log("AI CHOICE");
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Time.timeScale = 0;
+            //Make the menu thingie appear
+            return false;
+        }
+            enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
+        enemyManager.enemyUnitsScript.GetPlayersInRange();
+        enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
+        enemyManager.SetState(actionAiState);
+
+        if (enemyManager.enemyUnitsScript.commandPoints <= 0)
+        {
+            enemyManager.SetState(tacticState);
+        }
         //choose the enemy unit
         //do camera thing to it
         //go to ActionAiState
         return true;
 
+        
         //if esc or smth is pressed :
         //pause game (time.timescale = 0)
         //go to menuState (zeyda , so nooooo)

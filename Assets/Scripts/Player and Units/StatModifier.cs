@@ -22,7 +22,7 @@
             Source = source;
         }
 
-        //A Constructor that add a default Order value (similar in Unity where you chose the way you use a contructor) in case the user doesn't want to manually define it for some reason
+        //A Constructor that add a default Order value (similar in Unity where you chose the way you use a constructor) in case the user doesn't want to manually define it for some reason
         //calling a constructor from another constructor , like extending the constructor, so it takes the things we did in the other constructor and adds to it
         // (int) type is getting the index of the type in the enum StatModType , which decides for us the order
 

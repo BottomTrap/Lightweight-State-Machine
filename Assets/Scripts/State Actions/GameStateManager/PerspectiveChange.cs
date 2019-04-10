@@ -22,6 +22,7 @@ public class PerspectiveChange : StateAction
 
     public override bool Execute()
     {
+        states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
         states.endPhase = false;
         //states.playerTransform = states.cameraScript.PlayerClicked(states.commandPoints);
        states.cameraScript.IsoMovement();

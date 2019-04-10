@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using SA;
 using RG;
@@ -16,16 +17,20 @@ public class GameModeManager : StateManager
     public Transform endTurnPrompt;
     public Transform endPhasePrompt;
     public Transform playerTransform;
+    public EnemyUnits enemyUnitsScript;
+
 
     protected override void Init()
     {
+    
 
-        #region Tactics State
-        //Tactics State will change all tactics state conditions
-        //IN CONDITION: Clicking on the menu prompt to end the turn
-        //OUT CONDITION : Clicking on a player to go to action state
-        // Clicking on the menu prompt to end the WHOLE PHASE
-        State TacticsState = new State(
+
+    #region Tactics State
+    //Tactics State will change all tactics state conditions
+    //IN CONDITION: Clicking on the menu prompt to end the turn
+    //OUT CONDITION : Clicking on a player to go to action state
+    // Clicking on the menu prompt to end the WHOLE PHASE
+    State TacticsState = new State(
             new StateAction[]
             {
 
@@ -131,7 +136,30 @@ public class GameModeManager : StateManager
                 new EnemyPhaseAction(this,"tacticState","tacticAiState"), 
             }
             );
-#endregion
+        
+        State TacticAiState = new State(
+            new StateAction[]
+            {
+
+            },
+            new StateAction[]
+            {
+                new TacticAiStateAction(this,"actionAiState","menuState","tacticState"), 
+            }
+        );
+        State ActionAiState = new State(
+            new StateAction[]
+            {
+                new ActionAiStateAction(this,"tacticAiState","menuState"),
+            },
+            new StateAction[]
+            {
+
+            }
+        );
+        #endregion
+
+
 
 
         allStates.Add("tacticState",TacticsState);
@@ -139,7 +167,9 @@ public class GameModeManager : StateManager
         allStates.Add("menuState",MenuState);
         allStates.Add("aimState",AimState);
         allStates.Add("EnemyPhase",EnemyPhase);
-        
+        allStates.Add("tacticAiState", TacticAiState);
+        allStates.Add("actionAiState", ActionAiState);
+
         SetState("tacticState");
     }
 

@@ -8,7 +8,7 @@ using BehaviorDesigner.Runtime;
 public class EnemyPhaseAction : StateAction
 {
     private GameModeManager gameManager;
-    private EnemyPhaseManager enemyAiManager;
+    
     private readonly string tacticState;
     private readonly string tacticsAiState;
 
@@ -23,14 +23,13 @@ public class EnemyPhaseAction : StateAction
 
     public override bool Execute()
     {
-        if (enemyAiManager.enemyUnitsScript.commandPoints <= 0)
+        Debug.Log("enemytransition");
+        if (gameManager.enemyUnitsScript.commandPoints <= 0)
         {
             gameManager.SetState(tacticsAiState);
+            return true;
         }
-        else enemyAiManager.SetState(tacticsAiState);
-
-
-
+         gameManager.SetState(tacticsAiState);
         return true;
     }
 }
