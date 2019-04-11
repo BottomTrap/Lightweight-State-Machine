@@ -204,6 +204,6 @@ public class GameModeManager : StateManager
     private void Update()
     {
         Tick();
-        Debug.Log(currentState);
+        
     }
 }

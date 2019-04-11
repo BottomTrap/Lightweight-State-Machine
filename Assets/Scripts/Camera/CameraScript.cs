@@ -27,9 +27,7 @@ namespace RG
 
 
 
-       // private Transform
-          //
-          // playerTransform; //Public variable to store a reference to the player transform from ObjectClick.cs when delegate is activated
+
           public Transform playerTransform;
 
         [Header("State Bools")] public bool orthoOn = true;
@@ -56,15 +54,8 @@ namespace RG
         [SerializeField]
         private Vector3 offset; //Private variable to store the offset distance between the player and camera
 
-
         private Transform oldTransform; // old transform to retransition back into
-        //float horizontal = 0.0f;
-
-
-
-
-        //FiniteStateMachine
-        //private IsometricState isometricManager;
+       
         //private Animator animator;
 
         private void Awake()
@@ -96,25 +87,15 @@ namespace RG
 
             return false;
         }
+
         void Start()
         {
-            //playerTransform = target.transform;
-            //***Delegate subscription 
-            //ObjectClick.characterSelectDelegate += CamTrans;
-            //PlayerMovement.viewChangeDelegate += AimViewOn;
-
+            oldTransform = transform;
             //Third Person Camera Stuff
             offset = new Vector3(-2, 1, -4);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
-            //offset = transform.position - player.transform.position;
-
-            //FSM Stuff
-            //isometricManager = animator.GetBehaviour<IsometricState>  ();
-            //isometricManager.camBehaviour = this;
-
-
+           
             //Perspective switcher stuff
-
             aspect = (float) Screen.width / (float) Screen.height;
             ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize,
                 orthographicSize, near, far);
@@ -125,54 +106,25 @@ namespace RG
             blender = (NewMatrixBlender) GetComponent(typeof(NewMatrixBlender));
             blender.BlendToMatrix(ortho, 1f, 8, true);
 
-            // 
-           // orthoOn = true;
         }
 
-        void Update()
-        {
-           
-        }
-
-        //void LateUpdate() //NOTE TO SELF : LATE UPDATE DOES WEIRD THINGS WHEN ITS WITH UPDATE SIMULTANEOUSLY 
-        //{
-        //    if (!orthoOn)
-        //    {
-        //        CameraMovement();
-        //    }
-        //}
         
-
-        void CamTrans() //activated by delegate
-        {
-           
-            transitionning = true;
-            orthoOn = false;
-            Debug.Log(orthoOn);
-            Debug.Log(transitionning);
-
-
-
-
-        }
-
-        public void CameraTransition() // Cool looking lerp
+        public void CameraTransition(Transform target) // Cool looking lerp
         {
             blender.BlendToMatrix(perspective, 1f, 8, false);
             oldTransform = transform;
-            float angle = playerTransform.eulerAngles.y;
+            float angle = target.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
             Vector3 firstLerp =
-                new Vector3(playerTransform.position.x, playerTransform.position.y, transform.position.z);
+                new Vector3(target.position.x, target.position.y, transform.position.z);
             transform.position = Vector3.Lerp(transform.position, firstLerp, rotateSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, playerTransform.position + offset,
+            transform.position = Vector3.Lerp(transform.position, target.position + offset,
                 rotateSpeed * Time.deltaTime);
             //transform.LookAt(player.transform);
-            Vector3 direction = playerTransform.position - transform.position;
+            Vector3 direction = target.position - transform.position;
             Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-            //transitionning = false;
-            //orthoOn = false;
+          
         }
 
         public void IsoCameraTransition()
@@ -183,19 +135,19 @@ namespace RG
                 Quaternion.Lerp(transform.rotation, oldTransform.rotation, rotateSpeed * Time.deltaTime);
         }
 
-        public void CameraMovement() //player follow !! to make after we made camera transition
+        public void CameraMovement(Transform target) //player follow !! to make after we made camera transition
         {
             // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
-            transform.position = playerTransform.position + offset;
+            transform.position = target.position + offset;
             // if (Input.GetMouseButton(1))
             // {
             //     horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
             // }
             // player.transform.Rotate(0, horizontal, 0);
-            float angle = playerTransform.eulerAngles.y;
+            float angle = target.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            transform.position = playerTransform.position + rotation * offset;
-            transform.LookAt(playerTransform);
+            transform.position = target.position + rotation * offset;
+            transform.LookAt(target);
 
 
         }
@@ -257,8 +209,7 @@ namespace RG
             if (Input.GetMouseButton(1))
             {
                 translationX = Input.GetAxis("Mouse X");
-                transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,
-                    Space.World);
+                transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
             }
         }
 
@@ -286,10 +237,6 @@ namespace RG
 
             playerTransform.eulerAngles = e;
         }
-       //
-       //public void AimViewOn()
-       //{
-       //    aimView = !aimView;
-       //}
+       
     }
 }

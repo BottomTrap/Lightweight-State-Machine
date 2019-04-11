@@ -49,7 +49,7 @@ namespace RG
              distanceTraveled += Vector3.Distance(transform.position, lastPosition);
              lastPosition = transform.position;
                 
-             Debug.Log(didHit);
+             
         }
 
         public void Attack()

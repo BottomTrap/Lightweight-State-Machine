@@ -44,19 +44,20 @@ public class EnemyUnits : MonoBehaviour
     {
         Transform chosenTransform=UnitsList[Mathf.RoundToInt(Random.Range(0,UnitsList.Count))];
         int previousScore=0;
-        for (int i = 0; i < UnitsList.Count; i++)
+        foreach (Transform g in UnitsList)
         {
             
             int score = 0;
-            score += hasPlayed(UnitsList[i]) + IsThreatened(UnitsList[i]) +
-                     DistancefromVisibleUnits(UnitsList[i], SeenPlayersTransforms) + AlliesLeft(UnitsList[i]) +
-                     UnitsThatThisCanKill(UnitsList[i], SeenPlayersTransforms);
+            score += hasPlayed(g) + IsThreatened(g) +
+                     DistancefromVisibleUnits(g, SeenPlayersTransforms) + AlliesLeft(g) +
+                     UnitsThatThisCanKill(g, SeenPlayersTransforms);
             
-            if (i - 1 < 0) continue;
+           
+            
             if (score > previousScore)
             {
                 
-                chosenTransform = UnitsList[i];
+                chosenTransform = g;
                 if (score < 3)
                 {
                     chosenTransform.GetComponent<AI>().target = chosenTransform;
@@ -80,12 +81,8 @@ public class EnemyUnits : MonoBehaviour
             {
                 continue;
             }
-            
-
         }
-
         return chosenTransform;
-
     }
 
 
@@ -247,7 +244,12 @@ public class EnemyUnits : MonoBehaviour
         }
 
         return returnTransforms;
-    }  //Get players in view from the inRange players
+    }
+    //Get players in view from the inRange players
 
-    
+    IEnumerator Waiter()
+    {
+        yield return new WaitForSeconds(2.0f);
+    }
+
 }

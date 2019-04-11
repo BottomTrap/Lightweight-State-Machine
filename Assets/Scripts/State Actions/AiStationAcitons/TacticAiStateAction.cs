@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using SA;
 using RG;
@@ -22,6 +23,17 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
+        
+        Delay delay = new Delay(5.0f);
+        
+        if (enemyManager.previousState == enemyManager.GetState("tacticState"))
+        {
+            foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
+            {
+                g.GetComponent<AI>().hasPlayed = false;
+               
+            }
+        }
         Debug.Log("AI CHOICE");
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -29,11 +41,16 @@ public class TacticAiStateAction : StateAction
             //Make the menu thingie appear
             return false;
         }
-            enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
-        enemyManager.enemyUnitsScript.GetPlayersInRange();
-        enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
-        enemyManager.SetState(actionAiState);
 
+        enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
+        enemyManager.enemyUnitsScript.GetPlayersInRange();
+        Thread.Sleep(1000);
+        if (enemyManager.enemyUnitsScript.ChooseUnitTurn() != null)
+        {
+            enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
+        }
+            enemyManager.SetState(actionAiState);
+        
         if (enemyManager.enemyUnitsScript.commandPoints <= 0)
         {
             enemyManager.SetState(tacticState);
@@ -55,5 +72,6 @@ public class TacticAiStateAction : StateAction
 
     }
 
-   
+    
+
 }

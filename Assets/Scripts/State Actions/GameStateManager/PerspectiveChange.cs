@@ -28,7 +28,7 @@ public class PerspectiveChange : StateAction
        states.cameraScript.IsoMovement();
         if (states.cameraScript.PlayerClicked(states.commandPoints) && states.currentState == states.GetState("tacticState") ) //change key down to player selected or something
         {
-            states.cameraScript.CameraTransition();
+            states.cameraScript.CameraTransition(states.cameraScript.playerTransform);
             //states.cameraScript.CameraMovement(states.cameraScript.PlayerClicked(states.commandPoints)); //I want to update this!!
             //Debug.Log(states.currentState);
             states.commandPoints -= 1;

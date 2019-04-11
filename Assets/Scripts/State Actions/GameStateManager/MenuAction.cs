@@ -59,6 +59,7 @@ public class MenuAction : StateAction
             //Leads to "Watch State" Until GAME AI Finishes
             if (gameManager.endPhase)
             {
+                gameManager.endPhasePrompt.gameObject.SetActive(false);
                 gameManager.SetState(enemyState);
                 return true;
             }

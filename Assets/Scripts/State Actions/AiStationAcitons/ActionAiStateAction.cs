@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using SA;
 using RG;
@@ -21,11 +22,21 @@ public class ActionAiStateAction : StateAction
     public override bool Execute()
     {
         Debug.Log("AI ACTION");
-        Debug.Log(enemyPhaseManager.enemyUnitsScript.commandPoints);
-        var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
-        //camera follow the action happening
-        AI.Action();
-        enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
+        if (enemyPhaseManager.enemyUnitsScript.currentUnit != null)
+        {
+            enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit);
+            Debug.Log(enemyPhaseManager.enemyUnitsScript.commandPoints);
+            var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
+            //camera follow the action happening
+            AI.Action();
+            AI.hasPlayed = true;
+            enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
+        }
+        else enemyPhaseManager.enemyUnitsScript.commandPoints = 0;
+        enemyPhaseManager.cameraScript.IsoCameraTransition();
+        enemyPhaseManager.cameraScript.IsoMovement();
+        Thread.Sleep(1000);
+        Debug.Log("wfai wa9t");
         enemyPhaseManager.SetState(tacticAiState);
         //make sure all the actions are being made 
         //get unto tactics state after the unit finished its actions and some half a second delay

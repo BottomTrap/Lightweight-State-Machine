@@ -36,7 +36,7 @@ public class PlayerControlsAction : StateAction
         
 
         Debug.Log("this is actionState");
-        gameStates.cameraScript.CameraMovement();
+        gameStates.cameraScript.CameraMovement(gameStates.cameraScript.playerTransform);
         Debug.Log(playerMovement);
         //gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>().Movement();
         playerMovement.Rotate();
