@@ -146,7 +146,7 @@ namespace RG
                 transform.position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
                 transform.rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
-                await W
+                await Task.Delay(1000);
             }
             
         }

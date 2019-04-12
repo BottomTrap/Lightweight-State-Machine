@@ -28,8 +28,8 @@ public class TacticAiStateAction : StateAction
             enemyManager.SetState(tacticState);
             return true;
         }
-        enemyManager.cameraScript.StartCoroutine(enemyManager.cameraScript.IsoCameraTransition());
-        await enemyManager.cameraScript.IsoMovement();
+        enemyManager.cameraScript.IsoCameraTransition();
+       
 
         if (enemyManager.previousState == enemyManager.GetState("tacticState"))
         {
