@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 
 
 namespace RG
@@ -28,11 +29,9 @@ namespace RG
 
 
 
-          public Transform playerTransform;
+         public Transform playerTransform;
 
-        [Header("State Bools")] public bool orthoOn = true;
-        public bool transitionning = false;
-        public bool aimView = false;
+       
 
 
 
@@ -55,6 +54,8 @@ namespace RG
         private Vector3 offset; //Private variable to store the offset distance between the player and camera
 
         private Transform oldTransform; // old transform to retransition back into
+
+        public AnimationCurve curve;
        
         //private Animator animator;
 
@@ -102,37 +103,52 @@ namespace RG
             perspective = Matrix4x4.Perspective(fov, aspect, near, far);
             m_camera = GetComponent<Camera>();
             m_camera.projectionMatrix = ortho;
-            orthoOn = true;
             blender = (NewMatrixBlender) GetComponent(typeof(NewMatrixBlender));
             blender.BlendToMatrix(ortho, 1f, 8, true);
 
         }
 
         
-        public void CameraTransition(Transform target) // Cool looking lerp
+        public IEnumerator CameraTransition(Transform target) // Cool looking lerp
         {
-            blender.BlendToMatrix(perspective, 1f, 8, false);
-            oldTransform = transform;
-            float angle = target.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            Vector3 firstLerp =
-                new Vector3(target.position.x, target.position.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, firstLerp, rotateSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, target.position + offset,
-                rotateSpeed * Time.deltaTime);
-            //transform.LookAt(player.transform);
-            Vector3 direction = target.position - transform.position;
-            Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
-          
+            float currentTime = 0;
+            float totalTime = 1.0f;
+            while (currentTime < totalTime)
+            {
+                blender.BlendToMatrix(perspective, 1f, 8, false);
+                oldTransform = transform;
+                float angle = target.eulerAngles.y;
+                Quaternion rotation = Quaternion.Euler(0, angle, 0);
+                Vector3 firstLerp =
+                    new Vector3(target.position.x, target.position.y, transform.position.z);
+                transform.position = Vector3.Lerp(transform.position, firstLerp, curve.Evaluate(currentTime / totalTime));
+                transform.position = Vector3.Lerp(transform.position, target.position + offset, curve.Evaluate(
+                    currentTime / totalTime));
+                //transform.LookAt(player.transform);
+                Vector3 direction = target.position - transform.position;
+                Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
+                currentTime += Time.deltaTime;
+
+                yield return new WaitForSeconds(0.5f);
+            }
+            
+            
         }
 
-        public void IsoCameraTransition()
+        public async Task IsoCameraTransition()
         {
-            blender.BlendToMatrix(ortho, 1f, 8, true);
-            transform.position = Vector3.Lerp(transform.position, oldTransform.position, rotateSpeed * Time.deltaTime);
-            transform.rotation =
-                Quaternion.Lerp(transform.rotation, oldTransform.rotation, rotateSpeed * Time.deltaTime);
+            float currentTime=0;
+            float totalTime = 1f;
+            while (currentTime < totalTime)
+            {
+                blender.BlendToMatrix(ortho, 1f, 8, true);
+                transform.position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
+                transform.rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
+                currentTime += Time.deltaTime;
+                await W
+            }
+            
         }
 
         public void CameraMovement(Transform target) //player follow !! to make after we made camera transition

@@ -24,15 +24,36 @@ namespace RG
         public float fov = 90.0f;
         public AiModes aiModes;
 
+        private float distanceTraveled;
+        private Vector3 lastPosition;
+
         void Awake()
         {
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
         }
-
-        public void Move(Transform target)
+        private void FixedUpdate()
         {
-            transform.position = Vector3.Lerp(transform.position, target.position, 5.0f * Time.deltaTime);
+            distanceTraveled += Vector3.Distance(transform.position, lastPosition);
+            lastPosition = transform.position;
+        }
+        public IEnumerator Move(Transform target)
+        {
+            if (distanceTraveled <
+            GetComponent<PlayerStats>().AP.Value )
+            {
+                float currentTime = 0f;
+                float totalTime = 9f;
+                while (currentTime < totalTime)
+                {
+                    transform.position = Vector3.Lerp(transform.position, target.position, GetComponent<PlayerStats>().AP.Value/Vector3.Distance(transform.position, target.position)  );
+                    currentTime += Time.deltaTime;
+                    yield return null;
+                }
+
+            }
+            
+            
         }
 
         public void Action()
@@ -40,15 +61,18 @@ namespace RG
             switch (aiModes)
             {
                 case AiModes.Attack:
-                    Move(target);
+                    StartCoroutine(Move(target));
                     skills.Attack();
+                    hasPlayed = true;
                     break;
                 case AiModes.Cure:
                     skills.Cure();
+                    hasPlayed = true;
                     break;
                 case AiModes.RangedAttack:
-                    Move(target);
+                    StartCoroutine(Move(target));
                     skills.RangedAttack();
+                    hasPlayed = true;
                     break;
             }
             

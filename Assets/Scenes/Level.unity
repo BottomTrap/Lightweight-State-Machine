@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 455693098}
   - component: {fileID: 455693097}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -866,9 +866,6 @@ MonoBehaviour:
   far: 1000
   orthographicSize: 15
   playerTransform: {fileID: 0}
-  orthoOn: 1
-  transitionning: 0
-  aimView: 0
   rotateSpeed: 5
   mouseSensitivity: 10
   playerOffset: {x: 0, y: 0, z: 0}
@@ -878,6 +875,30 @@ MonoBehaviour:
   pitchMinMax: {x: -45, y: 40}
   rotationSmoothTime: 8
   offset: {x: 0, y: 0, z: 0}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &534669908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1807,7 +1828,7 @@ GameObject:
   - component: {fileID: 1491898412}
   - component: {fileID: 1491898411}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

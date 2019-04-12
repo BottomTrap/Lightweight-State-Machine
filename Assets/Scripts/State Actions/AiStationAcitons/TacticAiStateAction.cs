@@ -23,9 +23,14 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
-        
-        Delay delay = new Delay(5.0f);
-        
+        if (enemyManager.enemyUnitsScript.commandPoints <= 0 )
+        {
+            enemyManager.SetState(tacticState);
+            return true;
+        }
+        enemyManager.cameraScript.StartCoroutine(enemyManager.cameraScript.IsoCameraTransition());
+        await enemyManager.cameraScript.IsoMovement();
+
         if (enemyManager.previousState == enemyManager.GetState("tacticState"))
         {
             foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
@@ -44,17 +49,14 @@ public class TacticAiStateAction : StateAction
 
         enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
         enemyManager.enemyUnitsScript.GetPlayersInRange();
-        Thread.Sleep(1000);
+        
         if (enemyManager.enemyUnitsScript.ChooseUnitTurn() != null)
         {
             enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
         }
             enemyManager.SetState(actionAiState);
         
-        if (enemyManager.enemyUnitsScript.commandPoints <= 0)
-        {
-            enemyManager.SetState(tacticState);
-        }
+        
         //choose the enemy unit
         //do camera thing to it
         //go to ActionAiState
@@ -72,6 +74,15 @@ public class TacticAiStateAction : StateAction
 
     }
 
-    
+    bool AllPlayed(List<Transform> unitList)
+    {
+        foreach (Transform g in unitList)
+        {
+            if (!g.GetComponent<AI>().hasPlayed)
+                return false;
+            else continue;
+        }
+        return true;
+    }
 
 }

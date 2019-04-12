@@ -54,7 +54,7 @@ public class EnemyUnits : MonoBehaviour
             
            
             
-            if (score > previousScore)
+            if (score > previousScore && score >0)
             {
                 
                 chosenTransform = g;
