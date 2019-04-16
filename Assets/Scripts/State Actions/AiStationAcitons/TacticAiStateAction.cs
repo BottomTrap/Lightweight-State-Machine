@@ -28,7 +28,7 @@ public class TacticAiStateAction : StateAction
             enemyManager.SetState(tacticState);
             return true;
         }
-        enemyManager.cameraScript.IsoCameraTransition();
+        //enemyManager.cameraScript.IsoCameraTransition();
        
 
         if (enemyManager.previousState == enemyManager.GetState("tacticState"))
@@ -39,6 +39,7 @@ public class TacticAiStateAction : StateAction
                
             }
         }
+      
         Debug.Log("AI CHOICE");
         if (Input.GetKeyDown(KeyCode.Tab))
         {

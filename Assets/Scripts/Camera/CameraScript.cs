@@ -109,7 +109,7 @@ namespace RG
         }
 
         
-        public IEnumerator CameraTransition(Transform target) // Cool looking lerp
+        public void CameraTransition(Transform target) // Cool looking lerp
         {
             float currentTime = 0;
             float totalTime = 1.0f;
@@ -130,13 +130,13 @@ namespace RG
                 transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
 
-                yield return new WaitForSeconds(0.5f);
+                
             }
             
             
         }
 
-        public async Task IsoCameraTransition()
+        public void  IsoCameraTransition()
         {
             float currentTime=0;
             float totalTime = 1f;
@@ -146,7 +146,7 @@ namespace RG
                 transform.position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
                 transform.rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
-                await Task.Delay(1000);
+                
             }
             
         }
@@ -164,8 +164,6 @@ namespace RG
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
             transform.position = target.position + rotation * offset;
             transform.LookAt(target);
-
-
         }
 
         public void IsoMovement()

@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using UnityEngine;
 using RG;
-using Panda;
 using Random = UnityEngine.Random;
 
 public class EnemyUnits : MonoBehaviour
@@ -15,13 +15,18 @@ public class EnemyUnits : MonoBehaviour
     public Transform currentUnit;
     public int commandPoints=6;
     public int originalCommandPoints;
-
+   
 
 
     private void Awake()
     {
         originalCommandPoints = commandPoints;
         GetChildObjectsTransforms();
+    }
+
+    private void Update()
+    {
+       
     }
 
     public void GetChildObjectsTransforms()
@@ -43,45 +48,35 @@ public class EnemyUnits : MonoBehaviour
     public Transform ChooseUnitTurn()
     {
         Transform chosenTransform=UnitsList[Mathf.RoundToInt(Random.Range(0,UnitsList.Count))];
-        int previousScore=0;
+        
         foreach (Transform g in UnitsList)
         {
-            
-            int score = 0;
-            score += hasPlayed(g) + IsThreatened(g) +
+            int score = g.GetComponent<AI>().score=0;
+           score = hasPlayed(g) + IsThreatened(g) +
                      DistancefromVisibleUnits(g, SeenPlayersTransforms) + AlliesLeft(g) +
                      UnitsThatThisCanKill(g, SeenPlayersTransforms);
-            
-           
-            
-            if (score > previousScore && score >0)
-            {
-                
-                chosenTransform = g;
-                if (score < 3)
-                {
-                    chosenTransform.GetComponent<AI>().target = chosenTransform;
-                    chosenTransform.GetComponent<AI>().aiModes=AI.AiModes.Cure;
-                }
-
-                if (score > 3 && score < 6)
-                {
-                    chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
-                    chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
-                }
-
-                if (score > 6)
-                {
-                    chosenTransform.GetComponent<AI>().target =
-                        SeenPlayersTransforms[Mathf.RoundToInt(Random.Range(0, SeenPlayersTransforms.Count))];
-                }
-                previousScore = score;
-            }
-            else
-            {
-                continue;
-            }
         }
+        chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
+        int chosenScore = chosenTransform.GetComponent<AI>().score;
+        if (chosenScore < 3)
+        {
+            chosenTransform.GetComponent<AI>().target = chosenTransform;
+            chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Cure;
+        }
+
+        if (chosenScore > 3 && chosenScore < 6)
+        {
+            chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
+            chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
+        }
+
+        if (chosenScore > 6)
+        {
+
+            chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
+            chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
+        }
+
         return chosenTransform;
     }
 

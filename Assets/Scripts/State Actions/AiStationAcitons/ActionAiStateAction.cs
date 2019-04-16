@@ -25,7 +25,7 @@ public class ActionAiStateAction : StateAction
         if (enemyPhaseManager.enemyUnitsScript.currentUnit != null)
         {
 
-            enemyPhaseManager.cameraScript.StartCoroutine(enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit));
+            //enemyPhaseManager.cameraScript.StartCoroutine(enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit));
             Debug.Log(enemyPhaseManager.enemyUnitsScript.commandPoints);
             var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
             //camera follow the action happening

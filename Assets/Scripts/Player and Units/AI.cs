@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RG
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public class AI : MonoBehaviour
     {
         public List<Collider> colliders = new List<Collider>();
         public List<Transform> Visibles= new List<Transform>();
 
+        private NavMeshAgent navAgent;
         public enum AiModes
         {
             Attack = 100,
@@ -32,6 +35,12 @@ namespace RG
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
         }
+
+        private void Start()
+        {
+            navAgent = GetComponent<NavMeshAgent>();
+            navAgent.speed = GetComponent<PlayerStats>().Speed.Value; //Setting the Movement speed of each UNIT
+        }
         private void FixedUpdate()
         {
             distanceTraveled += Vector3.Distance(transform.position, lastPosition);
@@ -39,21 +48,12 @@ namespace RG
         }
         public IEnumerator Move(Transform target)
         {
-            if (distanceTraveled <
-            GetComponent<PlayerStats>().AP.Value )
+            yield return null;
+            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value)
             {
-                float currentTime = 0f;
-                float totalTime = 9f;
-                while (currentTime < totalTime)
-                {
-                    transform.position = Vector3.Lerp(transform.position, target.position, GetComponent<PlayerStats>().AP.Value/Vector3.Distance(transform.position, target.position)  );
-                    currentTime += Time.deltaTime;
-                    yield return null;
-                }
-
+                transform.position = Vector3.Lerp(transform.position, target.position, GetComponent<PlayerStats>().AP.Value/Vector3.Distance(transform.position, target.position)  );
             }
-            
-            
+            hasPlayed = true;
         }
 
         public void Action()
@@ -63,7 +63,7 @@ namespace RG
                 case AiModes.Attack:
                     StartCoroutine(Move(target));
                     skills.Attack();
-                    hasPlayed = true;
+                   
                     break;
                 case AiModes.Cure:
                     skills.Cure();
