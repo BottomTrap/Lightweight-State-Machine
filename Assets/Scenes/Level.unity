@@ -236,6 +236,7 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+  offset: {x: 1, y: 0, z: 1}
 --- !u!143 &63794236
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1227,6 +1228,7 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &751721324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2446,6 +2448,7 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &1804540086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2739,6 +2742,7 @@ MonoBehaviour:
   score: 0
   fov: 90
   aiModes: 0
+  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &1827323256
 MonoBehaviour:
   m_ObjectHideFlags: 0

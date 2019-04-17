@@ -24,11 +24,7 @@ public class EnemyPhaseAction : StateAction
     public override bool Execute()
     {
         Debug.Log("enemytransition");
-        if (gameManager.enemyUnitsScript.commandPoints <= 0)
-        {
-            gameManager.SetState(tacticsAiState);
-            return true;
-        }
+       // Debug.Log("HETLI EL SCORE "+gameManager.enemyUnitsScript.UnitsList[0].GetComponent<AI>().score);
          gameManager.SetState(tacticsAiState);
         return true;
     }
