@@ -27,6 +27,8 @@ namespace RG
         private float distanceTraveled;
         private Vector3 lastPosition;
 
+        
+
         void Awake()
         {
             aiModes = AiModes.Attack; //Default AI Mode;

@@ -23,14 +23,8 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
-        if (enemyManager.enemyUnitsScript.commandPoints <= 0 )
-        {
-            enemyManager.SetState(tacticState);
-            return true;
-        }
-        enemyManager.cameraScript.IsoCameraTransition();
-       
-
+        float currentTime=0;
+        float totalTime =2.0f;
         if (enemyManager.previousState == enemyManager.GetState("tacticState"))
         {
             foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
@@ -39,6 +33,18 @@ public class TacticAiStateAction : StateAction
                
             }
         }
+
+
+        if (enemyManager.enemyUnitsScript.commandPoints == 0 )
+        {
+            enemyManager.SetState(tacticState);
+            return true;
+        }
+
+        enemyManager.cameraScript.IsoCameraTransition();
+       
+
+        
         Debug.Log("AI CHOICE");
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -54,9 +60,12 @@ public class TacticAiStateAction : StateAction
         {
             enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
         }
+
+        //If state finished transitinoning, go to AiState
+        if (currentTime<totalTime)
             enemyManager.SetState(actionAiState);
         
-        
+        currentTime += Time.deltaTime;
         //choose the enemy unit
         //do camera thing to it
         //go to ActionAiState

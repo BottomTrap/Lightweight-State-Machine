@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using RG;
-using Panda;
 
 
 //[RequireComponent(typeof(Animator))]
@@ -103,7 +102,7 @@ namespace RG
 
         #region Tasks
 
-        [Task]
+       
         public bool IsHealthLessThan(float health)
         {
             return this.playerstats.Health.Value < health;
