@@ -52,7 +52,9 @@ public class EnemyUnits : MonoBehaviour
         foreach (Transform unit in UnitsList)
         {
             unit.GetComponent<AI>().score = 0;
+           // Debug.Log("FIRST SCORE" + unit.GetComponent<AI>().score);
             unit.GetComponent<AI>().score = FullScore(unit);
+            //Debug.Log("END SCORE" + unit.GetComponent<AI>().score);
         }
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
         int chosenScore = chosenTransform.GetComponent<AI>().score;
@@ -110,17 +112,26 @@ public class EnemyUnits : MonoBehaviour
         int finalreturn = 0;
         List<Transform> sortedList =
             seenPlayerTransforms.OrderBy(o => Vector3.Distance(unit.position, o.position)).ToList();
-        for (int i = 0; i < seenPlayerTransforms.Count; i++)
+       // for (int i = 0; i < seenPlayerTransforms.Count; i++)
+       // {
+       //     if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) <
+       //         unit.GetComponent<PlayerStats>().AP.Value * 5)
+       //     {
+       //         finalreturn++;
+       //     }
+       //     else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
+       //              unit.GetComponent<PlayerStats>().AP.Value * 10)
+       //     {
+       //         finalreturn--;
+       //     }
+       // }
+       foreach (Transform seenUnit in seenPlayerTransforms)
         {
-            if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) <
+            if (Vector3.Distance(unit.position, seenUnit.position) <
                 unit.GetComponent<PlayerStats>().AP.Value * 5)
             {
-                finalreturn++;
-            }
-            else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
-                     unit.GetComponent<PlayerStats>().AP.Value * 10)
-            {
-                finalreturn--;
+                finalreturn = 5;
+                break;
             }
         }
 
@@ -142,7 +153,7 @@ public class EnemyUnits : MonoBehaviour
                 finalreturn++;
             }
         }
-
+        //Debug.Log(finalreturn + " allies left");
         return finalreturn;
 
     }
@@ -151,14 +162,21 @@ public class EnemyUnits : MonoBehaviour
     public int UnitsThatThisCanKill(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn = 0;
-        for (int i = 0; i < seenPlayerTransforms.Count; i++)
+       //for (int i = 0; i < seenPlayerTransforms.Count; i++)
+       //{
+       //    if (CanKill(unit, seenPlayerTransforms[i]))
+       //    {
+       //        finalreturn++;
+       //    }
+       //}
+         foreach (Transform seenUnit in seenPlayerTransforms)
         {
-            if (CanKill(unit, seenPlayerTransforms[i]))
+            if (CanKill(unit,seenUnit))
             {
-                finalreturn++;
+                finalreturn = 10;
+                break;
             }
         }
-
         return finalreturn;
     }
 

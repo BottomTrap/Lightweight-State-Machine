@@ -31,6 +31,8 @@ namespace RG
         private float distanceTraveled = 0;
         private Vector3 lastPosition;
 
+        private Vector3 velocity = Vector3.one;
+
         void Awake()
         {
             aiModes = AiModes.Attack; //Default AI Mode;
@@ -51,34 +53,57 @@ namespace RG
                 distanceTraveled = 0;
             }
         }
-        public IEnumerator Move(Transform target, IEnumerator nextMove)
-        {
 
+        public bool moved = false;
+        public IEnumerator Move(Transform target)
+        {
+            yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
+                while (transform.position != target.position)
+                {
+                    //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
+                    //transform.Translate(target.position , Space.World);
+                    transform.position = Vector3.MoveTowards(transform.position, target.position-offset ,1/GetComponent<PlayerStats>().Speed.Value*0.1f);
+                    yield return null;
+                }
             }
-
-            yield return StartCoroutine(nextMove);
+            
+            
+            
         }
-
+        public IEnumerator HasPlayed()
+        {
+            while (!hasPlayed)
+            {
+                yield return new WaitForSeconds(2.0f);
+                hasPlayed = true;
+            }
+            
+        }
         public void Action()
         {
             switch (aiModes)
             {
                 case AiModes.Attack:
-                    StartCoroutine(Move(target, skills.Attack()));
-                    hasPlayed = true;
+                    StartCoroutine(Move(target));
+                    StartCoroutine(skills.Attack());
+                    StartCoroutine(HasPlayed());
+                    //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.Cure:
-                    skills.Cure();
-                    hasPlayed = true;
+                    StartCoroutine(skills.Cure());
+                    StartCoroutine(HasPlayed());
+
+                    //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.RangedAttack:
-                    StartCoroutine(Move(target, skills.RangedAttack()));
-                    hasPlayed = true;
+                    StartCoroutine(Move(target));
+                    StartCoroutine(skills.RangedAttack());
+                    StartCoroutine(HasPlayed());
+                    //hasPlayed = true;
                     score = 0;
                     break;
             }

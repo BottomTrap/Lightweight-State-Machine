@@ -11,6 +11,8 @@ public class ActionAiStateAction : StateAction
     private readonly string tacticAiState;
     private readonly string menuState;
 
+
+
     public ActionAiStateAction (GameModeManager enemyPhaseManager, string tacticAiState,string menuState)
     {
         this.enemyPhaseManager = enemyPhaseManager;
@@ -23,18 +25,24 @@ public class ActionAiStateAction : StateAction
         Debug.Log("AI ACTION");
         if (enemyPhaseManager.enemyUnitsScript.currentUnit != null)
         {
-
             //enemyPhaseManager.cameraScript.StartCoroutine(enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit));
-            Debug.Log(enemyPhaseManager.enemyUnitsScript.commandPoints);
+            //Debug.Log("command points"+enemyPhaseManager.enemyUnitsScript.commandPoints);
             var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
             //camera follow the action happening
             AI.Action();
-            AI.hasPlayed = true;
-            enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
+            //AI.hasPlayed = true;
+            
         }
         else enemyPhaseManager.enemyUnitsScript.commandPoints = 0;
-        
-        enemyPhaseManager.SetState(tacticAiState);
+
+        enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().score = 0;
+
+        if (enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().hasPlayed)
+        {
+            enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
+            enemyPhaseManager.SetState(tacticAiState);
+            return true;
+        }
         //make sure all the actions are being made 
         //get unto tactics state after the unit finished its actions and some half a second delay
         //IEnumarator? Coroutine? to be determined

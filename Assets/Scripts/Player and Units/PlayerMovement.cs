@@ -53,6 +53,8 @@ namespace RG
 
         public void Attack()
         {
+            var anim = GetComponentInChildren<Animator>();
+            anim.SetTrigger("Attack");
             Debug.Log("Attack");
             //animator.SetTrigger("Attack");
             

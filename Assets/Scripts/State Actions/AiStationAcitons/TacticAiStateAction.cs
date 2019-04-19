@@ -26,6 +26,7 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
+        Debug.Log("AI CHOICE");
         if (enemyManager.previousState == enemyManager.GetState(transitionState))
         {
             foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
@@ -55,7 +56,7 @@ public class TacticAiStateAction : StateAction
 
 
 
-        Debug.Log("AI CHOICE");
+        
         Debug.Log("UNIT NUMBERS " + enemyManager.enemyUnitsScript.UnitsList.Count);
         if (Input.GetKeyDown(KeyCode.Tab))
         {
