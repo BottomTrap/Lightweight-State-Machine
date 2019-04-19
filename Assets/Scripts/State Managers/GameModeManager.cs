@@ -12,7 +12,7 @@ public class GameModeManager : StateManager
     public PlayerMovement playerScript;
     public EnemyUnits enemyAiScript;
     public int commandPoints;
-    public bool endTurn= false;
+    public bool endTurn = false;
     public bool endPhase = false;
     public Transform endTurnPrompt;
     public Transform endPhasePrompt;
@@ -22,33 +22,33 @@ public class GameModeManager : StateManager
 
     protected override void Init()
     {
-    
+
 
 
         #region Tactics State
-    //Tactics State will change all tactics state conditions
-    //IN CONDITION: Clicking on the menu prompt to end the turn
-    //OUT CONDITION : Clicking on a player to go to action state
-    // Clicking on the menu prompt to end the WHOLE PHASE
-    State TacticsState = new State(
-            new StateAction[]
-            {
+        //Tactics State will change all tactics state conditions
+        //IN CONDITION: Clicking on the menu prompt to end the turn
+        //OUT CONDITION : Clicking on a player to go to action state
+        // Clicking on the menu prompt to end the WHOLE PHASE
+        State TacticsState = new State(
+                new StateAction[]
+                {
 
-            },
-            new StateAction[]
-            {
+                },
+                new StateAction[]
+                {
                 //1// The state Action will activate
                        // PerspectiveCameraChange
                        //CameraFollow
                        //PlayerMovement and general controls
-                       new PerspectiveChange(this,"tacticState","actionState","menuState"), 
-                  //GO TO ACTION STATE
-                //2// The state Action will activate
+                       new PerspectiveChange(this,"tacticState","actionState","menuState"),
+                    //GO TO ACTION STATE
+                    //2// The state Action will activate
                     //new MenuAction(this,"tacticState","actionState","aimState"), 
-                        //GO TO MENU STATE
-                        
-            }
-            );
+                    //GO TO MENU STATE
+
+                }
+                );
         #endregion
 
         #region Action States
@@ -104,7 +104,7 @@ public class GameModeManager : StateManager
                  //ACTIVATE ACTION STATE
                 //2// The stateAction will activate
                         //MENU STATE
-                        new AimAction(this,"menuState","actionState"), 
+                        new AimAction(this,"menuState","actionState"),
             }
             );
         #endregion
@@ -132,10 +132,10 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new EnemyPhaseAction(this,"tacticState","tacticAiState"), 
+                new EnemyPhaseAction(this,"tacticState","tacticAiState"),
             }
             );
-        
+
         State TacticAiState = new State(
             new StateAction[]
             {
@@ -143,7 +143,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new TacticAiStateAction(this,"actionAiState","menuState","tacticState"), 
+                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase"),
             }
         );
         State ActionAiState = new State(
@@ -161,11 +161,11 @@ public class GameModeManager : StateManager
 
 
 
-        allStates.Add("tacticState",TacticsState);
-        allStates.Add("actionState",ActionState);
-        allStates.Add("menuState",MenuState);
-        allStates.Add("aimState",AimState);
-        allStates.Add("EnemyPhase",EnemyPhase);
+        allStates.Add("tacticState", TacticsState);
+        allStates.Add("actionState", ActionState);
+        allStates.Add("menuState", MenuState);
+        allStates.Add("aimState", AimState);
+        allStates.Add("EnemyPhase", EnemyPhase);
         allStates.Add("tacticAiState", TacticAiState);
         allStates.Add("actionAiState", ActionAiState);
 
@@ -204,6 +204,6 @@ public class GameModeManager : StateManager
     private void Update()
     {
         Tick();
-        
+
     }
 }

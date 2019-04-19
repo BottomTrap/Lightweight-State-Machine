@@ -15,14 +15,16 @@ public class Skills : MonoBehaviour
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
     }
-    public void Attack()
+    public IEnumerator Attack()
     {
-        Debug.Log("EnemyAttacked");
+        Debug.Log("EnemyAttack");
+        yield return null;
     }
 
-    public void RangedAttack()
+    public IEnumerator RangedAttack()
     {
         Debug.Log("RangedEnemyAttack");
+        yield return null;
     }
 
     public void Cure()

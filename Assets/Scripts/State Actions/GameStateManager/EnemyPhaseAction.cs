@@ -8,7 +8,7 @@ using RG;
 public class EnemyPhaseAction : StateAction
 {
     private GameModeManager gameManager;
-    
+
     private readonly string tacticState;
     private readonly string tacticsAiState;
 
@@ -24,12 +24,8 @@ public class EnemyPhaseAction : StateAction
     public override bool Execute()
     {
         Debug.Log("enemytransition");
-        if (gameManager.enemyUnitsScript.commandPoints <= 0)
-        {
-            gameManager.SetState(tacticsAiState);
-            return true;
-        }
-         gameManager.SetState(tacticsAiState);
+        // Debug.Log("HETLI EL SCORE "+gameManager.enemyUnitsScript.UnitsList[0].GetComponent<AI>().score);
+        gameManager.SetState(tacticsAiState);
         return true;
     }
 }

@@ -11,11 +11,11 @@ public class EnemyUnits : MonoBehaviour
 {
     public Transform[] UnitsArrayTransforms;
     public List<Transform> UnitsList = new List<Transform>();
-    public List<Transform> SeenPlayersTransforms= new List<Transform>();
+    public List<Transform> SeenPlayersTransforms = new List<Transform>();
     public Transform currentUnit;
-    public int commandPoints=6;
+    public int commandPoints = 6;
     public int originalCommandPoints;
-   
+
 
 
     private void Awake()
@@ -26,7 +26,7 @@ public class EnemyUnits : MonoBehaviour
 
     private void Update()
     {
-       
+        GetChildObjectsTransforms();
     }
 
     public void GetChildObjectsTransforms()
@@ -43,18 +43,16 @@ public class EnemyUnits : MonoBehaviour
                 continue;
         }
     }
-   
+
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
     {
-        Transform chosenTransform=UnitsList[Mathf.RoundToInt(Random.Range(0,UnitsList.Count))];
-        
-        foreach (Transform g in UnitsList)
+        Transform chosenTransform = UnitsList[Mathf.RoundToInt(Random.Range(0, UnitsList.Count))];
+
+        foreach (Transform unit in UnitsList)
         {
-            int score = g.GetComponent<AI>().score=0;
-           score = hasPlayed(g) + IsThreatened(g) +
-                     DistancefromVisibleUnits(g, SeenPlayersTransforms) + AlliesLeft(g) +
-                     UnitsThatThisCanKill(g, SeenPlayersTransforms);
+            unit.GetComponent<AI>().score = 0;
+            unit.GetComponent<AI>().score = FullScore(unit);
         }
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
         int chosenScore = chosenTransform.GetComponent<AI>().score;
@@ -86,7 +84,7 @@ public class EnemyUnits : MonoBehaviour
     {
         if (unit.GetComponent<AI>().hasPlayed)
         {
-            return -100;
+            return -10;
         }
         else
         {
@@ -118,8 +116,9 @@ public class EnemyUnits : MonoBehaviour
                 unit.GetComponent<PlayerStats>().AP.Value * 5)
             {
                 finalreturn++;
-            }else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
-                      unit.GetComponent<PlayerStats>().AP.Value * 10)
+            }
+            else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
+                     unit.GetComponent<PlayerStats>().AP.Value * 10)
             {
                 finalreturn--;
             }
@@ -151,8 +150,8 @@ public class EnemyUnits : MonoBehaviour
 
     public int UnitsThatThisCanKill(Transform unit, List<Transform> seenPlayerTransforms)
     {
-        int finalreturn=0;
-        for (int i=0; i < seenPlayerTransforms.Count; i++)
+        int finalreturn = 0;
+        for (int i = 0; i < seenPlayerTransforms.Count; i++)
         {
             if (CanKill(unit, seenPlayerTransforms[i]))
             {
@@ -177,8 +176,6 @@ public class EnemyUnits : MonoBehaviour
             return false;
         }
     }
-#endregion
-
 
     public Transform GetLowestHP(List<Transform> transforms)
     {
@@ -191,18 +188,33 @@ public class EnemyUnits : MonoBehaviour
                 chosenTransform.GetComponent<PlayerStats>().Health.Value)
             {
                 chosenTransform = transforms[i];
-            }else 
+            }
+            else
                 continue;
         }
 
         return chosenTransform;
     }
 
+    public int FullScore(Transform unitTransform)
+    {
+        int score = 0;
+        score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
+                     DistancefromVisibleUnits(unitTransform, SeenPlayersTransforms) + AlliesLeft(unitTransform) +
+                     UnitsThatThisCanKill(unitTransform, SeenPlayersTransforms);
+
+        return score;
+    }
+    #endregion
+
+
+
+
 
 
     //TO START EVERYTIME WE WANT TO CHOOSE A UNIT TO USE // MEANING BEFORE ChooseUnitTurn() 
-    
-    public void GetPlayersInRange( )
+
+    public void GetPlayersInRange()
     {
         for (int j = 0; j < UnitsList.Count; j++)
         {
@@ -242,9 +254,6 @@ public class EnemyUnits : MonoBehaviour
     }
     //Get players in view from the inRange players
 
-    IEnumerator Waiter()
-    {
-        yield return new WaitForSeconds(2.0f);
-    }
+
 
 }
