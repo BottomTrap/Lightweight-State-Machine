@@ -26,7 +26,7 @@ public class EnemyUnits : MonoBehaviour
 
     private void Update()
     {
-        GetChildObjectsTransforms();
+       
     }
 
     public void GetChildObjectsTransforms()
@@ -48,11 +48,13 @@ public class EnemyUnits : MonoBehaviour
     public Transform ChooseUnitTurn()
     {
         Transform chosenTransform=UnitsList[Mathf.RoundToInt(Random.Range(0,UnitsList.Count))];
-       
-        foreach (Transform unit in UnitsList)
+        
+        foreach (Transform g in UnitsList)
         {
-            unit.GetComponent<AI>().score = 0;
-            unit.GetComponent<AI>().score = FullScore(unit);
+            int score = g.GetComponent<AI>().score=0;
+           score = hasPlayed(g) + IsThreatened(g) +
+                     DistancefromVisibleUnits(g, SeenPlayersTransforms) + AlliesLeft(g) +
+                     UnitsThatThisCanKill(g, SeenPlayersTransforms);
         }
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
         int chosenScore = chosenTransform.GetComponent<AI>().score;
@@ -84,7 +86,7 @@ public class EnemyUnits : MonoBehaviour
     {
         if (unit.GetComponent<AI>().hasPlayed)
         {
-            return -10;
+            return -100;
         }
         else
         {
@@ -175,6 +177,8 @@ public class EnemyUnits : MonoBehaviour
             return false;
         }
     }
+#endregion
+
 
     public Transform GetLowestHP(List<Transform> transforms)
     {
@@ -187,27 +191,12 @@ public class EnemyUnits : MonoBehaviour
                 chosenTransform.GetComponent<PlayerStats>().Health.Value)
             {
                 chosenTransform = transforms[i];
-            }
-            else
+            }else 
                 continue;
         }
 
         return chosenTransform;
     }
-
-    public int FullScore(Transform unitTransform)
-    {
-        int score=0;
-        score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
-                     DistancefromVisibleUnits(unitTransform, SeenPlayersTransforms) + AlliesLeft(unitTransform) +
-                     UnitsThatThisCanKill(unitTransform, SeenPlayersTransforms);
-
-        return score;
-    }
-#endregion
-
-
-    
 
 
 
@@ -253,6 +242,9 @@ public class EnemyUnits : MonoBehaviour
     }
     //Get players in view from the inRange players
 
-    
+    IEnumerator Waiter()
+    {
+        yield return new WaitForSeconds(2.0f);
+    }
 
 }

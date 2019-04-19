@@ -143,7 +143,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase"), 
+                new TacticAiStateAction(this,"actionAiState","menuState","tacticState"), 
             }
         );
         State ActionAiState = new State(

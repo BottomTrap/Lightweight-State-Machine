@@ -26,9 +26,8 @@ namespace RG
         public int score = 0;
         public float fov = 90.0f;
         public AiModes aiModes;
-        public Vector3 offset;
 
-        private float distanceTraveled=0;
+        private float distanceTraveled;
         private Vector3 lastPosition;
 
         void Awake()
@@ -46,20 +45,15 @@ namespace RG
         {
             distanceTraveled += Vector3.Distance(transform.position, lastPosition);
             lastPosition = transform.position;
-            if (hasPlayed)
-            {
-                distanceTraveled = 0;
-            }
         }
-        public IEnumerator Move(Transform target, IEnumerator nextMove)
+        public IEnumerator Move(Transform target)
         {
-            
-            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value*5)
+            yield return null;
+            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.position+offset, GetComponent<PlayerStats>().AP.Value/Vector3.Distance(transform.position, target.position)  );
+                transform.position = Vector3.Lerp(transform.position, target.position, GetComponent<PlayerStats>().AP.Value/Vector3.Distance(transform.position, target.position)  );
             }
-           
-            yield return StartCoroutine(nextMove);
+            hasPlayed = true;
         }
 
         public void Action()
@@ -67,19 +61,18 @@ namespace RG
             switch (aiModes)
             {
                 case AiModes.Attack:
-                    StartCoroutine(Move(target,skills.Attack()));
-                    hasPlayed = true;
-                    score = 0;
+                    StartCoroutine(Move(target));
+                    skills.Attack();
+                   
                     break;
                 case AiModes.Cure:
                     skills.Cure();
                     hasPlayed = true;
-                    score = 0;
                     break;
                 case AiModes.RangedAttack:
-                    StartCoroutine(Move(target,skills.RangedAttack()));
+                    StartCoroutine(Move(target));
+                    skills.RangedAttack();
                     hasPlayed = true;
-                    score = 0;
                     break;
             }
             
@@ -94,7 +87,5 @@ namespace RG
             Gizmos.color = new Color(255, 204, 102, 0.3f);
             Gizmos.DrawSphere(transform.position, AP+range);
         }
-
-       
     }
 }

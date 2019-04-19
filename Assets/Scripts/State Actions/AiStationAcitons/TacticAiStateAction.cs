@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using SA;
 using RG;
 
@@ -12,39 +11,18 @@ public class TacticAiStateAction : StateAction
     private readonly string actionAiState;
     private readonly string menuState;
     private readonly string tacticState;
-    private readonly string transitionState;
 
-    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState)
+    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState,string tacticState)
     {
         this.enemyManager = enemyManager;
         this.actionAiState = actionAiState;
         this.menuState = menuState;
         this.tacticState = tacticState;
-        this.transitionState = transitionState;
     }
 
     public override bool Execute()
     {
-        if (enemyManager.previousState == enemyManager.GetState(transitionState))
-        {
-            foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
-            {
-                g.GetComponent<AI>().hasPlayed = false;
-                g.GetComponent<AI>().score = 0;
-            }
-            enemyManager.enemyUnitsScript.commandPoints = enemyManager.enemyUnitsScript.originalCommandPoints;
-            Debug.Log(enemyManager.enemyUnitsScript.commandPoints);
-        }
-       //if (enemyManager.previousState == enemyManager.GetState(actionAiState))
-       //{
-       //    foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
-       //    {
-       //        g.GetComponent<AI>().score = 0;
-       //        Debug.Log("IS THIS WORKING???");
-       //    }
-       //   
-       //}
-        if (enemyManager.enemyUnitsScript.commandPoints <= 0 || AllPlayed(enemyManager.enemyUnitsScript.UnitsList) )
+        if (enemyManager.enemyUnitsScript.commandPoints <= 0 )
         {
             enemyManager.SetState(tacticState);
             return true;
@@ -52,23 +30,30 @@ public class TacticAiStateAction : StateAction
         //enemyManager.cameraScript.IsoCameraTransition();
        
 
-       
+        if (enemyManager.previousState == enemyManager.GetState("tacticState"))
+        {
+            foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
+            {
+                g.GetComponent<AI>().hasPlayed = false;
+               
+            }
+        }
       
         Debug.Log("AI CHOICE");
-        Debug.Log("UNIT NUMBERS "+enemyManager.enemyUnitsScript.UnitsList.Count);
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             Time.timeScale = 0;
             //Make the menu thingie appear
             return false;
         }
-        
+
         enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
         enemyManager.enemyUnitsScript.GetPlayersInRange();
         
-        
+        if (enemyManager.enemyUnitsScript.ChooseUnitTurn() != null)
+        {
             enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
-        Debug.Log("CHOSEN TRANSFORM SCORE" + " " + enemyManager.enemyUnitsScript.ChooseUnitTurn().name+" " +enemyManager.enemyUnitsScript.ChooseUnitTurn().GetComponent<AI>().score);
+        }
             enemyManager.SetState(actionAiState);
         
         
