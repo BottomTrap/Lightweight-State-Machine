@@ -20,21 +20,26 @@ public class Skills : MonoBehaviour
     }
     public IEnumerator Attack()
     {
+        if (!ai.hasPlayed){
         Debug.Log("EnemyAttack");
         yield return StartCoroutine(ai.HasPlayed()) ;
+        }
     }
 
     public IEnumerator RangedAttack()
     {
+        if (!ai.hasPlayed){
         Debug.Log("RangedEnemyAttack");
         yield return StartCoroutine(ai.HasPlayed());
+        }   
     }
 
     public IEnumerator Cure()
     {
-        
+        if (ai.hasPlayed){
         Debug.Log("Enemy Casted cure on itself");
         yield return StartCoroutine(ai.HasPlayed());
+        }
     }
 
     public IEnumerator Invisible()

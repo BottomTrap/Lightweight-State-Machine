@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using SA;
 
 namespace RG
 {
@@ -31,6 +32,8 @@ namespace RG
         private float distanceTraveled = 0;
         private Vector3 lastPosition;
 
+        public GameModeManager gameModeManager;
+
         private Vector3 velocity = Vector3.one;
 
         void Awake()
@@ -55,23 +58,22 @@ namespace RG
         }
 
         public bool moved = false;
-        public IEnumerator Move(Transform target)
+        public IEnumerator Move(Transform target, IEnumerator nextMove)
         {
             yield return new WaitForSeconds(1);
-            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5)
+            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
-                while (transform.position != target.position)
+                while (transform.position != target.position-offset)
                 {
                     //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
                     //transform.Translate(target.position , Space.World);
-                    transform.position = Vector3.MoveTowards(transform.position, target.position-offset ,1/GetComponent<PlayerStats>().Speed.Value*0.1f);
+                    transform.position = Vector3.MoveTowards(transform.position, target.position-offset ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
                     yield return null;
                 }
-            }
-            
-            
-            
+            }else 
+            yield return StartCoroutine(nextMove);
         }
+
         public IEnumerator HasPlayed()
         {
             while (!hasPlayed)
@@ -86,23 +88,30 @@ namespace RG
             switch (aiModes)
             {
                 case AiModes.Attack:
-                    StartCoroutine(Move(target));
-                    StartCoroutine(skills.Attack());
-                    StartCoroutine(HasPlayed());
+                    StartCoroutine(Move(target,skills.Attack()));
+                    //StartCoroutine(skills.Attack());
+                    if (hasPlayed){
+                        StopCoroutine (skills.Attack());
+                    }
+                    //StartCoroutine(HasPlayed());
                     //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.Cure:
                     StartCoroutine(skills.Cure());
-                    StartCoroutine(HasPlayed());
-
+                    //StartCoroutine(HasPlayed());
+                    if (hasPlayed){
+                        StopCoroutine (skills.Cure());
+                    }
                     //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.RangedAttack:
-                    StartCoroutine(Move(target));
-                    StartCoroutine(skills.RangedAttack());
-                    StartCoroutine(HasPlayed());
+                    StartCoroutine(Move(target,skills.RangedAttack()));
+                    //StartCoroutine(skills.RangedAttack());
+                    if (hasPlayed){
+                        StopCoroutine (skills.RangedAttack());
+                    }
                     //hasPlayed = true;
                     score = 0;
                     break;

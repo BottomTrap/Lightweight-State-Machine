@@ -25,7 +25,7 @@ namespace RG
         private Vector3 lastPosition;
         public float distanceTraveled;
         public bool didHit;
-        private bool aiming = false;
+        //private bool aiming = false;
 
         private PlayerStats playerstats;
         public bool isClicked=false;

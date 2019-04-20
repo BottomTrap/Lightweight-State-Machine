@@ -96,8 +96,8 @@ public class EnemyUnits : MonoBehaviour
 
     public int IsThreatened(Transform unit)
     {
-        if ((unit.GetComponent<PlayerStats>().Health.Value / unit.GetComponent<PlayerStats>().startHealth) / 100.0 <
-            50.0)
+        if ((unit.GetComponent<PlayerStats>().Health.Value / unit.GetComponent<PlayerStats>().startHealth) / 100.0f<
+            50.0f)
         {
             return -5;
         }
