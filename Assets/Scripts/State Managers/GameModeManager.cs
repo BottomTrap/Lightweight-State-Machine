@@ -18,6 +18,7 @@ public class GameModeManager : StateManager
     public Transform endPhasePrompt;
     public Transform playerTransform;
     public EnemyUnits enemyUnitsScript;
+    public PlayerUnits playerUnitsScript;
 
 
     protected override void Init()

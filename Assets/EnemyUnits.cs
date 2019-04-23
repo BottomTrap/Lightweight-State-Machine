@@ -67,6 +67,7 @@ public class EnemyUnits : MonoBehaviour
         if (chosenScore > 3 && chosenScore < 6)
         {
             chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
+            chosenTransform.GetComponent<AI>().offset = chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
         }
 

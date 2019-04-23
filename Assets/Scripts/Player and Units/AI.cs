@@ -21,6 +21,7 @@ namespace RG
         }
 
         private Skills skills;
+        private PlayerStats stats;
         public Transform target;
         public bool hasPlayed = false; //For enemy units AI
         public bool isAlive = true;
@@ -28,7 +29,7 @@ namespace RG
         public float fov = 90.0f;
         public AiModes aiModes;
         public Vector3 offset;
-
+        public Vector3 finalTarget;
         private float distanceTraveled = 0;
         private Vector3 lastPosition;
 
@@ -40,6 +41,7 @@ namespace RG
         {
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
+            stats = GetComponent<PlayerStats>();
         }
 
         private void Start()
@@ -55,23 +57,33 @@ namespace RG
             {
                 distanceTraveled = 0;
             }
+            //offset = Vector3.zero;
         }
 
         public bool moved = false;
         public IEnumerator Move(Transform target, IEnumerator nextMove)
         {
+
             yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
+                
                 while (transform.position != target.position-offset)
                 {
+                    finalTarget = target.position - offset;
                     //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
                     //transform.Translate(target.position , Space.World);
-                    transform.position = Vector3.MoveTowards(transform.position, target.position-offset ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
+                    transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
+                    Vector3 direction = target.position - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     yield return null;
                 }
             }else 
             yield return StartCoroutine(nextMove);
+
+            yield return StartCoroutine(nextMove);
+
         }
 
         public IEnumerator HasPlayed()
@@ -129,6 +141,25 @@ namespace RG
             Gizmos.DrawSphere(transform.position, AP + range);
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Weapon" && other.gameObject != skills.bullet)
+            {
+                if (other.GetComponentInParent<PlayerMovement>().didHit == true && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                {
+                    stats.startHealth -= 1/other.GetComponentInParent<PlayerStats>().Strength.Value ;
+                    Debug.Log(stats.startHealth);
+                }
+            }
+        }
+        bool isPlaying(Animator anim, string stateName)
+        {
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName) ||
+                    anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+                return true;
+            else
+                return false;
+        }
 
     }
 }

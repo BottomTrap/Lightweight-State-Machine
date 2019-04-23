@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using SA;
+using RG;
 
 public class PerspectiveChange : StateAction
 {
@@ -25,6 +26,11 @@ public class PerspectiveChange : StateAction
         Debug.Log("tactics?");
         states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
         states.endPhase = false;
+        foreach(Transform playerUnits in states.playerUnitsScript.playerUnitsTransformList)
+        {
+            playerUnits.GetComponent<PlayerMovement>().didHit = false;
+        }
+
         //states.playerTransform = states.cameraScript.PlayerClicked(states.commandPoints);
        states.cameraScript.IsoMovement();
         if (states.cameraScript.PlayerClicked(states.commandPoints) && states.currentState == states.GetState("tacticState") ) //change key down to player selected or something

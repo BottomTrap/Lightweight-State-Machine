@@ -24,7 +24,8 @@ namespace RG
 
         private Vector3 lastPosition;
         public float distanceTraveled;
-        public bool didHit;
+        public bool didHit=false;
+        public bool isAlive;
         //private bool aiming = false;
 
         private PlayerStats playerstats;
@@ -41,14 +42,20 @@ namespace RG
             characterController = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
             lastPosition = transform.position;
+            didHit = false;
         }
 
         private void FixedUpdate()
         {
              distanceTraveled += Vector3.Distance(transform.position, lastPosition);
              lastPosition = transform.position;
-                
-             
+
+            //if (didHit  )
+            //{
+            //    var anim = GetComponentInChildren<Animator>();
+            //    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            //        anim.SetBool("Attack",false);
+            //}
         }
 
         public void Attack()
@@ -56,7 +63,9 @@ namespace RG
             var anim = GetComponentInChildren<Animator>();
             anim.SetTrigger("Attack");
             Debug.Log("Attack");
-            //animator.SetTrigger("Attack");
+            if (!anim.IsInTransition(0))
+            didHit = true;
+            
             
         }
         void OnGUI()
@@ -102,8 +111,15 @@ namespace RG
         }
 
 
-        
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Weapon" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject)
+            {
+                playerstats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
+                Debug.Log(playerstats.startHealth);
+            }
+        }
 
     }
 }
