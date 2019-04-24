@@ -62,6 +62,7 @@ namespace RG
         private void Awake()
         {
             //animator = GetComponent<Animator>();
+          
         }
 
         public bool PlayerClicked(int commandPoints)
@@ -76,6 +77,7 @@ namespace RG
                     if (hit.transform.tag == "PlayerUnit" && commandPoints > 0)
                     {
                         playerTransform = hit.transform;
+                        rotator = playerTransform.GetComponent<PlayerMovement>().rotator;
                         return true;
 
                     }
@@ -246,7 +248,6 @@ namespace RG
             e.x = 0;
             Vector3 g = transform.eulerAngles;
             g.y = 0;
-
             rotator.eulerAngles = new Vector3(g.x, rotator.eulerAngles.y, rotator.eulerAngles.z);
 
             playerTransform.eulerAngles = e;

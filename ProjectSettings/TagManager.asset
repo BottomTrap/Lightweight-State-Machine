@@ -7,6 +7,8 @@ TagManager:
   - PlayerUnit
   - EnemyUnit
   - Weapon
+  - PlayerWeapon
+  - WeaponBullet
   layers:
   - Default
   - TransparentFX

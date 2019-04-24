@@ -34,7 +34,8 @@ namespace RG
         public Texture crosshair;
 
         public bool drawcrosshair;
-       
+
+        public Transform rotator;
 
         private void Awake()
         {
@@ -43,6 +44,7 @@ namespace RG
             animator = GetComponentInChildren<Animator>();
             lastPosition = transform.position;
             didHit = false;
+            rotator = transform.GetChild(1).transform;
         }
 
         private void FixedUpdate()
@@ -81,7 +83,10 @@ namespace RG
         }
         public void RangedAttack()
         {
-           //Instantiate bullet in corsair position
+
+           //Get the raycast hit point from the crosshair in the cameraScript
+           //Instantiate bullet from the weapon point towards the raycast hit
+           //if there is no raycast hit, what do? DO NOTHING , that'd be too dumb, let the enemies be hit or hitable targets only
         }
 
         public void Movement()
@@ -114,9 +119,20 @@ namespace RG
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.tag == "WeaponBullet" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject)
+            {
+                var successRate = other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().HitRate.Value / 10.0f;
+                var result = UnityEngine.Random.Range(0.0f, 1.0f) < successRate;
+                Debug.Log(result);
+                if (result)
+                {
+                    playerstats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().GunStrength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
+                    Debug.Log(playerstats.startHealth);
+                }
+            }
             if (other.gameObject.tag == "Weapon" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject)
             {
-                playerstats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
+                playerstats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
                 Debug.Log(playerstats.startHealth);
             }
         }

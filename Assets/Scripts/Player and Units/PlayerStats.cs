@@ -28,7 +28,7 @@ public class PlayerStats : MonoBehaviour
     }
     public Skills CharacterSkills;
 
-    public CharacterStat Strength, Defense, Speed, AP, Health, Range;
+    public CharacterStat Strength, Defense, Speed, AP, Health, Range, GunStrength, HitRate;
 
     public float startHealth;
 
@@ -47,6 +47,11 @@ public class PlayerStats : MonoBehaviour
                     AP = new CharacterStat(7);
                     Health = new CharacterStat(6);
                     Range = new CharacterStat(5);
+                    GunStrength = new CharacterStat(5);
+                    HitRate = new CharacterStat(10); //10 means perfect
+                    //Rounin Mesh
+                    //Rounin Weapon
+                    //Rounin Gun
                     break;
                 }
             case Classes.Gunner:
@@ -57,6 +62,11 @@ public class PlayerStats : MonoBehaviour
                     AP = new CharacterStat(4);
                     Health = new CharacterStat(10);
                     Range = new CharacterStat(13);
+                    GunStrength = new CharacterStat(14);
+                    HitRate = new CharacterStat(8);
+                    //Gunner Mesh
+                    //Gunner Weapon
+                    //Gunner Gun
                     break;
                 }
             case Classes.Ninja:
@@ -67,6 +77,11 @@ public class PlayerStats : MonoBehaviour
                     AP = new CharacterStat(14);
                     Health = new CharacterStat(6);
                     Range = new CharacterStat(10);
+                    GunStrength = new CharacterStat(4);// with special ability to make enemy sleep
+                    HitRate = new CharacterStat(9);
+                    //Ninja Mesh
+                    //Ninja Weapon
+                    //Ninja Gun (Darts or whatever)
                     break;
                 }
             case Classes.Underling:
@@ -77,6 +92,11 @@ public class PlayerStats : MonoBehaviour
                     AP = new CharacterStat(6);
                     Health = new CharacterStat(6);
                     Range = new CharacterStat(6);
+                    GunStrength = new CharacterStat(5);
+                    HitRate = new CharacterStat(9);
+                    //Underling Mesh
+                    //Underling Weapon
+                    //Underling Gun
                     break;
                 }
             case Classes.UnderlingBoss:
@@ -87,6 +107,12 @@ public class PlayerStats : MonoBehaviour
                     AP = new CharacterStat(5);
                     Health = new CharacterStat(7);
                     Range = new CharacterStat(5);
+                    GunStrength = new CharacterStat(15);
+                    HitRate = new CharacterStat(6);
+                    //Underling Boss Mesh
+                    //Underling Boss Weapon
+                    //Underling Boss Gun
+
                     break;
                 }
         }

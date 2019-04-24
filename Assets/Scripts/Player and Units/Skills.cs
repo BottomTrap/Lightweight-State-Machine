@@ -13,6 +13,8 @@ public class Skills : MonoBehaviour
 
     public GameObject bullet;
 
+    
+
     bool isCreated = false;
 
     GameObject[] spawnCount;
@@ -41,6 +43,8 @@ public class Skills : MonoBehaviour
             var rotation = Quaternion.LookRotation(heading);
             var projectile =Instantiate(bullet, transform.position, rotation);
             //bullet.transform.position = transform.position;
+            //get the source of the bullet
+            projectile.GetComponent<Bullet>().shooter = this.gameObject;
             projectile.transform.LookAt(ai.target);
             projectile.GetComponent<Rigidbody>().AddForce(heading*5.0f, ForceMode.Impulse);
             //projectile.GetComponent<Rigidbody>().velocity = transform.TransformDirection(heading * 5.0f);
