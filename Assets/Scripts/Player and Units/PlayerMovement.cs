@@ -103,7 +103,7 @@ namespace RG
                         projectile.transform.LookAt(hit.transform);
                         projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.VelocityChange);
                         Destroy(projectile, 3);
-                    Debug.Log("fired");
+                        Debug.Log("fired");
                     }
                     
                 
