@@ -245,7 +245,7 @@ namespace RG
             pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
             currentRotation =
-                Vector3.Lerp(currentRotation, new Vector3(pitch, yaw), rotationSmoothTime * Time.deltaTime);
+                Vector3.Lerp(currentRotation, new Vector3(pitch, yaw), rotateSpeed* Time.deltaTime);
 
             transform.eulerAngles = currentRotation;
             Vector3 e = transform.eulerAngles;

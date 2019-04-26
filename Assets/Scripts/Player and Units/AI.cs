@@ -58,6 +58,12 @@ namespace RG
                 distanceTraveled = 0;
             }
             //offset = Vector3.zero;
+
+
+            if (stats.startHealth <= 0.0f)
+            {
+                Death();
+            }
         }
 
         public bool moved = false;
@@ -143,24 +149,27 @@ namespace RG
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "PlayerWeapon" && other.gameObject != skills.bullet)
+            if (other.gameObject.tag == "PlayerWeapon")
             {
                 if (other.GetComponentInParent<PlayerMovement>().didHit == true && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                 {
+
+                    stats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().GunStrength.Value;
+                    Debug.Log(stats.startHealth);
+
+                }
+            }
+            if (other.gameObject.tag == "WeaponBullet" && other.gameObject.GetComponent<Bullet>().shooter.tag != "EnemyUnit")
+            {
                     var successRate = other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().HitRate.Value / 10.0f;
                     var result = UnityEngine.Random.Range(0.0f, 1.0f) < successRate;
                     if (result)
                     {
-                        stats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().GunStrength.Value;
+                        stats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().Strength.Value;
                         Debug.Log(stats.startHealth);
                     }
-                }
-                if (other.gameObject.tag == "PlayerWeapon" && other.gameObject != skills.bullet)
-                {
-                    stats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value;
-                    Debug.Log(stats.startHealth);
-                }
             }
+            
         }
         bool isPlaying(Animator anim, string stateName)
         {
@@ -169,6 +178,13 @@ namespace RG
                 return true;
             else
                 return false;
+        }
+
+        void Death()
+        {
+
+            Destroy(this.gameObject);
+
         }
 
     }

@@ -284,6 +284,10 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  GunStrength:
+    BaseValue: 0
+  HitRate:
+    BaseValue: 0
   startHealth: 0
   isAlive: 1
 --- !u!136 &63794238
@@ -893,6 +897,7 @@ MonoBehaviour:
   near: 0.3
   far: 1000
   orthographicSize: 15
+  statesManager: {fileID: 0}
   playerTransform: {fileID: 0}
   rotateSpeed: 5
   mouseSensitivity: 10
@@ -900,7 +905,7 @@ MonoBehaviour:
   distanceFromOffset: 0
   rotator: {fileID: 0}
   target: {fileID: 0}
-  pitchMinMax: {x: -45, y: 40}
+  pitchMinMax: {x: -20, y: 20}
   rotationSmoothTime: 8
   offset: {x: 0, y: 0, z: 0}
   curve:
@@ -1211,6 +1216,10 @@ MonoBehaviour:
   Health:
     BaseValue: 0
   Range:
+    BaseValue: 0
+  GunStrength:
+    BaseValue: 0
+  HitRate:
     BaseValue: 0
   startHealth: 0
   isAlive: 1
@@ -2448,6 +2457,10 @@ MonoBehaviour:
     BaseValue: 0
   Range:
     BaseValue: 0
+  GunStrength:
+    BaseValue: 0
+  HitRate:
+    BaseValue: 0
   startHealth: 0
   isAlive: 1
 --- !u!23 &1804540083
@@ -2722,6 +2735,10 @@ MonoBehaviour:
   Health:
     BaseValue: 0
   Range:
+    BaseValue: 0
+  GunStrength:
+    BaseValue: 0
+  HitRate:
     BaseValue: 0
   startHealth: 0
   isAlive: 1
@@ -3142,6 +3159,16 @@ PrefabInstance:
         type: 3}
       propertyPath: CharacterClass
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4810929792875663793, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6637233536445241817, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5448d70bd8c985a4c9eb11052c1ec7f8, type: 3}

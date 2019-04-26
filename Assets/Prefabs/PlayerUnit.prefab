@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2976043812244564589}
   - component: {fileID: 883114197315021723}
   - component: {fileID: 4810929792875663793}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Weapon
   m_TagString: PlayerWeapon
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 1649955843778196829}
   - component: {fileID: 1649955843778196806}
   - component: {fileID: 1649955843778196825}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerUnit
   m_TagString: PlayerUnit
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1649955843824582239}
   - component: {fileID: 1649955843824582238}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 8204821291939689194}
   - component: {fileID: 6285237443437248656}
   - component: {fileID: 6637233536445241817}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

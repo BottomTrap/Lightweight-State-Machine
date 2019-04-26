@@ -83,14 +83,16 @@ namespace RG
                         crosshair);
             }
         }
+
         public void RangedAttack()
         {
            
                 RaycastHit hit;
-                Ray ray = Camera.main.ViewportPointToRay(new Vector3(Screen.width, Screen.height, 0));
-                int layerMask = 1 << 8;
+            //Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width, Screen.height, 0));
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                //int layerMask = ~( (1 << 8) | ( 1 << 9 ) ) ;
             Debug.Log("checking for fire");
-                if (Physics.Raycast(ray,out hit,playerstats.Range.Value *10))
+                if (Physics.Raycast(ray,out hit))
                 {
                 Debug.Log("checking for ray");
                     if (hit.transform.tag == "EnemyUnit")
@@ -99,7 +101,7 @@ namespace RG
                         var projectile = Instantiate(bullet, transform.GetChild(2).position, transform.GetChild(2).rotation);
                         projectile.GetComponent<Bullet>().shooter = this.gameObject;
                         projectile.transform.LookAt(hit.transform);
-                        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
+                        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.VelocityChange);
                         Destroy(projectile, 3);
                     Debug.Log("fired");
                     }
@@ -149,7 +151,7 @@ namespace RG
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "WeaponBullet" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject)
+            if (other.gameObject.tag == "WeaponBullet" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject && other.GetComponent<Bullet>().shooter.tag != "PlayerUnit")
             {
                 var successRate = other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().HitRate.Value / 10.0f;
                 var result = UnityEngine.Random.Range(0.0f, 1.0f) < successRate;
