@@ -24,7 +24,7 @@ namespace RG
 
         private float aspect;
         private NewMatrixBlender blender;
-
+        public GameModeManager statesManager;
 
 
 
@@ -62,33 +62,38 @@ namespace RG
         private void Awake()
         {
             //animator = GetComponent<Animator>();
-          
+            
         }
 
         public bool PlayerClicked(int commandPoints)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (statesManager.currentState == statesManager.GetState("tacticState"))
             {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray,out hit))
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (hit.transform.tag == "PlayerUnit" && commandPoints > 0)
-                    {
-                        playerTransform = hit.transform;
-                        rotator = playerTransform.GetComponent<PlayerMovement>().rotator;
-                        return true;
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.transform.tag == "PlayerUnit" && commandPoints > 0)
+                        {
+                            playerTransform = hit.transform;
+                            rotator = playerTransform.GetComponent<PlayerMovement>().rotator;
+                            return true;
+
+                        }
+
+                        return false;
                     }
 
                     return false;
                 }
+                else
 
-                return false;
-            }else
-
-            return false;
+                    return false;
+            }
+            else return false;
         }
 
         void Start()
@@ -233,7 +238,7 @@ namespace RG
 
         public void AimView()
         {
-            rotator = playerTransform.GetChild(0).transform;
+            rotator = playerTransform.GetChild(2).transform;
             //reticle or corshair or whatever control and appearance
             // aim and orientation animation when models ready 
             //that's about it

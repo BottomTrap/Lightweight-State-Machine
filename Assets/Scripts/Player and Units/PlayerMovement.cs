@@ -17,6 +17,7 @@ namespace RG
     {
         private CharacterController characterController;
         private Animator animator;
+        public GameModeManager statesManager;
 
         [SerializeField] private float moveSpeed = 30;
         [SerializeField] private float turnSpeed = 3.5f;
@@ -34,6 +35,7 @@ namespace RG
         public Texture crosshair;
 
         public bool drawcrosshair;
+        public GameObject bullet;
 
         public Transform rotator;
 
@@ -58,6 +60,7 @@ namespace RG
             //    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             //        anim.SetBool("Attack",false);
             //}
+            
         }
 
         public void Attack()
@@ -67,9 +70,8 @@ namespace RG
             Debug.Log("Attack");
             if (!anim.IsInTransition(0))
             didHit = true;
-            
-            
         }
+
         void OnGUI()
         {
             if (drawcrosshair)
@@ -83,7 +85,33 @@ namespace RG
         }
         public void RangedAttack()
         {
-
+           
+                RaycastHit hit;
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(Screen.width, Screen.height, 0));
+                int layerMask = 1 << 8;
+            Debug.Log("checking for fire");
+                if (Physics.Raycast(ray, out hit, playerstats.Range.Value, layerMask))
+                {
+                    if (hit.transform.tag == "EnemyUnit")
+                    {
+                        var heading = hit.transform.position - transform.GetChild(2).position;
+                        var projectile = Instantiate(bullet, transform.GetChild(2).position, transform.GetChild(2).rotation);
+                        projectile.GetComponent<Bullet>().shooter = this.gameObject;
+                        projectile.transform.LookAt(hit.transform);
+                        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
+                        Destroy(projectile, 3);
+                    Debug.Log("fired");
+                    }
+                    else
+                    {
+                        var heading = transform.GetChild(2).forward;
+                        var projectile = Instantiate(bullet, transform.GetChild(2).position, transform.GetChild(2).rotation);
+                        projectile.GetComponent<Bullet>().shooter = this.gameObject;
+                        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
+                        Destroy(projectile, 3);
+                    }
+                
+            }
            //Get the raycast hit point from the crosshair in the cameraScript
            //Instantiate bullet from the weapon point towards the raycast hit
            //if there is no raycast hit, what do? DO NOTHING , that'd be too dumb, let the enemies be hit or hitable targets only
