@@ -67,8 +67,7 @@ namespace RG
 
         public bool PlayerClicked(int commandPoints)
         {
-            if (statesManager.currentState == statesManager.GetState("tacticState"))
-            {
+            
                 if (Input.GetMouseButtonDown(0))
                 {
                     RaycastHit hit;
@@ -92,8 +91,8 @@ namespace RG
                 else
 
                     return false;
-            }
-            else return false;
+            
+            
         }
 
         void Start()

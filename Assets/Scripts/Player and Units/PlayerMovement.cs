@@ -90,8 +90,9 @@ namespace RG
                 Ray ray = Camera.main.ViewportPointToRay(new Vector3(Screen.width, Screen.height, 0));
                 int layerMask = 1 << 8;
             Debug.Log("checking for fire");
-                if (Physics.Raycast(ray, out hit, playerstats.Range.Value, layerMask))
+                if (Physics.Raycast(ray,out hit,playerstats.Range.Value *10))
                 {
+                Debug.Log("checking for ray");
                     if (hit.transform.tag == "EnemyUnit")
                     {
                         var heading = hit.transform.position - transform.GetChild(2).position;
@@ -102,19 +103,20 @@ namespace RG
                         Destroy(projectile, 3);
                     Debug.Log("fired");
                     }
-                    else
-                    {
-                        var heading = transform.GetChild(2).forward;
-                        var projectile = Instantiate(bullet, transform.GetChild(2).position, transform.GetChild(2).rotation);
-                        projectile.GetComponent<Bullet>().shooter = this.gameObject;
-                        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
-                        Destroy(projectile, 3);
-                    }
+                    
                 
             }
-           //Get the raycast hit point from the crosshair in the cameraScript
-           //Instantiate bullet from the weapon point towards the raycast hit
-           //if there is no raycast hit, what do? DO NOTHING , that'd be too dumb, let the enemies be hit or hitable targets only
+            else
+            {
+                var heading = transform.GetChild(2).forward;
+                var projectile = Instantiate(bullet, transform.GetChild(2).position, transform.GetChild(2).rotation);
+                projectile.GetComponent<Bullet>().shooter = this.gameObject;
+                projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
+                Destroy(projectile, 3);
+            }
+            //Get the raycast hit point from the crosshair in the cameraScript
+            //Instantiate bullet from the weapon point towards the raycast hit
+            //if there is no raycast hit, what do? DO NOTHING , that'd be too dumb, let the enemies be hit or hitable targets only
         }
 
         public void Movement()
