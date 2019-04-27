@@ -32,7 +32,7 @@ public class TacticAiStateAction : StateAction
             foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
             {
                 g.GetComponent<AI>().hasPlayed = false;
-                g.GetComponent<AI>().score = 0;
+               // g.GetComponent<AI>().score = 0;
             }
             enemyManager.enemyUnitsScript.commandPoints = enemyManager.enemyUnitsScript.originalCommandPoints;
             Debug.Log(enemyManager.enemyUnitsScript.commandPoints);

@@ -49,12 +49,18 @@ public class EnemyUnits : MonoBehaviour
     {
         Transform chosenTransform = UnitsList[Mathf.RoundToInt(Random.Range(0, UnitsList.Count))];
 
-        foreach (Transform unit in UnitsList)
+        //foreach (Transform unit in UnitsList)
+        //{
+        //    unit.GetComponent<AI>().score = 0;
+        //   // Debug.Log("FIRST SCORE" + unit.GetComponent<AI>().score);
+        //    unit.GetComponent<AI>().score = FullScore(unit);
+        //    //Debug.Log("END SCORE" + unit.GetComponent<AI>().score);
+        //}
+        for (int i = 0; i < UnitsList.Count; i++)
         {
-            unit.GetComponent<AI>().score = 0;
-           // Debug.Log("FIRST SCORE" + unit.GetComponent<AI>().score);
-            unit.GetComponent<AI>().score = FullScore(unit);
-            //Debug.Log("END SCORE" + unit.GetComponent<AI>().score);
+            UnitsList[i].GetComponent<AI>().score = 0;
+            UnitsList[i].GetComponent<AI>().score = FullScore(UnitsList[i]);
+            Debug.Log("full score = "+FullScore(UnitsList[i]));
         }
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
         int chosenScore = chosenTransform.GetComponent<AI>().score;
@@ -132,6 +138,7 @@ public class EnemyUnits : MonoBehaviour
                 unit.GetComponent<PlayerStats>().AP.Value * 5)
             {
                 finalreturn = 5;
+                //Debug.Log("famma visible units");
                 break;
             }
         }
@@ -221,7 +228,7 @@ public class EnemyUnits : MonoBehaviour
         score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
                      DistancefromVisibleUnits(unitTransform, SeenPlayersTransforms) + AlliesLeft(unitTransform) +
                      UnitsThatThisCanKill(unitTransform, SeenPlayersTransforms);
-
+       // Debug.Log("fucking bloody"+score);
         return score;
     }
     #endregion

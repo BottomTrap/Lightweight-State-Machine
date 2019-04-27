@@ -35,7 +35,7 @@ public class ActionAiStateAction : StateAction
         }
         else enemyPhaseManager.enemyUnitsScript.commandPoints = 0;
 
-        enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().score = 0;
+        //enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().score = 0;
 
         if (enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().hasPlayed)
         {
