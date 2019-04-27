@@ -65,6 +65,11 @@ namespace RG
                 Death();
             }
         }
+        private Vector3 RandomPointOnCircleEdge(float radius)
+{
+    var vector2 = Random.insideUnitCircle.normalized * radius;
+    return new Vector3(vector2.x, 0, vector2.y);
+}
 
         public bool moved = false;
         public IEnumerator Move(Transform target, IEnumerator nextMove)
@@ -73,7 +78,7 @@ namespace RG
             yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
-                
+                //offset = RandomPointOnCircleEdge(1);
                 while (transform.position != target.position-offset)
                 {
                     finalTarget = target.position - offset;

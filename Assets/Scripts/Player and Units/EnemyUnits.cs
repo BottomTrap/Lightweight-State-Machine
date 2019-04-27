@@ -43,7 +43,11 @@ public class EnemyUnits : MonoBehaviour
                 continue;
         }
     }
-
+        private Vector3 RandomPointOnCircleEdge(float radius)
+{
+    var vector2 = Random.insideUnitCircle.normalized * radius;
+    return new Vector3(vector2.x, 0, vector2.y);
+}
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
     {
@@ -73,7 +77,7 @@ public class EnemyUnits : MonoBehaviour
         if (chosenScore > 3 && chosenScore < 6)
         {
             chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
-            chosenTransform.GetComponent<AI>().offset = chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
+            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
         }
 
@@ -81,6 +85,7 @@ public class EnemyUnits : MonoBehaviour
         {
 
             chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
+            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
         }
 
@@ -103,8 +108,7 @@ public class EnemyUnits : MonoBehaviour
 
     public int IsThreatened(Transform unit)
     {
-        if ((unit.GetComponent<PlayerStats>().Health.Value / unit.GetComponent<PlayerStats>().startHealth) / 100.0f<
-            50.0f)
+        if (unit.GetComponent<PlayerStats>().startHealth<unit.GetComponent<PlayerStats>().Health.Value/2)
         {
             return -5;
         }
@@ -142,7 +146,7 @@ public class EnemyUnits : MonoBehaviour
                 break;
             }
         }
-
+//Debug.Log("final return ISS" + finalreturn);
         return finalreturn;
     }
 
@@ -228,7 +232,7 @@ public class EnemyUnits : MonoBehaviour
         score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
                      DistancefromVisibleUnits(unitTransform, SeenPlayersTransforms) + AlliesLeft(unitTransform) +
                      UnitsThatThisCanKill(unitTransform, SeenPlayersTransforms);
-       // Debug.Log("fucking bloody"+score);
+        Debug.Log("is threatened is  "+IsThreatened(unitTransform));
         return score;
     }
     #endregion
