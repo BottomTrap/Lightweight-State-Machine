@@ -7,6 +7,20 @@ using RG;
 
 public class GameModeManager : StateManager
 {
+    public static GameModeManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     public CameraScript cameraScript;
     public PlayerMovement playerScript;
