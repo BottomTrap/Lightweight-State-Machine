@@ -31,16 +31,20 @@ public class EnemyUnits : MonoBehaviour
 
     public void GetChildObjectsTransforms()
     {
-        UnitsArrayTransforms = GetComponentsInChildren<Transform>();
-        for (int i = 0; i < UnitsArrayTransforms.Length; i++)
-        {
-            if (UnitsArrayTransforms[i] == this.transform) continue;
-            if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive && !UnitsList.Contains(UnitsArrayTransforms[i]))
-            {
-                UnitsList.Add(UnitsArrayTransforms[i]);
-            }
-            else
-                continue;
+        //UnitsArrayTransforms = GetComponentsInChildren<Transform>();
+        //for (int i = 0; i < UnitsArrayTransforms.Length; i++)
+        //{
+        //    if (UnitsArrayTransforms[i] == this.transform) continue;
+        //    if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive && !UnitsList.Contains(UnitsArrayTransforms[i]))
+        //    {
+        //        UnitsList.Add(UnitsArrayTransforms[i]);
+        //    }
+        //    else
+        //        continue;
+        //}
+        foreach (Transform child in transform) {
+            if (child.GetComponent<AI>().isAlive && !UnitsList.Contains(child))
+            UnitsList.Add(child);
         }
     }
         private Vector3 RandomPointOnCircleEdge(float radius)
@@ -48,6 +52,14 @@ public class EnemyUnits : MonoBehaviour
     var vector2 = Random.insideUnitCircle.normalized * radius;
     return new Vector3(vector2.x, 0, vector2.y);
 }
+
+   // private Vector3 RandomPointOnCircleEdgeWhereObjectIsStillInView(float radius, Transform obj)
+   // {
+   //     var randomPoint =RandomPointOnCircleEdge(radius);
+   //     var direction = obj.position - randomPoint;
+   //     
+   //     
+   // }
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
     {
@@ -60,12 +72,15 @@ public class EnemyUnits : MonoBehaviour
         //    unit.GetComponent<AI>().score = FullScore(unit);
         //    //Debug.Log("END SCORE" + unit.GetComponent<AI>().score);
         //}
+
+
         for (int i = 0; i < UnitsList.Count; i++)
         {
             UnitsList[i].GetComponent<AI>().score = 0;
             UnitsList[i].GetComponent<AI>().score = FullScore(UnitsList[i]);
             Debug.Log("full score = "+FullScore(UnitsList[i]));
         }
+
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
         int chosenScore = chosenTransform.GetComponent<AI>().score;
         if (chosenScore < 3)
@@ -230,8 +245,8 @@ public class EnemyUnits : MonoBehaviour
     {
         int score = 0;
         score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
-                     DistancefromVisibleUnits(unitTransform, SeenPlayersTransforms) + AlliesLeft(unitTransform) +
-                     UnitsThatThisCanKill(unitTransform, SeenPlayersTransforms);
+                     DistancefromVisibleUnits(unitTransform, PlayersInViewTransforms()) + AlliesLeft(unitTransform) +
+                     UnitsThatThisCanKill(unitTransform, PlayersInViewTransforms());
         Debug.Log("is threatened is  "+IsThreatened(unitTransform));
         return score;
     }
@@ -257,8 +272,6 @@ public class EnemyUnits : MonoBehaviour
                 i++;
             }
         }
-
-
     } //Get players in range, even behind
 
     public List<Transform> PlayersInViewTransforms()
@@ -266,24 +279,70 @@ public class EnemyUnits : MonoBehaviour
         List<Transform> returnTransforms = new List<Transform>();
         if (SeenPlayersTransforms == null)
         {
+            //Debug.Log("seen player transforms is null");
             returnTransforms = null;
             return returnTransforms;
         }
-        for (int i = 0; i < SeenPlayersTransforms.Count; i++)
+        for (int j = 0; j < UnitsList.Count; j++)
         {
-            Vector3 targetDir = SeenPlayersTransforms[i].transform.position - GetComponentInParent<Transform>().position;
-            float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
-
-            if (angleToPlayer >= -SeenPlayersTransforms[i].GetComponent<AI>().fov && angleToPlayer <= SeenPlayersTransforms[i].GetComponent<AI>().fov)
+            //var fov = UnitsList[j].GetComponent<AI>().fov;
+            for (int i = 0; i < SeenPlayersTransforms.Count; i++)
             {
-                returnTransforms.Add(SeenPlayersTransforms[i].transform);
+                if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
+                {
+                    Debug.Log("FAMA HAJA WALA LE");
+                    returnTransforms.Add(SeenPlayersTransforms[i]);
+                }
             }
         }
-
         return returnTransforms;
     }
     //Get players in view from the inRange players
+    //public bool PlayerInView(Transform source, Transform target)
+    //{
+    //    Vector3 targetDir = target.position - source.position;
+    //    float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
+    //
+    //    if (angleToPlayer >= -
+    //}
 
+    private bool IsInView(GameObject origin, GameObject toCheck)
+    {
+        var cam = origin.GetComponentInChildren<Camera>();
+        Vector3 pointOnScreen = cam.WorldToScreenPoint(toCheck.GetComponentInChildren<Renderer>().bounds.center);
 
+        //Is in front
+        if (pointOnScreen.z < 0)
+        {
+            Debug.Log("Behind: " + toCheck.name);
+            return false;
+        }
 
+        //Is in FOV
+        if ((pointOnScreen.x < 0) || (pointOnScreen.x > (float)cam.pixelWidth) ||
+                (pointOnScreen.y < 0) || (pointOnScreen.y > (float)cam.pixelHeight))
+        {
+            Debug.Log("OutOfBounds: " + toCheck.name);
+            return false;
+        }
+
+        RaycastHit hit;
+        Vector3 heading = toCheck.transform.position - origin.transform.position;
+        Vector3 direction = heading.normalized;// / heading.magnitude;
+
+        if (Physics.Linecast(cam.transform.position, toCheck.GetComponentInChildren<Renderer>().bounds.center, out hit))
+        {
+            if (hit.transform.name != toCheck.name)
+            {
+                
+                Debug.DrawLine(cam.transform.position, toCheck.GetComponentInChildren<Renderer>().bounds.center, Color.red);
+                Debug.LogError(toCheck.name + " occluded by " + hit.transform.name);
+                
+                Debug.Log(toCheck.name + " occluded by " + hit.transform.name);
+                return false;
+            }
+        }
+        Debug.Log("FAMA HAJA");
+        return true;
+    }
 }

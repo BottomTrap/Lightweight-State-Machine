@@ -42,6 +42,7 @@ namespace RG
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
             stats = GetComponent<PlayerStats>();
+            //target.position = Vector3.zero;
         }
 
         private void Start()
