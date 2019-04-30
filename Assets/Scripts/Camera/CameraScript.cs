@@ -48,7 +48,9 @@ namespace RG
         public Transform target;
 
         public Vector2 pitchMinMax = new Vector2(-40, 85);
+        public Vector2 yawMinMax = new Vector2(-50, 50);
         public float rotationSmoothTime = 8f;
+        public Vector3 aimViewOffset;
 
         [SerializeField]
         private Vector3 offset; //Private variable to store the offset distance between the player and camera
@@ -244,7 +246,8 @@ namespace RG
             yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
             pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
-            currentRotation = Vector3.Lerp(currentRotation, new Vector3(pitch, yaw,rotator.position.z), rotateSpeed* Time.deltaTime);
+            yaw = Mathf.Clamp(yaw, yawMinMax.x, yawMinMax.y);
+            currentRotation = Vector3.Lerp(currentRotation, new Vector3(pitch, yaw,0), rotateSpeed* Time.deltaTime);
 
             transform.eulerAngles = currentRotation;
             Vector3 e = transform.eulerAngles;
@@ -254,7 +257,7 @@ namespace RG
             rotator.eulerAngles = new Vector3(g.x, rotator.eulerAngles.y, rotator.eulerAngles.z);
 
             playerTransform.eulerAngles = e;
-            transform.position = Vector3.Lerp(transform.position, playerTransform.position - offset, rotateSpeed);
+            transform.position = Vector3.Lerp(transform.position, playerTransform.position - aimViewOffset, rotateSpeed);
         }
        
     }

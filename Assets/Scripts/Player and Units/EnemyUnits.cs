@@ -16,6 +16,7 @@ public class EnemyUnits : MonoBehaviour
     public int commandPoints = 6;
     public int originalCommandPoints;
 
+    private int originalUnitNumbers;
 
 
     private void Awake()
@@ -27,6 +28,18 @@ public class EnemyUnits : MonoBehaviour
     private void Update()
     {
         GetChildObjectsTransforms();
+        originalUnitNumbers = UnitsList.Count;
+    }
+
+    void CheckForDeath()
+    {
+        foreach(Transform unit in UnitsList)
+        {
+            if(unit.GetComponent<AI>().isAlive == false)
+            {
+                UnitsList.Remove(unit);
+            }
+        }
     }
 
     public void GetChildObjectsTransforms()
@@ -76,9 +89,12 @@ public class EnemyUnits : MonoBehaviour
 
         for (int i = 0; i < UnitsList.Count; i++)
         {
-            UnitsList[i].GetComponent<AI>().score = 0;
-            UnitsList[i].GetComponent<AI>().score = FullScore(UnitsList[i]);
-            Debug.Log("full score = "+FullScore(UnitsList[i]));
+            if (UnitsList[i])
+            {
+                UnitsList[i].GetComponent<AI>().score = 0;
+                UnitsList[i].GetComponent<AI>().score = FullScore(UnitsList[i]);
+                Debug.Log("full score = " + FullScore(UnitsList[i]));
+            }
         }
 
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
@@ -170,14 +186,17 @@ public class EnemyUnits : MonoBehaviour
         int finalreturn = 0;
         for (int i = 0; i < UnitsList.Count; i++)
         {
-            if (UnitsList[i] == unit)
+            if (UnitsList[i])
             {
-                continue;
-            }
+                if (UnitsList[i] == unit)
+                {
+                    continue;
+                }
 
-            if (UnitsList[i].GetComponent<PlayerStats>().isAlive)
-            {
-                finalreturn++;
+                if (UnitsList[i].GetComponent<PlayerStats>().isAlive)
+                {
+                    finalreturn++;
+                }
             }
         }
         //Debug.Log(finalreturn + " allies left");
@@ -263,13 +282,16 @@ public class EnemyUnits : MonoBehaviour
     {
         for (int j = 0; j < UnitsList.Count; j++)
         {
-            Collider[] seenPlayerColliders = Physics.OverlapSphere(UnitsList[j].position, UnitsList[j].GetComponent<PlayerStats>().AP.Value + UnitsList[j].GetComponent<PlayerStats>().Range.Value);
-            int i = 0;
-            while (i < seenPlayerColliders.Length)
+            if (UnitsList[j])
             {
-                if (seenPlayerColliders[i].gameObject.tag == "PlayerUnit")
-                    SeenPlayersTransforms.Add(seenPlayerColliders[i].transform);
-                i++;
+                Collider[] seenPlayerColliders = Physics.OverlapSphere(UnitsList[j].position, UnitsList[j].GetComponent<PlayerStats>().AP.Value + UnitsList[j].GetComponent<PlayerStats>().Range.Value);
+                int i = 0;
+                while (i < seenPlayerColliders.Length)
+                {
+                    if (seenPlayerColliders[i].gameObject.tag == "PlayerUnit")
+                        SeenPlayersTransforms.Add(seenPlayerColliders[i].transform);
+                    i++;
+                }
             }
         }
     } //Get players in range, even behind
@@ -285,15 +307,20 @@ public class EnemyUnits : MonoBehaviour
         }
         for (int j = 0; j < UnitsList.Count; j++)
         {
-            //var fov = UnitsList[j].GetComponent<AI>().fov;
-            for (int i = 0; i < SeenPlayersTransforms.Count; i++)
+            if (UnitsList[j])
             {
-                if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
+                //var fov = UnitsList[j].GetComponent<AI>().fov;
+                for (int i = 0; i < SeenPlayersTransforms.Count; i++)
                 {
-                    Debug.Log("FAMA HAJA WALA LE");
-                    returnTransforms.Add(SeenPlayersTransforms[i]);
+                    if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
+                    {
+                        Debug.Log("FAMA HAJA WALA LE");
+                        returnTransforms.Add(SeenPlayersTransforms[i]);
+                    }
                 }
+
             }
+            else continue;
         }
         return returnTransforms;
     }

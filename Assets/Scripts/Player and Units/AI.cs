@@ -76,7 +76,7 @@ namespace RG
         public IEnumerator Move(Transform target, IEnumerator nextMove)
         {
 
-            yield return new WaitForSeconds(1);
+            //yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
                 //offset = RandomPointOnCircleEdge(1);
@@ -87,8 +87,9 @@ namespace RG
                     //transform.Translate(target.position , Space.World);
                     transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
                     Vector3 direction = target.position - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
+                    //Quaternion rotation = Quaternion.LookRotation(direction);
+                    //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
+                    transform.LookAt(target);
                     yield return null;
                 }
             }else 
@@ -188,8 +189,9 @@ namespace RG
 
         void Death()
         {
-
-            Destroy(this.gameObject);
+            isAlive = false;
+            this.GetComponent<MeshRenderer>().enabled = false;
+            this.GetComponent<CapsuleCollider>().enabled = false;
 
         }
 

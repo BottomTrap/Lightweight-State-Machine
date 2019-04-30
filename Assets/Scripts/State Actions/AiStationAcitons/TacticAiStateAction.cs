@@ -31,6 +31,7 @@ public class TacticAiStateAction : StateAction
         {
             foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
             {
+                if (g)
                 g.GetComponent<AI>().hasPlayed = false;
                // g.GetComponent<AI>().score = 0;
             }
@@ -95,9 +96,12 @@ public class TacticAiStateAction : StateAction
     {
         foreach (Transform g in unitList)
         {
-            if (!g.GetComponent<AI>().hasPlayed)
-                return false;
-            else continue;
+            if (g)
+            {
+                if (!g.GetComponent<AI>().hasPlayed)
+                    return false;
+                else continue;
+            }
         }
         return true;
     }

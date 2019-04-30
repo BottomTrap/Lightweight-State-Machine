@@ -1071,7 +1071,9 @@ MonoBehaviour:
   rotator: {fileID: 0}
   target: {fileID: 0}
   pitchMinMax: {x: -20, y: 20}
+  yawMinMax: {x: -50, y: 50}
   rotationSmoothTime: 8
+  aimViewOffset: {x: 0, y: 0, z: 3}
   offset: {x: 0, y: 0, z: 0}
   curve:
     serializedVersion: 2
