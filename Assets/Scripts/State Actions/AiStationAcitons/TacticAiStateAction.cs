@@ -68,6 +68,7 @@ public class TacticAiStateAction : StateAction
 
         enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
         enemyManager.enemyUnitsScript.GetPlayersInRange();
+        enemyManager.enemyUnitsScript.PlayersInViewTransforms();
 
 
         enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();

@@ -32,6 +32,7 @@ namespace RG
         public Vector3 finalTarget;
         private float distanceTraveled = 0;
         private Vector3 lastPosition;
+        public List<Transform> playersInView = new List<Transform>();
 
         public GameModeManager gameModeManager;
 
@@ -42,6 +43,7 @@ namespace RG
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
             stats = GetComponent<PlayerStats>();
+
             //target.position = Vector3.zero;
         }
 
@@ -50,6 +52,7 @@ namespace RG
             navAgent = GetComponent<NavMeshAgent>();
             navAgent.speed = GetComponent<PlayerStats>().Speed.Value; //Setting the Movement speed of each UNIT
         }
+
         private void FixedUpdate()
         {
             distanceTraveled += Vector3.Distance(transform.position, lastPosition);
@@ -66,6 +69,7 @@ namespace RG
                 Death();
             }
         }
+
         private Vector3 RandomPointOnCircleEdge(float radius)
 {
     var vector2 = Random.insideUnitCircle.normalized * radius;
@@ -99,15 +103,17 @@ namespace RG
 
         }
 
-        public IEnumerator HasPlayed()
+        public IEnumerator HasPlayed(IEnumerator cor)
         {
             while (!hasPlayed)
             {
-                yield return new WaitForSeconds(2.0f);
+                StopCoroutine(cor);
+                yield return new WaitForSeconds(1f);
                 hasPlayed = true;
             }
             
         }
+
         public void Action()
         {
             switch (aiModes)
@@ -178,6 +184,8 @@ namespace RG
             }
             
         }
+
+
         bool isPlaying(Animator anim, string stateName)
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName) ||
@@ -192,6 +200,11 @@ namespace RG
             isAlive = false;
             this.GetComponent<MeshRenderer>().enabled = false;
             this.GetComponent<CapsuleCollider>().enabled = false;
+
+        }
+
+        public void PassiveActions()
+        {
 
         }
 

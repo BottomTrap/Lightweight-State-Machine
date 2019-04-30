@@ -44,17 +44,7 @@ public class EnemyUnits : MonoBehaviour
 
     public void GetChildObjectsTransforms()
     {
-        //UnitsArrayTransforms = GetComponentsInChildren<Transform>();
-        //for (int i = 0; i < UnitsArrayTransforms.Length; i++)
-        //{
-        //    if (UnitsArrayTransforms[i] == this.transform) continue;
-        //    if (UnitsArrayTransforms[i].GetComponentInChildren<AI>().isAlive && !UnitsList.Contains(UnitsArrayTransforms[i]))
-        //    {
-        //        UnitsList.Add(UnitsArrayTransforms[i]);
-        //    }
-        //    else
-        //        continue;
-        //}
+       
         foreach (Transform child in transform) {
             if (child.GetComponent<AI>().isAlive && !UnitsList.Contains(child))
             UnitsList.Add(child);
@@ -66,12 +56,7 @@ public class EnemyUnits : MonoBehaviour
     return new Vector3(vector2.x, 0, vector2.y);
 }
 
-   // private Vector3 RandomPointOnCircleEdgeWhereObjectIsStillInView(float radius, Transform obj)
-   // {
-   //     var randomPoint =RandomPointOnCircleEdge(radius);
-   //     var direction = obj.position - randomPoint;
-   //     
-   //     
+ 
    // }
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
@@ -98,25 +83,30 @@ public class EnemyUnits : MonoBehaviour
         }
 
         chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
+        List<Transform> playerList= new List<Transform>();
+        if (chosenTransform.GetComponent<AI>().playersInView.Count > 0)
+        {
+            playerList = chosenTransform.GetComponent<AI>().playersInView;
+        }
         int chosenScore = chosenTransform.GetComponent<AI>().score;
-        if (chosenScore < 3)
+        if (chosenScore < 3 || playerList.Count <=0)
         {
             chosenTransform.GetComponent<AI>().target = chosenTransform;
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Cure;
         }
 
-        if (chosenScore > 3 && chosenScore < 6)
+        if (chosenScore > 3 && chosenScore < 6 && playerList.Count > 0)
         {
-            chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
+            chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
             chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
         }
 
-        if (chosenScore > 6)
+        if (chosenScore > 6 && playerList.Count >0)
         {
 
-            chosenTransform.GetComponent<AI>().target = GetLowestHP(SeenPlayersTransforms);
-            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
+            chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
+            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(1); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
         }
 
@@ -152,30 +142,37 @@ public class EnemyUnits : MonoBehaviour
     public int DistancefromVisibleUnits(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn = 0;
-        List<Transform> sortedList =
-            seenPlayerTransforms.OrderBy(o => Vector3.Distance(unit.position, o.position)).ToList();
-       // for (int i = 0; i < seenPlayerTransforms.Count; i++)
-       // {
-       //     if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) <
-       //         unit.GetComponent<PlayerStats>().AP.Value * 5)
-       //     {
-       //         finalreturn++;
-       //     }
-       //     else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
-       //              unit.GetComponent<PlayerStats>().AP.Value * 10)
-       //     {
-       //         finalreturn--;
-       //     }
-       // }
-       foreach (Transform seenUnit in seenPlayerTransforms)
+        //List<Transform> sortedList =seenPlayerTransforms.OrderBy(o => Vector3.Distance(unit.position, o.position)).ToList();
+
+        // for (int i = 0; i < seenPlayerTransforms.Count; i++)
+        // {
+        //     if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) <
+        //         unit.GetComponent<PlayerStats>().AP.Value * 5)
+        //     {
+        //         finalreturn++;
+        //     }
+        //     else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
+        //              unit.GetComponent<PlayerStats>().AP.Value * 10)
+        //     {
+        //         finalreturn--;
+        //     }
+        // }
+        if (seenPlayerTransforms != null)
         {
-            if (Vector3.Distance(unit.position, seenUnit.position) <
-                unit.GetComponent<PlayerStats>().AP.Value * 5)
+            foreach (Transform seenUnit in seenPlayerTransforms)
             {
-                finalreturn = 5;
-                //Debug.Log("famma visible units");
-                break;
+                if (Vector3.Distance(unit.position, seenUnit.position) <
+                    unit.GetComponent<PlayerStats>().AP.Value * 5)
+                {
+                    finalreturn = 5;
+                    //Debug.Log("famma visible units");
+                    break;
+                }
             }
+        }
+        else
+        {
+            finalreturn = -10;
         }
 //Debug.Log("final return ISS" + finalreturn);
         return finalreturn;
@@ -263,9 +260,10 @@ public class EnemyUnits : MonoBehaviour
     public int FullScore(Transform unitTransform)
     {
         int score = 0;
+        List<Transform> playersInViewList = unitTransform.GetComponent<AI>().playersInView;
         score = hasPlayed(unitTransform) + IsThreatened(unitTransform) +
-                     DistancefromVisibleUnits(unitTransform, PlayersInViewTransforms()) + AlliesLeft(unitTransform) +
-                     UnitsThatThisCanKill(unitTransform, PlayersInViewTransforms());
+                     DistancefromVisibleUnits(unitTransform, playersInViewList) + AlliesLeft(unitTransform) +
+                     UnitsThatThisCanKill(unitTransform, playersInViewList);
         Debug.Log("is threatened is  "+IsThreatened(unitTransform));
         return score;
     }
@@ -296,33 +294,34 @@ public class EnemyUnits : MonoBehaviour
         }
     } //Get players in range, even behind
 
-    public List<Transform> PlayersInViewTransforms()
+    public void PlayersInViewTransforms()
     {
-        List<Transform> returnTransforms = new List<Transform>();
+       // List<Transform> returnTransforms = new List<Transform>();
         if (SeenPlayersTransforms == null)
         {
             //Debug.Log("seen player transforms is null");
-            returnTransforms = null;
-            return returnTransforms;
+            //returnTransforms = null;
+            return;
         }
         for (int j = 0; j < UnitsList.Count; j++)
         {
             if (UnitsList[j])
             {
-                //var fov = UnitsList[j].GetComponent<AI>().fov;
-                for (int i = 0; i < SeenPlayersTransforms.Count; i++)
+               UnitsList[j].GetComponent<AI>().playersInView = new List<Transform>();
+               var transformList = UnitsList[j].GetComponent<AI>().playersInView; 
+               for (int i = 0; i < SeenPlayersTransforms.Count; i++)
                 {
                     if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
                     {
                         Debug.Log("FAMA HAJA WALA LE");
-                        returnTransforms.Add(SeenPlayersTransforms[i]);
+                        transformList.Add(SeenPlayersTransforms[i]);
                     }
                 }
 
             }
             else continue;
         }
-        return returnTransforms;
+       
     }
     //Get players in view from the inRange players
     //public bool PlayerInView(Transform source, Transform target)
@@ -367,6 +366,9 @@ public class EnemyUnits : MonoBehaviour
                 
                 Debug.Log(toCheck.name + " occluded by " + hit.transform.name);
                 return false;
+            }else if (hit.transform.tag == "EnemyUnit" || hit.transform.tag =="PlayerUnit")
+            {
+                return true;
             }
         }
         Debug.Log("FAMA HAJA");

@@ -28,9 +28,10 @@ public class Skills : MonoBehaviour
     public IEnumerator Attack()
     {
         if (!ai.hasPlayed){
-        
+            var weaponAnim = transform.GetChild(1).GetComponent<Animator>();
+            weaponAnim.SetTrigger("Attack");
         Debug.Log("EnemyAttack");
-        yield return StartCoroutine(ai.HasPlayed()) ;
+        yield return StartCoroutine(ai.HasPlayed(Attack())) ;
         }
     }
 
@@ -51,39 +52,59 @@ public class Skills : MonoBehaviour
             Destroy(projectile, 3);
             isCreated = true;
             Debug.Log("RangedEnemyAttack"); 
-            yield return StartCoroutine(ai.HasPlayed());
+            yield return StartCoroutine(ai.HasPlayed(RangedAttack()));
         }   
     }
 
     public IEnumerator Cure()
     {
-        if (ai.hasPlayed){
+        if (!ai.hasPlayed){
         Debug.Log("Enemy Casted cure on itself");
-        yield return StartCoroutine(ai.HasPlayed());
+        yield return StartCoroutine(ai.HasPlayed(Cure()));
+        }
+    }
+
+    public IEnumerator DoNothing()
+    {
+        if (!ai.hasPlayed)
+        {
+            yield return StartCoroutine(ai.HasPlayed(DoNothing()));
         }
     }
 
     public IEnumerator Invisible()
     {
-        Debug.Log("Invisible!");
-        yield return StartCoroutine(ai.HasPlayed());
+        if (!ai.hasPlayed)
+        {
+            Debug.Log("Invisible!");
+            yield return StartCoroutine(ai.HasPlayed(Invisible()));
+        }
     }
 
     public IEnumerator Barrier()
     {
-        Debug.Log("Barrier Cast");
-        yield return StartCoroutine(ai.HasPlayed());
+        if (!ai.hasPlayed)
+        {
+            Debug.Log("Barrier Cast");
+            yield return StartCoroutine(ai.HasPlayed(Barrier()));
+        }
     }
 
     public IEnumerator DeathBlow()
     {
-        Debug.Log("DeathBlow Attack!!");
-        yield return StartCoroutine(ai.HasPlayed());
+        if (!ai.hasPlayed)
+        {
+            Debug.Log("DeathBlow Attack!!");
+            yield return StartCoroutine(ai.HasPlayed(DeathBlow()));
+        }
     }
 
     public IEnumerator CriticalHitUp()
     {
-        Debug.Log("Critical Hit Up");
-        yield return StartCoroutine(ai.HasPlayed());
+        if (!ai.hasPlayed)
+        {
+            Debug.Log("Critical Hit Up");
+            yield return StartCoroutine(ai.HasPlayed(CriticalHitUp()));
+        }
     }
 }

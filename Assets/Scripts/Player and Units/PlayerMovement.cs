@@ -103,6 +103,7 @@ namespace RG
                         projectile.transform.LookAt(hit.transform);
                         projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.VelocityChange);
                         Destroy(projectile, 3);
+                    didHit = true;
                         Debug.Log("fired");
                     }
                     
@@ -164,7 +165,7 @@ namespace RG
             }
             if (other.gameObject.tag == "Weapon" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject)
             {
-                playerstats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
+                playerstats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
                 Debug.Log(playerstats.startHealth);
             }
         }

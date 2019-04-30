@@ -231,7 +231,8 @@ namespace RG
             if (Input.GetMouseButton(1))
             {
                 translationX = Input.GetAxis("Mouse X");
-                transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
+                //transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
+                transform.Rotate(new Vector3(0, translationX, 0));
             }
         }
 

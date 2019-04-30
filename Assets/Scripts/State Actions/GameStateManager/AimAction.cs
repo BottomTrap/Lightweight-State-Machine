@@ -40,10 +40,13 @@ public class AimAction : StateAction
             return true;
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (!playerMovement.didHit)
         {
-            playerMovement.drawcrosshair = false;
-            playerMovement.RangedAttack();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                playerMovement.drawcrosshair = false;
+                playerMovement.RangedAttack();
+            }
         }
         
 
