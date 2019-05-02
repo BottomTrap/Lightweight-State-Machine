@@ -28,6 +28,8 @@ public class EnemyUnits : MonoBehaviour
     private void Update()
     {
         GetChildObjectsTransforms();
+        PlayersInViewTransforms();
+
         originalUnitNumbers = UnitsList.Count;
     }
 

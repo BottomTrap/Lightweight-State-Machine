@@ -107,4 +107,21 @@ public class Skills : MonoBehaviour
             yield return StartCoroutine(ai.HasPlayed(CriticalHitUp()));
         }
     }
+
+    public IEnumerator PassiveRangedAttack()
+    {
+        Debug.Log("passive ranged attack");
+        transform.LookAt(ai.target.position);
+        var heading = ai.target.position - transform.position;
+        var rotation = Quaternion.LookRotation(heading);
+        var projectile = Instantiate(bullet, transform.position, rotation);
+        //bullet.transform.position = transform.position;
+        //get the source of the bullet
+        projectile.GetComponent<Bullet>().shooter = this.gameObject;
+        projectile.transform.LookAt(ai.target);
+        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
+        //projectile.GetComponent<Rigidbody>().velocity = transform.TransformDirection(heading * 5.0f);
+        Destroy(projectile, 3);
+        yield return new WaitForSeconds(1.5f);
+    }
 }

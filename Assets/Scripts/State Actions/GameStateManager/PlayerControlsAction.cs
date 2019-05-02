@@ -33,11 +33,11 @@ public class PlayerControlsAction : StateAction
             playerMovement = gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>();
             cameraScript = gameStates.cameraScript;
             playerStats = gameStates.cameraScript.playerTransform.GetComponent<PlayerStats>();
-        
 
+        var enemyUnits = gameStates.enemyUnitsScript.UnitsList;
         Debug.Log("this is actionState");
         gameStates.cameraScript.CameraMovement(gameStates.cameraScript.playerTransform);
-        Debug.Log(playerMovement);
+        //Debug.Log(playerMovement);
         //gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>().Movement();
         playerMovement.Rotate();
         if (playerMovement.distanceTraveled <
@@ -54,6 +54,10 @@ public class PlayerControlsAction : StateAction
                 playerMovement.didHit = true;
                 
             }
+        }
+        foreach (Transform enemy in enemyUnits)
+        {
+            enemy.GetComponent<AI>().PassiveActions();
         }
        // if (gameStates.cameraScript.PlayerClicked(gameStates.commandPoints) != null)
        // {

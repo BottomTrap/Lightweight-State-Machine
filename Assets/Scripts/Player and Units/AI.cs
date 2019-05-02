@@ -226,8 +226,58 @@ namespace RG
 
         public void PassiveActions()
         {
-
+            foreach (Transform enemy in playersInView)
+            {
+                if (Vector3.Distance(transform.position, enemy.position) < GetComponent<PlayerStats>().Range.Value)
+                {
+                    target = enemy;
+                    StartCoroutine(skills.PassiveRangedAttack());
+                }
+            }
         }
-
+      // public void PassiveActions()
+      // {
+      //     var cam = GetComponentInChildren<Camera>();
+      //     List<Vector3> pointsPlayerInView= new List<Vector3>();
+      //     foreach (Transform player in playersInView)
+      //     {
+      //         pointsPlayerInView.Add(cam.WorldToScreenPoint(player.GetComponentInChildren<Renderer>().bounds.center));
+      //
+      //     }
+      //
+      //     foreach (Vector3 pointOnScreen in pointsPlayerInView)
+      //     {
+      //         if (pointOnScreen.z < 0)
+      //         {
+      //             //Debug.Log("Behind: " + toCheck.name);
+      //             continue;
+      //         }
+      //
+      //         //Is in FOV
+      //         if ((pointOnScreen.x < 0) || (pointOnScreen.x > (float)cam.pixelWidth) ||
+      //                 (pointOnScreen.y < 0) || (pointOnScreen.y > (float)cam.pixelHeight))
+      //         {
+      //            // Debug.Log("OutOfBounds: " + toCheck.name);
+      //             continue;
+      //         }
+      //
+      //         RaycastHit hit;
+      //         Vector3 heading = pointOnScreen - transform.position;
+      //         Vector3 direction = heading.normalized;// / heading.magnitude;
+      //
+      //         if (Physics.Linecast(cam.transform.position,pointOnScreen, out hit))
+      //         {
+      //             if (hit.transform.tag == "EnemyUnit" || hit.transform.tag == "PlayerUnit" || hit.transform.tag == "Weapon" || hit.transform.tag == "PlayerWeapon")
+      //             {
+      //                 target = hit.transform;
+      //                 StartCoroutine(skills.PassiveRangedAttack());
+      //             }
+      //             else
+      //                 continue;
+      //         }
+      //     }
+      //
+      // }
+      //
     }
 }
