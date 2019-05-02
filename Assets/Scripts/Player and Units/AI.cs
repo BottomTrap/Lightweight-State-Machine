@@ -70,13 +70,22 @@ namespace RG
             }
         }
 
-        private Vector3 RandomPointOnCircleEdge(float radius)
-{
-    var vector2 = Random.insideUnitCircle.normalized * radius;
-    return new Vector3(vector2.x, 0, vector2.y);
-}
-
-        public bool moved = false;
+        public bool PathComplete(Vector3 target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            NavMeshPath path = new NavMeshPath();
+            navAgent.CalculatePath(target, path);
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+    
         public IEnumerator Move(Transform target, IEnumerator nextMove)
         {
 
@@ -84,21 +93,33 @@ namespace RG
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
                 //offset = RandomPointOnCircleEdge(1);
-                while (transform.position != target.position-offset)
+                while (transform.position != target.position - offset)
                 {
                     finalTarget = target.position - offset;
                     //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
                     //transform.Translate(target.position , Space.World);
-                    transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
-                    Vector3 direction = target.position - transform.position;
+                    //transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
+                    //Vector3 direction = target.position - transform.position;
+                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
+                    //navAgent.destination = finalTarget;
+                    
+                   transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
+
+                    
+                    
                     //Quaternion rotation = Quaternion.LookRotation(direction);
                     //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     transform.LookAt(target);
                     yield return null;
                 }
-            }else 
-            yield return StartCoroutine(nextMove);
-
+                navAgent.isStopped = true;
+            }
+            else
+            {
+                
+                yield return StartCoroutine(nextMove);
+            }
+            navAgent.isStopped = true;
             yield return StartCoroutine(nextMove);
 
         }

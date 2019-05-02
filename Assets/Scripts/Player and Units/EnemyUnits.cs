@@ -63,15 +63,6 @@ public class EnemyUnits : MonoBehaviour
     {
         Transform chosenTransform = UnitsList[Mathf.RoundToInt(Random.Range(0, UnitsList.Count))];
 
-        //foreach (Transform unit in UnitsList)
-        //{
-        //    unit.GetComponent<AI>().score = 0;
-        //   // Debug.Log("FIRST SCORE" + unit.GetComponent<AI>().score);
-        //    unit.GetComponent<AI>().score = FullScore(unit);
-        //    //Debug.Log("END SCORE" + unit.GetComponent<AI>().score);
-        //}
-
-
         for (int i = 0; i < UnitsList.Count; i++)
         {
             if (UnitsList[i])
@@ -89,6 +80,7 @@ public class EnemyUnits : MonoBehaviour
             playerList = chosenTransform.GetComponent<AI>().playersInView;
         }
         int chosenScore = chosenTransform.GetComponent<AI>().score;
+        //bool validPath = false;
         if (chosenScore < 3 || playerList.Count <=0)
         {
             chosenTransform.GetComponent<AI>().target = chosenTransform;
@@ -98,15 +90,24 @@ public class EnemyUnits : MonoBehaviour
         if (chosenScore > 3 && chosenScore < 6 && playerList.Count > 0)
         {
             chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
-            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
+            chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
+            if (!chosenTransform.GetComponent<AI>().PathComplete(chosenTransform.GetComponent<AI>().target.position - chosenTransform.GetComponent<AI>().offset))
+            {
+                chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
+                chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
+            }
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
         }
 
         if (chosenScore > 6 && playerList.Count >0)
         {
-
             chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
-            chosenTransform.GetComponent<AI>().offset =RandomPointOnCircleEdge(1); //chosenTransform.forward* Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2; 
+            chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
+            if (!chosenTransform.GetComponent<AI>().PathComplete(chosenTransform.GetComponent<AI>().target.position - chosenTransform.GetComponent<AI>().offset))
+            {
+                chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
+                chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
+            }
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
         }
 
@@ -142,21 +143,7 @@ public class EnemyUnits : MonoBehaviour
     public int DistancefromVisibleUnits(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn = 0;
-        //List<Transform> sortedList =seenPlayerTransforms.OrderBy(o => Vector3.Distance(unit.position, o.position)).ToList();
-
-        // for (int i = 0; i < seenPlayerTransforms.Count; i++)
-        // {
-        //     if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) <
-        //         unit.GetComponent<PlayerStats>().AP.Value * 5)
-        //     {
-        //         finalreturn++;
-        //     }
-        //     else if (Vector3.Distance(unit.position, seenPlayerTransforms[i].position) >
-        //              unit.GetComponent<PlayerStats>().AP.Value * 10)
-        //     {
-        //         finalreturn--;
-        //     }
-        // }
+      
         if (seenPlayerTransforms != null)
         {
             foreach (Transform seenUnit in seenPlayerTransforms)
@@ -174,7 +161,6 @@ public class EnemyUnits : MonoBehaviour
         {
             finalreturn = -10;
         }
-//Debug.Log("final return ISS" + finalreturn);
         return finalreturn;
     }
 
@@ -205,13 +191,6 @@ public class EnemyUnits : MonoBehaviour
     public int UnitsThatThisCanKill(Transform unit, List<Transform> seenPlayerTransforms)
     {
         int finalreturn = 0;
-       //for (int i = 0; i < seenPlayerTransforms.Count; i++)
-       //{
-       //    if (CanKill(unit, seenPlayerTransforms[i]))
-       //    {
-       //        finalreturn++;
-       //    }
-       //}
          foreach (Transform seenUnit in seenPlayerTransforms)
         {
             if (CanKill(unit,seenUnit))
@@ -296,11 +275,11 @@ public class EnemyUnits : MonoBehaviour
 
     public void PlayersInViewTransforms()
     {
-       // List<Transform> returnTransforms = new List<Transform>();
+       
         if (SeenPlayersTransforms == null)
         {
             //Debug.Log("seen player transforms is null");
-            //returnTransforms = null;
+            
             return;
         }
         for (int j = 0; j < UnitsList.Count; j++)
@@ -313,7 +292,6 @@ public class EnemyUnits : MonoBehaviour
                 {
                     if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
                     {
-                        Debug.Log("FAMA HAJA WALA LE");
                         transformList.Add(SeenPlayersTransforms[i]);
                     }
                 }
@@ -323,14 +301,7 @@ public class EnemyUnits : MonoBehaviour
         }
        
     }
-    //Get players in view from the inRange players
-    //public bool PlayerInView(Transform source, Transform target)
-    //{
-    //    Vector3 targetDir = target.position - source.position;
-    //    float angleToPlayer = (Vector3.Angle(targetDir, transform.forward));
-    //
-    //    if (angleToPlayer >= -
-    //}
+  
 
     private bool IsInView(GameObject origin, GameObject toCheck)
     {
@@ -358,20 +329,21 @@ public class EnemyUnits : MonoBehaviour
 
         if (Physics.Linecast(cam.transform.position, toCheck.GetComponentInChildren<Renderer>().bounds.center, out hit))
         {
+            if (hit.transform.tag == "EnemyUnit" || hit.transform.tag == "PlayerUnit" || hit.transform.tag =="Weapon"||hit.transform.tag =="PlayerWeapon")
+            {
+                return true;
+            }else
             if (hit.transform.name != toCheck.name)
             {
                 
                 Debug.DrawLine(cam.transform.position, toCheck.GetComponentInChildren<Renderer>().bounds.center, Color.red);
-                Debug.LogError(toCheck.name + " occluded by " + hit.transform.name);
+                Debug.LogError("origin"+origin.name+ toCheck.name + " occluded by " + hit.transform.name);
                 
                 Debug.Log(toCheck.name + " occluded by " + hit.transform.name);
                 return false;
-            }else if (hit.transform.tag == "EnemyUnit" || hit.transform.tag =="PlayerUnit")
-            {
-                return true;
             }
         }
-        Debug.Log("FAMA HAJA");
+        
         return true;
     }
 }
