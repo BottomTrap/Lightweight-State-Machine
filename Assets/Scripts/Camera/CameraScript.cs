@@ -29,7 +29,7 @@ namespace RG
 
 
 
-         public Transform playerTransform;
+         public Transform playerTransform; //container to current player transform to follow during its actions phase
 
        
 
@@ -137,11 +137,7 @@ namespace RG
                 Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
                 transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
-
-                
             }
-            
-            
         }
 
         public void  IsoCameraTransition()
@@ -189,7 +185,7 @@ namespace RG
             }
             else
             {
-                transform.Translate(translationX, 0, translationY, Space.World);
+                transform.Translate(translationX, 0, translationY, Space.Self);
             }
 
             //Mouse Scroll
@@ -232,7 +228,7 @@ namespace RG
             {
                 translationX = Input.GetAxis("Mouse X");
                 //transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
-                transform.Rotate(new Vector3(0, translationX, 0));
+                transform.Rotate(new Vector3(0, translationX, 0),Space.World);
             }
         }
 

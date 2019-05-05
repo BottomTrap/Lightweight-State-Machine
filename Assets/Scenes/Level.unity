@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -995,7 +995,7 @@ GameObject:
   - component: {fileID: 347818858}
   - component: {fileID: 347818857}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1353,8 +1353,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.16668192, y: -0, z: -0, w: 0.98601073}
-  m_LocalPosition: {x: 0, y: 3.18, z: -10}
+  m_LocalRotation: {x: 0.3329816, y: -0.07203726, z: 0.025522776, w: 0.93983114}
+  m_LocalPosition: {x: 7.8692284, y: 15.7228365, z: -23.712116}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1374,8 +1374,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 60
   near: 0.3
-  far: 1000
-  orthographicSize: 15
+  far: 300
+  orthographicSize: 7
   statesManager: {fileID: 0}
   playerTransform: {fileID: 0}
   rotateSpeed: 5
@@ -2784,7 +2784,7 @@ PrefabInstance:
     - target: {fileID: 1649955843778196826, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.330001
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 1649955843778196826, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
         type: 3}
@@ -2794,7 +2794,7 @@ PrefabInstance:
     - target: {fileID: 1649955843778196826, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.3900003
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 1649955843778196826, guid: 5448d70bd8c985a4c9eb11052c1ec7f8,
         type: 3}

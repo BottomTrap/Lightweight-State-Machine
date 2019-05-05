@@ -224,16 +224,13 @@ namespace RG
 
         }
 
-        public void PassiveActions()
+        public void PassiveActions(Transform enemy)
         {
-            foreach (Transform enemy in playersInView)
-            {
-                if (Vector3.Distance(transform.position, enemy.position) < GetComponent<PlayerStats>().Range.Value)
-                {
+            if( playersInView.Contains(enemy)){
                     target = enemy;
                     StartCoroutine(skills.PassiveRangedAttack());
                 }
-            }
+            
         }
       // public void PassiveActions()
       // {

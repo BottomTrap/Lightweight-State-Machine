@@ -163,7 +163,7 @@ namespace RG
                     Debug.Log(playerstats.startHealth);
                 }
             }
-            if (other.gameObject.tag == "Weapon" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            if (other.gameObject.tag == "Weapon" && other.gameObject != this.transform.GetChild(1) && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
                 playerstats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
                 Debug.Log(playerstats.startHealth);

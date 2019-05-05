@@ -38,6 +38,27 @@ public class GameModeManager : StateManager
     protected override void Init()
     {
 
+        #region Menu State
+State MainMenuState = new State (
+        new StateAction[]
+        {
+
+        },
+        new StateAction[]
+        {
+
+        }
+
+
+
+
+
+    );
+
+
+
+        #endregion
+
 
 
         #region Tactics State

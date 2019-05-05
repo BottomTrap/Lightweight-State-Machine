@@ -55,9 +55,11 @@ public class PlayerControlsAction : StateAction
                 
             }
         }
+gameStates.enemyUnitsScript.PlayersInViewTransforms();
         foreach (Transform enemy in enemyUnits)
         {
-            enemy.GetComponent<AI>().PassiveActions();
+            
+            enemy.GetComponent<AI>().PassiveActions(gameStates.cameraScript.playerTransform);
         }
        // if (gameStates.cameraScript.PlayerClicked(gameStates.commandPoints) != null)
        // {

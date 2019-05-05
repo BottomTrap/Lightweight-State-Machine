@@ -63,8 +63,8 @@ public class EnemyUnits : MonoBehaviour
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
     {
-        Transform chosenTransform = UnitsList[Mathf.RoundToInt(Random.Range(0, UnitsList.Count))];
-
+        //Transform chosenTransform = UnitsList[Mathf.RoundToInt(Random.Range(0, UnitsList.Count))];
+        Transform chosenTransform;
         for (int i = 0; i < UnitsList.Count; i++)
         {
             if (UnitsList[i])
@@ -103,11 +103,11 @@ public class EnemyUnits : MonoBehaviour
 
         if (chosenScore > 6 && playerList.Count >0)
         {
-            chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
+            chosenTransform.GetComponent<AI>().target = ClosestTarget(chosenTransform,playerList);
             chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
             if (!chosenTransform.GetComponent<AI>().PathComplete(chosenTransform.GetComponent<AI>().target.position - chosenTransform.GetComponent<AI>().offset))
             {
-                chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
+                chosenTransform.GetComponent<AI>().target = ClosestTarget(chosenTransform,playerList);
                 chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
             }
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
@@ -236,6 +236,20 @@ public class EnemyUnits : MonoBehaviour
         }
 
         return chosenTransform;
+    }
+
+    public Transform ClosestTarget(Transform unit,List<Transform> seenTransforms)
+    {   
+        Transform closestTransform;
+        closestTransform = seenTransforms[0];
+        for (int i =1 ; i <seenTransforms.Count;i++) 
+        {
+            if (Vector3.Distance(unit.position,seenTransforms[i].position)<Vector3.Distance(unit.position,closestTransform.position))
+            {
+                closestTransform= seenTransforms[i];
+            }
+        }
+        return closestTransform;
     }
 
     public int FullScore(Transform unitTransform)
