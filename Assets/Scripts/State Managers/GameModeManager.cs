@@ -38,25 +38,16 @@ public class GameModeManager : StateManager
     protected override void Init()
     {
 
-        #region Menu State
-State MainMenuState = new State (
-        new StateAction[]
-        {
+        #region Main Menu State
+        State MainMenuState = new State(
+                new StateAction[]
+                {
 
-        },
-        new StateAction[]
-        {
-
-        }
-
-
-
-
-
-    );
-
-
-
+                },
+                new StateAction[]
+                {
+            new MainMenuStateAction(this,"tacticState"),
+        });
         #endregion
 
 
@@ -77,7 +68,7 @@ State MainMenuState = new State (
                        // PerspectiveCameraChange
                        //CameraFollow
                        //PlayerMovement and general controls
-                       new PerspectiveChange(this,"tacticState","actionState","menuState"),
+                       new PerspectiveChange(this,"tacticState","actionState","menuState","mainMenuState"),
                     //GO TO ACTION STATE
                     //2// The state Action will activate
                     //new MenuAction(this,"tacticState","actionState","aimState"), 
@@ -95,7 +86,7 @@ State MainMenuState = new State (
         State ActionState = new State(
             new StateAction[]
             {
-                new PlayerControlsAction(this,"aimState","tacticState","menuState")
+                new PlayerControlsAction(this,"aimState","tacticState","menuState","mainMenuState")
             },
             new StateAction[]
             {
@@ -140,12 +131,12 @@ State MainMenuState = new State (
                  //ACTIVATE ACTION STATE
                 //2// The stateAction will activate
                         //MENU STATE
-                        new AimAction(this,"menuState","actionState"),
+                        new AimAction(this,"menuState","actionState","mainMenuState"),
             }
             );
         #endregion
 
-        #region Menu State
+        #region  Menu State
         //This state is for menu prompts 
         State MenuState = new State(
             new StateAction[]
@@ -154,7 +145,7 @@ State MainMenuState = new State (
             },
             new StateAction[]
             {
-                new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase")
+                new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase","mainMenuState")
             }
             );
 
@@ -168,7 +159,7 @@ State MainMenuState = new State (
             },
             new StateAction[]
             {
-                new EnemyPhaseAction(this,"tacticState","tacticAiState"),
+                new EnemyPhaseAction(this,"tacticState","tacticAiState","mainMenuState"),
             }
             );
 
@@ -179,13 +170,13 @@ State MainMenuState = new State (
             },
             new StateAction[]
             {
-                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase"),
+                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase","mainMenuState"),
             }
         );
         State ActionAiState = new State(
             new StateAction[]
             {
-                new ActionAiStateAction(this,"tacticAiState","menuState"),
+                new ActionAiStateAction(this,"tacticAiState","menuState","mainMenuState"),
             },
             new StateAction[]
             {
@@ -204,6 +195,7 @@ State MainMenuState = new State (
         allStates.Add("EnemyPhase", EnemyPhase);
         allStates.Add("tacticAiState", TacticAiState);
         allStates.Add("actionAiState", ActionAiState);
+        allStates.Add("mainMenuState", MainMenuState);
 
         SetState("tacticState");
     }

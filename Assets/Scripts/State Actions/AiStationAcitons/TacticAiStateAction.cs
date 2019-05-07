@@ -62,7 +62,7 @@ public class TacticAiStateAction : StateAction
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             Time.timeScale = 0;
-            //Make the menu thingie appear
+            
             return false;
         }
 

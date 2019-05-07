@@ -9,6 +9,7 @@ public class MainMenuStateAction : StateAction
 	private GameModeManager statesManager;
 	private readonly string tacticState;
 	private readonly string cinematicState;
+    
 
    public MainMenuStateAction(GameModeManager statesManager,string tacticState)
    {
