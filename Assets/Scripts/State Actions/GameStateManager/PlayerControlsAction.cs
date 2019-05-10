@@ -7,21 +7,23 @@ using RG;
 public class PlayerControlsAction : StateAction
 {
     private GameModeManager gameStates;
-    private string aimState;
-    private string isoState;
-    private string menuState;
+    private readonly string aimState;
+    private readonly string isoState;
+    private readonly string menuState;
+    private readonly string mainMenuState;
 
     private PlayerMovement playerMovement;
     private CameraScript cameraScript;
     private PlayerStats playerStats;
     
 
-    public PlayerControlsAction(GameModeManager gameStates, string aimState, string isoState, string menuState)
+    public PlayerControlsAction(GameModeManager gameStates, string aimState, string isoState, string menuState, string mainMenuState)
     {
         this.gameStates = gameStates;
         this.aimState = aimState;
         this.isoState = isoState;
         this.menuState = menuState;
+        this.mainMenuState = mainMenuState;
     }
 
 

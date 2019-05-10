@@ -11,14 +11,16 @@ public class MenuAction : StateAction
     private readonly string perspectiveState;
     private readonly string aimState;
     private readonly string enemyState;
+    private readonly string mainMenuState;
 
-    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState)
+    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState,string mainMenuState)
     {
         this.gameManager = gameManager;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.aimState = aimState;
         this.enemyState = enemyState;
+        this.mainMenuState = mainMenuState;
     }
 
     public override bool Execute()

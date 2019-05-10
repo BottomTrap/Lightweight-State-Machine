@@ -9,14 +9,16 @@ public class AimAction : StateAction
     private GameModeManager statesManager;
     private string menuState;
     private string actionState;
+    private string mainMenuState;
 
     private PlayerMovement playerMovement;
 
-    public AimAction(GameModeManager statesManager, string menuState, string actionState)
+    public AimAction(GameModeManager statesManager, string menuState, string actionState,string mainMenuState)
     {
         this.statesManager = statesManager;
         this.menuState = menuState;
         this.actionState = actionState;
+        this.mainMenuState = mainMenuState;
     }
     public override bool Execute()
     {
