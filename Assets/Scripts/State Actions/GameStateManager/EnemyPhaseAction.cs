@@ -11,13 +11,15 @@ public class EnemyPhaseAction : StateAction
 
     private readonly string tacticState;
     private readonly string tacticsAiState;
+    private readonly string mainMenuState;
 
 
-    public EnemyPhaseAction(GameModeManager gameManager, string tacticState, string tacticsAiState)
+    public EnemyPhaseAction(GameModeManager gameManager, string tacticState, string tacticsAiState,string mainMenuState)
     {
         this.gameManager = gameManager;
         this.tacticState = tacticState;
         this.tacticsAiState = tacticsAiState;
+        this.mainMenuState= mainMenuState;
     }
 
 

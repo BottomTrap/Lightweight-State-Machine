@@ -14,14 +14,16 @@ public class TacticAiStateAction : StateAction
     private readonly string menuState;
     private readonly string tacticState;
     private readonly string transitionState;
+    private readonly string mainMenuState;
 
-    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState)
+    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState,string mainMenuState)
     {
         this.enemyManager = enemyManager;
         this.actionAiState = actionAiState;
         this.menuState = menuState;
         this.tacticState = tacticState;
         this.transitionState = transitionState;
+        this.mainMenuState= mainMenuState;
     }
 
     public override bool Execute()

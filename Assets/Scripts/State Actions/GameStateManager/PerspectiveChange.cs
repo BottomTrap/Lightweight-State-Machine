@@ -11,14 +11,16 @@ public class PerspectiveChange : StateAction
     private readonly string isoState;
     private readonly string perspectiveState;
     private readonly string menuState;
+    private readonly string mainMenuState;
 
 
-    public PerspectiveChange(GameModeManager states, string isoState, string perspectiveState, string menuState)
+    public PerspectiveChange(GameModeManager states, string isoState, string perspectiveState, string menuState,string mainMenuState)
     {
         this.states = states;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.menuState = menuState;
+        this.mainMenuState=mainMenuState;
     }
 
     public override bool Execute()
