@@ -128,14 +128,14 @@ namespace RG
                 float angle = target.eulerAngles.y;
                 Quaternion rotation = Quaternion.Euler(0, angle, 0);
                 Vector3 firstLerp =
-                    new Vector3(target.position.x, target.position.y, transform.position.z);
-                transform.position = Vector3.Lerp(transform.position, firstLerp, curve.Evaluate(currentTime / totalTime));
-                transform.position = Vector3.Lerp(transform.position, target.position + offset, curve.Evaluate(
+                    new Vector3(target.position.x, target.position.y, GetComponentInParent<Transform>().position.z);
+                GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, firstLerp, curve.Evaluate(currentTime / totalTime));
+                GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, target.position + offset, curve.Evaluate(
                     currentTime / totalTime));
                 //transform.LookAt(player.transform);
-                Vector3 direction = target.position - transform.position;
+                Vector3 direction = target.position - GetComponentInParent<Transform>().position;
                 Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-                transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
+                GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
             }
         }
@@ -147,8 +147,8 @@ namespace RG
             while (currentTime < totalTime)
             {
                 blender.BlendToMatrix(ortho, 1f, 8, true);
-                transform.position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
-                transform.rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
+                GetComponentInParent<Transform>().position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
+                GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
                 currentTime += Time.deltaTime;
                 
             }
@@ -158,7 +158,7 @@ namespace RG
         public void CameraMovement(Transform target) //player follow !! to make after we made camera transition
         {
             // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
-            transform.position = target.position + offset;
+            GetComponentInParent<Transform>().position = target.position + offset;
             // if (Input.GetMouseButton(1))
             // {
             //     horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
@@ -166,8 +166,8 @@ namespace RG
             // player.transform.Rotate(0, horizontal, 0);
             float angle = target.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            transform.position = target.position + rotation * offset;
-            transform.LookAt(target);
+            GetComponentInParent<Transform>().position = target.position + rotation * offset;
+            GetComponentInParent<Transform>().LookAt(target);
         }
 
         public void IsoMovement()
@@ -181,11 +181,11 @@ namespace RG
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                transform.Translate(fastTranslationX, 0, fastTranslationY);
+                GetComponentInParent<Transform>().Translate(fastTranslationX, 0, fastTranslationY, Space.World);
             }
             else
             {
-                transform.Translate(translationX, 0, translationY, Space.Self);
+                GetComponentInParent<Transform>().Translate(translationX, 0, translationY, Space.World);
             }
 
             //Mouse Scroll
@@ -201,26 +201,26 @@ namespace RG
                 if (mousePosX < scrollDistance)
                 {
                     //horizontal left
-                    transform.Translate(-1, 0, 1);
+                    GetComponentInParent<Transform>().Translate(-1, 0, 1);
                 }
 
                 if (mousePosY >= Screen.width - scrollDistance)
                 {
                     //horizontal right
-                    transform.Translate(1, 0, -1);
+                    GetComponentInParent<Transform>().Translate(1, 0, -1);
                 }
 
                 //Vertical Camera Movement
                 if (mousePosY < scrollDistance)
                 {
                     //scrolling down
-                    transform.Translate(-1, 0, -1);
+                    GetComponentInParent<Transform>().Translate(-1, 0, -1);
                 }
 
                 if (mousePosY >= Screen.height - scrollDistance)
                 {
                     //scrolling up
-                    transform.Translate(1, 0, 1);
+                    GetComponentInParent<Transform>().Translate(1, 0, 1);
                 }
             }
 
@@ -228,7 +228,7 @@ namespace RG
             {
                 translationX = Input.GetAxis("Mouse X");
                 //transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
-                transform.Rotate(new Vector3(0, translationX, 0),Space.World);
+                GetComponentInParent<Transform>().Rotate(new Vector3(0, translationX, 0),Space.World);
             }
         }
 
@@ -246,15 +246,15 @@ namespace RG
             yaw = Mathf.Clamp(yaw, yawMinMax.x, yawMinMax.y);
             currentRotation = Vector3.Lerp(currentRotation, new Vector3(pitch, yaw,0), rotateSpeed* Time.deltaTime);
 
-            transform.eulerAngles = currentRotation;
-            Vector3 e = transform.eulerAngles;
+            GetComponentInParent<Transform>().eulerAngles = currentRotation;
+            Vector3 e = GetComponentInParent<Transform>().eulerAngles;
             e.x = 0;
-            Vector3 g = transform.eulerAngles;
+            Vector3 g = GetComponentInParent<Transform>().eulerAngles;
             g.y = 0;
             rotator.eulerAngles = new Vector3(g.x, rotator.eulerAngles.y, rotator.eulerAngles.z);
 
             playerTransform.eulerAngles = e;
-            transform.position = Vector3.Lerp(transform.position, playerTransform.position - aimViewOffset, rotateSpeed);
+            GetComponentInParent<Transform>().position = Vector3.Lerp(transform.position, playerTransform.position - aimViewOffset, rotateSpeed);
         }
        
     }
