@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using SA;
 using RG;
+using UnityEngine.SceneManagement;
 
 public class GameModeManager : StateManager
 {
@@ -28,8 +29,10 @@ public class GameModeManager : StateManager
     public int commandPoints;
     public bool endTurn = false;
     public bool endPhase = false;
+    public bool menu = false;
     public Transform endTurnPrompt;
     public Transform endPhasePrompt;
+    public Transform mainMenu;
     public Transform playerTransform;
     public EnemyUnits enemyUnitsScript;
     public PlayerUnits playerUnitsScript;
@@ -38,17 +41,7 @@ public class GameModeManager : StateManager
     protected override void Init()
     {
 
-        #region Main Menu State
-        State MainMenuState = new State(
-                new StateAction[]
-                {
-
-                },
-                new StateAction[]
-                {
-            new MainMenuStateAction(this,"tacticState"),
-        });
-        #endregion
+      
 
 
 
@@ -68,7 +61,7 @@ public class GameModeManager : StateManager
                        // PerspectiveCameraChange
                        //CameraFollow
                        //PlayerMovement and general controls
-                       new PerspectiveChange(this,"tacticState","actionState","menuState","mainMenuState"),
+                       new PerspectiveChange(this,"tacticState","actionState","menuState"),
                     //GO TO ACTION STATE
                     //2// The state Action will activate
                     //new MenuAction(this,"tacticState","actionState","aimState"), 
@@ -86,7 +79,7 @@ public class GameModeManager : StateManager
         State ActionState = new State(
             new StateAction[]
             {
-                new PlayerControlsAction(this,"aimState","tacticState","menuState","mainMenuState")
+                new PlayerControlsAction(this,"aimState","tacticState","menuState")
             },
             new StateAction[]
             {
@@ -131,7 +124,7 @@ public class GameModeManager : StateManager
                  //ACTIVATE ACTION STATE
                 //2// The stateAction will activate
                         //MENU STATE
-                        new AimAction(this,"menuState","actionState","mainMenuState"),
+                        new AimAction(this,"menuState","actionState"),
             }
             );
         #endregion
@@ -145,7 +138,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase","mainMenuState")
+                new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase")
             }
             );
 
@@ -159,7 +152,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new EnemyPhaseAction(this,"tacticState","tacticAiState","mainMenuState"),
+                new EnemyPhaseAction(this,"tacticState","tacticAiState"),
             }
             );
 
@@ -170,13 +163,13 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase","mainMenuState"),
+                new TacticAiStateAction(this,"actionAiState","menuState","tacticState","EnemyPhase"),
             }
         );
         State ActionAiState = new State(
             new StateAction[]
             {
-                new ActionAiStateAction(this,"tacticAiState","menuState","mainMenuState"),
+                new ActionAiStateAction(this,"tacticAiState","menuState"),
             },
             new StateAction[]
             {
@@ -195,7 +188,7 @@ public class GameModeManager : StateManager
         allStates.Add("EnemyPhase", EnemyPhase);
         allStates.Add("tacticAiState", TacticAiState);
         allStates.Add("actionAiState", ActionAiState);
-        allStates.Add("mainMenuState", MainMenuState);
+        
 
         SetState("tacticState");
     }
@@ -209,7 +202,14 @@ public class GameModeManager : StateManager
     {
         endPhase = true;
     }
-
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void Resume()
+    {
+        menu = false;
+    }
     public void SetTacticsState()
     {
         SetState("tacticState");
@@ -232,6 +232,9 @@ public class GameModeManager : StateManager
     private void Update()
     {
         Tick();
-
+        if (!menu)
+        {
+            Time.timeScale = 1;
+        }
     }
 }

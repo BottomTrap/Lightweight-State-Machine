@@ -11,16 +11,16 @@ public class MenuAction : StateAction
     private readonly string perspectiveState;
     private readonly string aimState;
     private readonly string enemyState;
-    private readonly string mainMenuState;
+    
 
-    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState,string mainMenuState)
+    public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState)
     {
         this.gameManager = gameManager;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.aimState = aimState;
         this.enemyState = enemyState;
-        this.mainMenuState = mainMenuState;
+        
     }
 
     public override bool Execute()
@@ -65,6 +65,12 @@ public class MenuAction : StateAction
                 gameManager.SetState(enemyState);
                 return true;
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            gameManager.mainMenu.gameObject.SetActive(true);
         }
         return false;
     }

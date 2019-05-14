@@ -11,16 +11,16 @@ public class PerspectiveChange : StateAction
     private readonly string isoState;
     private readonly string perspectiveState;
     private readonly string menuState;
-    private readonly string mainMenuState;
+    
 
 
-    public PerspectiveChange(GameModeManager states, string isoState, string perspectiveState, string menuState,string mainMenuState)
+    public PerspectiveChange(GameModeManager states, string isoState, string perspectiveState, string menuState)
     {
         this.states = states;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.menuState = menuState;
-        this.mainMenuState=mainMenuState;
+        
     }
 
     public override bool Execute()
@@ -57,6 +57,12 @@ public class PerspectiveChange : StateAction
             states.SetState(menuState);
             return true;
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            states.mainMenu.gameObject.SetActive(true);
+        }
+       
 
 
         return false;

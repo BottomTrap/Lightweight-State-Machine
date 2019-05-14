@@ -10,20 +10,25 @@ public class ActionAiStateAction : StateAction
     private readonly GameModeManager enemyPhaseManager;
     private readonly string tacticAiState;
     private readonly string menuState;
-    private readonly string mainMenuState;
+    
 
 
 
-    public ActionAiStateAction (GameModeManager enemyPhaseManager, string tacticAiState,string menuState,string mainMenuState)
+    public ActionAiStateAction (GameModeManager enemyPhaseManager, string tacticAiState,string menuState)
     {
         this.enemyPhaseManager = enemyPhaseManager;
         this.tacticAiState = tacticAiState;
         this.menuState = menuState;
-        this.mainMenuState=mainMenuState;
+        
     }
 
     public override bool Execute()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            enemyPhaseManager.mainMenu.gameObject.SetActive(true);
+        }
         Debug.Log("AI ACTION");
         if (enemyPhaseManager.enemyUnitsScript.currentUnit != null)
         {

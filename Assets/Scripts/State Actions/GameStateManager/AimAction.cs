@@ -9,16 +9,16 @@ public class AimAction : StateAction
     private GameModeManager statesManager;
     private string menuState;
     private string actionState;
-    private string mainMenuState;
+    
 
     private PlayerMovement playerMovement;
 
-    public AimAction(GameModeManager statesManager, string menuState, string actionState,string mainMenuState)
+    public AimAction(GameModeManager statesManager, string menuState, string actionState)
     {
         this.statesManager = statesManager;
         this.menuState = menuState;
         this.actionState = actionState;
-        this.mainMenuState = mainMenuState;
+        
     }
     public override bool Execute()
     {
@@ -50,7 +50,11 @@ public class AimAction : StateAction
                 playerMovement.RangedAttack();
             }
         }
-        
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            statesManager.mainMenu.gameObject.SetActive(true);
+        }
 
         return false;
     }

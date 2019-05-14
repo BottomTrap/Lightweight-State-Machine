@@ -193,7 +193,7 @@ namespace RG
             var mousePosX = Input.mousePosition.x;
             var mousePosY = Input.mousePosition.y;
             int scrollDistance = 3;
-            float scrollSpeed = 15f;
+            //float scrollSpeed = 15f;
 
             //Horizontal Camera Movement
             if (Input.GetKey(KeyCode.Space))

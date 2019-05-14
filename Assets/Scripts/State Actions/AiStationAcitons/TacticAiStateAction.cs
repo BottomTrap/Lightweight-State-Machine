@@ -14,20 +14,25 @@ public class TacticAiStateAction : StateAction
     private readonly string menuState;
     private readonly string tacticState;
     private readonly string transitionState;
-    private readonly string mainMenuState;
+    
 
-    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState,string mainMenuState)
+    public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState)
     {
         this.enemyManager = enemyManager;
         this.actionAiState = actionAiState;
         this.menuState = menuState;
         this.tacticState = tacticState;
         this.transitionState = transitionState;
-        this.mainMenuState= mainMenuState;
+        
     }
 
     public override bool Execute()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            enemyManager.mainMenu.gameObject.SetActive(true);
+        }
         Debug.Log("AI CHOICE");
         if (enemyManager.previousState == enemyManager.GetState(transitionState))
         {

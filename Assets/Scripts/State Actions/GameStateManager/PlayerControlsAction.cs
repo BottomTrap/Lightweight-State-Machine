@@ -10,20 +10,20 @@ public class PlayerControlsAction : StateAction
     private readonly string aimState;
     private readonly string isoState;
     private readonly string menuState;
-    private readonly string mainMenuState;
+    
 
     private PlayerMovement playerMovement;
     private CameraScript cameraScript;
     private PlayerStats playerStats;
     
 
-    public PlayerControlsAction(GameModeManager gameStates, string aimState, string isoState, string menuState, string mainMenuState)
+    public PlayerControlsAction(GameModeManager gameStates, string aimState, string isoState, string menuState)
     {
         this.gameStates = gameStates;
         this.aimState = aimState;
         this.isoState = isoState;
         this.menuState = menuState;
-        this.mainMenuState = mainMenuState;
+        
     }
 
 
@@ -81,7 +81,11 @@ gameStates.enemyUnitsScript.PlayersInViewTransforms();
             return true;
         }
         
-
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Time.timeScale = 0;
+            gameStates.mainMenu.gameObject.SetActive(true);
+        }
 
 
         return false;
