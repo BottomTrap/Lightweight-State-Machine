@@ -12,14 +12,9 @@ public class GameModeManager : StateManager
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }else
-        {
-            Destroy(gameObject);
-        }
+    
+
+        
     }
 
 
@@ -38,12 +33,25 @@ public class GameModeManager : StateManager
     public PlayerUnits playerUnitsScript;
 
 
+   
     protected override void Init()
     {
 
-      
 
 
+        #region TitleScreen State
+        State TitleScreenState = new State(
+            new StateAction[]
+            {
+
+            },
+            new StateAction[]
+            {
+
+            }
+
+            );
+        #endregion
 
         #region Tactics State
         //Tactics State will change all tactics state conditions
@@ -188,8 +196,9 @@ public class GameModeManager : StateManager
         allStates.Add("EnemyPhase", EnemyPhase);
         allStates.Add("tacticAiState", TacticAiState);
         allStates.Add("actionAiState", ActionAiState);
-        
+        allStates.Add("titleScreenState", TitleScreenState);
 
+        //SetState("titleScreenState");
         SetState("tacticState");
     }
 
@@ -209,6 +218,9 @@ public class GameModeManager : StateManager
     public void StartGame()
     {
         SceneManager.LoadScene(1);
+        //SetState("tacticState");
+      
+
     }
     public void Resume()
     {
@@ -224,9 +236,9 @@ public class GameModeManager : StateManager
         SetState("actionState");
     }
 
-    public void SetAimState()
+    public void ExitApplication()
     {
-
+        Application.Quit();
     }
     private void FixedUpdate()
     {

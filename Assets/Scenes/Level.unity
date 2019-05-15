@@ -1437,7 +1437,7 @@ GameObject:
   - component: {fileID: 568715153}
   m_Layer: 0
   m_Name: PlayerUnits
-  m_TagString: Untagged
+  m_TagString: PlayerUnits
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4002,7 +4002,7 @@ GameObject:
   - component: {fileID: 1816594651}
   m_Layer: 0
   m_Name: EnemyUnits
-  m_TagString: Untagged
+  m_TagString: EnemyUnits
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

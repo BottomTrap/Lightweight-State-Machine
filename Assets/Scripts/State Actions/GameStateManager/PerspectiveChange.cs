@@ -25,6 +25,8 @@ public class PerspectiveChange : StateAction
 
     public override bool Execute()
     {
+       
+        //states.playerUnitsScript = GameObject.Find
         Debug.Log("tactics?");
         states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
         states.endPhase = false;

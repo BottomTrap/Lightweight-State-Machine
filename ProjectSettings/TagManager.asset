@@ -9,6 +9,8 @@ TagManager:
   - Weapon
   - PlayerWeapon
   - WeaponBullet
+  - EnemyUnits
+  - PlayerUnits
   layers:
   - Default
   - TransparentFX
