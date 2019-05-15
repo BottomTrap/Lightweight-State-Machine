@@ -206,6 +206,10 @@ public class GameModeManager : StateManager
     {
         SceneManager.LoadScene(0);
     }
+    public void StartGame()
+    {
+        SceneManager.LoadScene(1);
+    }
     public void Resume()
     {
         menu = false;
