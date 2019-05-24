@@ -131,6 +131,8 @@ namespace RG
             movement = transform.TransformDirection(movement);
 
             characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
+            if (horizontal>0 || vertical>0)
+            animator.SetFloat("Run", 1);
         }
 
         public void Rotate()
