@@ -43,7 +43,7 @@ namespace RG
         {
             playerstats = (PlayerStats) GetComponent(typeof(PlayerStats));
             characterController = GetComponent<CharacterController>();
-            animator = GetComponentInChildren<Animator>();
+            animator = GetComponent<Animator>();
             lastPosition = transform.position;
             didHit = false;
             rotator = transform.GetChild(1).transform;
@@ -65,10 +65,10 @@ namespace RG
 
         public void Attack()
         {
-            var anim = GetComponentInChildren<Animator>();
-            anim.SetTrigger("Attack");
+           
+            animator.SetTrigger("Attack");
             Debug.Log("Attack");
-            if (!anim.IsInTransition(0))
+            if (!animator.IsInTransition(0))
             didHit = true;
         }
 
@@ -131,8 +131,10 @@ namespace RG
             movement = transform.TransformDirection(movement);
 
             characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
-            if (horizontal>0 || vertical>0)
-            animator.SetFloat("Run", 1);
+            if (Math.Abs(horizontal)>0 || Math.Abs(vertical) > 0)
+            {
+                animator.SetBool("Run", true);
+            }else { animator.SetBool("Run",false);}
         }
 
         public void Rotate()
