@@ -65,7 +65,7 @@ namespace RG
 
         public void Attack()
         {
-            var anim = GetComponentInChildren<Animator>();
+            var anim = GetComponent<Animator>();
             anim.SetTrigger("Attack");
             Debug.Log("Attack");
             if (!anim.IsInTransition(0))
