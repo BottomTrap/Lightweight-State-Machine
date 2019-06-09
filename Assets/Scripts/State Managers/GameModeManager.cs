@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GameModeManager : StateManager
 {
-    public static GameModeManager Instance { get; private set; }
+    
 
     private void Awake()
     {
@@ -213,15 +213,15 @@ public class GameModeManager : StateManager
     }
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
-    }
-    public void StartGame()
-    {
         SceneManager.LoadScene(1);
+    }
+  // public void StartGame()
+    //{
+      //  SceneManager.LoadScene(1);
         //SetState("tacticState");
       
 
-    }
+     //}
     public void Resume()
     {
         menu = false;
