@@ -101,7 +101,7 @@ namespace RG
         {
             oldTransform = transform;
             //Third Person Camera Stuff
-            offset = new Vector3(-2, 1, -4);
+            offset = new Vector3(-2, 2.5f, -4);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
            
             //Perspective switcher stuff
