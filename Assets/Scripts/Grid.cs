@@ -32,8 +32,7 @@ static class Grid
     private static void Woe(string error)
     {
         Debug.Log(">>> Cannot proceed... " + error);
-        Debug.Log(">>> It is very likely you just forgot to launch");
-      Debug.Log(">>> from scene zero, the _preload scene.");
+        Debug.Log(">>>You need to launch from scene 0, the preload scene..");
     }
 
 

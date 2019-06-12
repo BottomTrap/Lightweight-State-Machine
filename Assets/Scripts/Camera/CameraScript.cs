@@ -101,7 +101,7 @@ namespace RG
         {
             oldTransform = transform;
             //Third Person Camera Stuff
-            offset = new Vector3(-2, 2.5f, -4);
+            offset = new Vector3(-1, 1.6f, -3);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
            
             //Perspective switcher stuff
@@ -167,7 +167,7 @@ namespace RG
             float angle = target.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
             GetComponentInParent<Transform>().position = target.position + rotation * offset;
-            GetComponentInParent<Transform>().LookAt(target);
+            //GetComponentInParent<Transform>().LookAt(target);
         }
 
         public void IsoMovement()

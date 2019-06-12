@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SA
+namespace RG
+
 {
 	public abstract class StateAction 
 	{

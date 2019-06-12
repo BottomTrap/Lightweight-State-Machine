@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using RG;
 using UnityEngine;
-using SA;
 
 public class AimAction : StateAction
 {

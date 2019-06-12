@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using SA;
 using RG;
 using UnityEngine.SceneManagement;
 
@@ -69,7 +68,7 @@ public class GameModeManager : StateManager
                        // PerspectiveCameraChange
                        //CameraFollow
                        //PlayerMovement and general controls
-                       new PerspectiveChange(this,"tacticState","actionState","menuState"),
+                       new TacticsMode(this,"tacticState","actionState","menuState"),
                     //GO TO ACTION STATE
                     //2// The state Action will activate
                     //new MenuAction(this,"tacticState","actionState","aimState"), 
@@ -87,7 +86,7 @@ public class GameModeManager : StateManager
         State ActionState = new State(
             new StateAction[]
             {
-                new PlayerControlsAction(this,"aimState","tacticState","menuState")
+                new ActionMode(this,"aimState","tacticState","menuState")
             },
             new StateAction[]
             {
@@ -95,7 +94,7 @@ public class GameModeManager : StateManager
                     //IsoPerspectiveChange
                     //IsoCameraMovement
                 //GO TO TACTIC STATE!!
-                //new PerspectiveChange(this,"tacticState","actionState","menuState"),
+                //new TacticsMode(this,"tacticState","actionState","menuState"),
                  
                 //2//The stateAction will activate
                     //AimMode Camera Controls
@@ -160,7 +159,7 @@ public class GameModeManager : StateManager
             },
             new StateAction[]
             {
-                new EnemyPhaseAction(this,"tacticState","tacticAiState"),
+                new EnemyPhaseTransitionAction(this,"tacticState","tacticAiState"),
             }
             );
 

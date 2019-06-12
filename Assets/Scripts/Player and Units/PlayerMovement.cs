@@ -124,17 +124,24 @@ namespace RG
 
         public void Movement()
         {
-            var horizontal = Input.GetAxis("Horizontal");
-            var vertical = Input.GetAxis("Vertical");
-
-            var movement = new Vector3(horizontal, 0, vertical);
-            movement = transform.TransformDirection(movement);
-
-            characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
-            if (Math.Abs(horizontal)>0 || Math.Abs(vertical) > 0)
+            if (distanceTraveled < playerstats.AP.Value * 10)
             {
-                animator.SetBool("Run", true);
-            }else { animator.SetBool("Run",false);}
+                var horizontal = Input.GetAxis("Horizontal");
+                var vertical = Input.GetAxis("Vertical");
+
+                var movement = new Vector3(horizontal, 0, vertical);
+                movement = transform.TransformDirection(movement);
+
+                characterController.SimpleMove(movement * Time.deltaTime * moveSpeed);
+                if (Math.Abs(horizontal) > 0 || Math.Abs(vertical) > 0)
+                {
+                    animator.SetBool("Run", true);
+                }
+                else { animator.SetBool("Run", false); }
+            }else
+            {
+                animator.SetBool("Run", false);
+            }
         }
 
         public void Rotate()
@@ -149,6 +156,7 @@ namespace RG
                 Quaternion newDirection = Quaternion.LookRotation(movement);
 
                 transform.rotation = Quaternion.Slerp(transform.rotation, newDirection, Time.deltaTime * turnSpeed);
+                Camera.main.transform.rotation = Quaternion.Slerp(transform.rotation, newDirection, Time.deltaTime * turnSpeed);
             }
         }
 
