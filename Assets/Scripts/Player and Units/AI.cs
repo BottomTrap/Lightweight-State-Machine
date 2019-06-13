@@ -100,17 +100,17 @@ namespace RG
                     //transform.Translate(target.position , Space.World);
                     //transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
                     //Vector3 direction = target.position - transform.position;
-                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
+                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value*10;
                     //navAgent.destination = finalTarget;
-                    
-                   transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
+                    //navAgent.isStopped = false;
+                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
 
                     
                     
                     //Quaternion rotation = Quaternion.LookRotation(direction);
                     //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     transform.LookAt(target);
-                    yield return null;
+                    //yield return null;
                 }
                 navAgent.isStopped = true;
             }
@@ -119,7 +119,7 @@ namespace RG
                 
                 yield return StartCoroutine(nextMove);
             }
-            navAgent.isStopped = true;
+            //navAgent.isStopped = true;
             yield return StartCoroutine(nextMove);
 
         }

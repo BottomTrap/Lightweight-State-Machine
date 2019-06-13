@@ -64,15 +64,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amount: 0.743
-    - _Foam: 2.04
+    - _Amount: 0.852
+    - _Foam: 0.5
     - _FresnelScale: 0.3897143
     - _GerstnerIntensity: 1
-    - _Height: 0.907
+    - _Height: 0
     - _HeightDisplacement: 2.3370318
     - _NormalsDisplacement: 72.72728
     - _Shininess: 349.13794
-    - _Speed: 0.771
+    - _Speed: 0.407
     m_Colors:
     - _AnimationDirection: {r: 2, g: 1, b: -1, a: 1}
     - _AnimationTiling: {r: 0.4, g: 0.39099997, b: 0.56, a: 0.7}
@@ -93,7 +93,7 @@ Material:
     - _ReflectionColor: {r: 0.47582978, g: 0.6064865, b: 0.6641791, a: 0.47058824}
     - _RefractionFog: {r: 0.8681778, g: 0.8797176, b: 0.8880597, a: 1}
     - _SpecularColor: {r: 0.82089555, g: 0.80581594, b: 0.7718869, a: 1}
-    - _Tint: {r: 1, g: 1, b: 1, a: 0.5}
+    - _Tint: {r: 0.95283014, g: 0.8944019, b: 0.8944019, a: 0.22352941}
     - _WorldLightDir: {r: -0.9847187, g: -0.17359081, b: -0.013992548, a: 0}
 --- !u!1002 &2100001
 EditorExtensionImpl:

@@ -5,7 +5,7 @@ using RG;
 
 public class ActionMode : StateAction
 {
-    private GameModeManager gameStates;
+    private GameModeManager states;
     private readonly string aimState;
     private readonly string isoState;
     private readonly string menuState;
@@ -18,7 +18,7 @@ public class ActionMode : StateAction
 
     public ActionMode(GameModeManager gameStates, string aimState, string isoState, string menuState)
     {
-        this.gameStates = gameStates;
+        this.states = gameStates;
         this.aimState = aimState;
         this.isoState = isoState;
         this.menuState = menuState;
@@ -29,15 +29,15 @@ public class ActionMode : StateAction
     public override bool Execute()
     {
 
-        gameStates.endTurn = false;
+        states.endTurn = false;
        
-            playerMovement = gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>();
-            cameraScript = gameStates.cameraScript;
-            playerStats = gameStates.cameraScript.playerTransform.GetComponent<PlayerStats>();
+            playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
+            cameraScript = states.cameraScript;
+            playerStats = states.cameraScript.playerTransform.GetComponent<PlayerStats>();
 
-        var enemyUnits = gameStates.enemyUnitsScript.UnitsList;
+        var enemyUnits = states.enemyUnitsScript.UnitsList;
         Debug.Log("this is actionState");
-        gameStates.cameraScript.CameraMovement(gameStates.cameraScript.playerTransform);
+        states.cameraScript.CameraMovement(states.cameraScript.playerTransform);
         //Debug.Log(playerMovement);
         //gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>().Movement();
         playerMovement.Rotate();
@@ -53,11 +53,11 @@ public class ActionMode : StateAction
                 
             }
         }
-gameStates.enemyUnitsScript.PlayersInViewTransforms();
+states.enemyUnitsScript.PlayersInViewTransforms();
         foreach (Transform enemy in enemyUnits)
         {
             
-            enemy.GetComponent<AI>().PassiveActions(gameStates.cameraScript.playerTransform);
+            enemy.GetComponent<AI>().PassiveActions(states.cameraScript.playerTransform);
         }
        // if (gameStates.cameraScript.PlayerClicked(gameStates.commandPoints) != null)
        // {
@@ -68,19 +68,19 @@ gameStates.enemyUnitsScript.PlayersInViewTransforms();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            gameStates.SetState(menuState);
+            states.SetState(menuState);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            gameStates.SetState(aimState);
+            states.SetState(aimState);
             return true;
         }
         
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            gameStates.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
 
 

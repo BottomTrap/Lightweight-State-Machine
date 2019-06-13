@@ -25,9 +25,9 @@ public class TacticsMode : StateAction
     public override bool Execute()
     {
        
-        //states.playerUnitsScript = GameObject.Find
-        Debug.Log("tactics?");
+        Debug.Log("tactics");
         states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
+        // §§§§§ MAKE THE NUMBER OF COMMAND POINTS APPEAR ON THE UI
         states.endPhase = false;
         foreach(Transform playerUnits in states.playerUnitsScript.playerUnitsTransformList)
         {
@@ -42,6 +42,7 @@ public class TacticsMode : StateAction
             //states.cameraScript.CameraMovement(states.cameraScript.PlayerClicked(states.commandPoints)); //I want to update this!!
             //Debug.Log(states.currentState);
             states.commandPoints -= 1;
+            // §§§§ DO THE COMMAND POINTS REMOVE FROM THE UI
             states.SetState(perspectiveState);
             return true;
         }

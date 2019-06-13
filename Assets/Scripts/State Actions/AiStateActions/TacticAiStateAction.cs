@@ -8,7 +8,7 @@ using RG;
 public class TacticAiStateAction : StateAction
 {
 
-    private GameModeManager enemyManager;
+    private GameModeManager states;
     private readonly string actionAiState;
     private readonly string menuState;
     private readonly string tacticState;
@@ -17,7 +17,7 @@ public class TacticAiStateAction : StateAction
 
     public TacticAiStateAction(GameModeManager enemyManager, string actionAiState, string menuState, string tacticState, string transitionState)
     {
-        this.enemyManager = enemyManager;
+        this.states = enemyManager;
         this.actionAiState = actionAiState;
         this.menuState = menuState;
         this.tacticState = tacticState;
@@ -30,19 +30,19 @@ public class TacticAiStateAction : StateAction
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            enemyManager.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
         Debug.Log("AI CHOICE");
-        if (enemyManager.previousState == enemyManager.GetState(transitionState))
+        if (states.previousState == states.GetState(transitionState))
         {
-            foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
+            foreach (Transform g in states.enemyUnitsScript.UnitsList)
             {
                 if (g)
                 g.GetComponent<AI>().hasPlayed = false;
                // g.GetComponent<AI>().score = 0;
             }
-            enemyManager.enemyUnitsScript.commandPoints = enemyManager.enemyUnitsScript.originalCommandPoints;
-            Debug.Log(enemyManager.enemyUnitsScript.commandPoints);
+            states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
+            Debug.Log(states.enemyUnitsScript.commandPoints);
         }
         //if (enemyManager.previousState == enemyManager.GetState(actionAiState))
         //{
@@ -53,9 +53,9 @@ public class TacticAiStateAction : StateAction
         //    }
         //   
         //}
-        if (enemyManager.enemyUnitsScript.commandPoints <= 0 || AllPlayed(enemyManager.enemyUnitsScript.UnitsList))
+        if (states.enemyUnitsScript.commandPoints <= 0 || AllPlayed(states.enemyUnitsScript.UnitsList))
         {
-            enemyManager.SetState(tacticState);
+            states.SetState(tacticState);
             return true;
         }
         //enemyManager.cameraScript.IsoCameraTransition();
@@ -64,7 +64,7 @@ public class TacticAiStateAction : StateAction
 
 
         
-        Debug.Log("UNIT NUMBERS " + enemyManager.enemyUnitsScript.UnitsList.Count);
+        Debug.Log("UNIT NUMBERS " + states.enemyUnitsScript.UnitsList.Count);
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             Time.timeScale = 0;
@@ -72,14 +72,14 @@ public class TacticAiStateAction : StateAction
             return false;
         }
 
-        enemyManager.enemyUnitsScript.GetChildObjectsTransforms();
-        enemyManager.enemyUnitsScript.GetPlayersInRange();
-        enemyManager.enemyUnitsScript.PlayersInViewTransforms();
+        states.enemyUnitsScript.GetChildObjectsTransforms();
+        states.enemyUnitsScript.GetPlayersInRange();
+        states.enemyUnitsScript.PlayersInViewTransforms();
 
 
-        enemyManager.enemyUnitsScript.currentUnit = enemyManager.enemyUnitsScript.ChooseUnitTurn();
-        Debug.Log("CHOSEN TRANSFORM SCORE" + " " + enemyManager.enemyUnitsScript.ChooseUnitTurn().name + " " + enemyManager.enemyUnitsScript.ChooseUnitTurn().GetComponent<AI>().score);
-        enemyManager.SetState(actionAiState);
+        states.enemyUnitsScript.currentUnit = states.enemyUnitsScript.ChooseUnitTurn();
+        Debug.Log("CHOSEN TRANSFORM SCORE" + " " + states.enemyUnitsScript.ChooseUnitTurn().name + " " + states.enemyUnitsScript.ChooseUnitTurn().GetComponent<AI>().score);
+        states.SetState(actionAiState);
 
 
         //choose the enemy unit

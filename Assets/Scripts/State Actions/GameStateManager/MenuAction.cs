@@ -6,7 +6,7 @@ using RG;
 public class MenuAction : StateAction
 {
    
-    private GameModeManager gameManager;
+    private GameModeManager states;
     private readonly string isoState;
     private readonly string perspectiveState;
     private readonly string aimState;
@@ -15,7 +15,7 @@ public class MenuAction : StateAction
 
     public MenuAction(GameModeManager gameManager, string isoState, string perspectiveState, string aimState,string enemyState)
     {
-        this.gameManager = gameManager;
+        this.states = gameManager;
         this.isoState = isoState;
         this.perspectiveState = perspectiveState;
         this.aimState = aimState;
@@ -26,17 +26,17 @@ public class MenuAction : StateAction
     public override bool Execute()
     {
         Debug.Log("menu state");
-        if(gameManager.previousState == gameManager.GetState("actionState")|| gameManager.previousState == gameManager.GetState("aimState")) { 
+        if(states.previousState == states.GetState("actionState")|| states.previousState == states.GetState("aimState")) { 
             Time.timeScale = 0;
-            gameManager.endTurnPrompt.gameObject.SetActive(true);
-            if (gameManager.endTurn)
+            states.endTurnPrompt.gameObject.SetActive(true);
+            if (states.endTurn)
             {
             
                 Time.timeScale = 1.0f;
-                gameManager.cameraScript.IsoCameraTransition();
+                states.cameraScript.IsoCameraTransition();
 
-                gameManager.SetState(isoState);
-                gameManager.endTurnPrompt.gameObject.SetActive(false);
+                states.SetState(isoState);
+                states.endTurnPrompt.gameObject.SetActive(false);
                 return true;
 
             }
@@ -53,16 +53,16 @@ public class MenuAction : StateAction
         //    
         //    gameManager.SetState(isoState);
         //}
-        if (gameManager.previousState == gameManager.GetState("tacticState"))
+        if (states.previousState == states.GetState("tacticState"))
         {
             Debug.Log("escappe");
-            gameManager.endPhasePrompt.gameObject.SetActive(true);
+            states.endPhasePrompt.gameObject.SetActive(true);
             //Activates the end PHASE Menu prompt, that leads the game into enemy phase
             //Leads to "Watch State" Until GAME AI Finishes
-            if (gameManager.endPhase)
+            if (states.endPhase)
             {
-                gameManager.endPhasePrompt.gameObject.SetActive(false);
-                gameManager.SetState(enemyState);
+                states.endPhasePrompt.gameObject.SetActive(false);
+                states.SetState(enemyState);
                 return true;
             }
         }
@@ -70,7 +70,7 @@ public class MenuAction : StateAction
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            gameManager.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
         return false;
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 static class Grid
 {
     public static Music music;
+    public static UiManager uiManager;
 
 
     static Grid()
@@ -14,6 +15,7 @@ static class Grid
         g = safeFind("__app");
 
         music = (Music)SafeComponent(g, "Music");
+        uiManager = (UiManager)SafeComponent(g, "UiManager");
     }
 
 

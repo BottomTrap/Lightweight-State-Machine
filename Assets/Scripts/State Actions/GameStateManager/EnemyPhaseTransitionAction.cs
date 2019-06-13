@@ -6,7 +6,7 @@ using RG;
 
 public class EnemyPhaseTransitionAction : StateAction
 {
-    private GameModeManager gameManager;
+    private GameModeManager states;
 
     private readonly string tacticState;
     private readonly string tacticsAiState;
@@ -15,7 +15,7 @@ public class EnemyPhaseTransitionAction : StateAction
 
     public EnemyPhaseTransitionAction(GameModeManager gameManager, string tacticState, string tacticsAiState)
     {
-        this.gameManager = gameManager;
+        this.states = gameManager;
         this.tacticState = tacticState;
         this.tacticsAiState = tacticsAiState;
         
@@ -27,11 +27,11 @@ public class EnemyPhaseTransitionAction : StateAction
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            gameManager.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
         Debug.Log("enemytransition");
         // Debug.Log("HETLI EL SCORE "+gameManager.enemyUnitsScript.UnitsList[0].GetComponent<AI>().score);
-        gameManager.SetState(tacticsAiState);
+        states.SetState(tacticsAiState);
         return true;
 
        

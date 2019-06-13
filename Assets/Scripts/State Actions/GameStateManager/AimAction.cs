@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AimAction : StateAction
 {
-    private GameModeManager statesManager;
+    private GameModeManager states;
     private string menuState;
     private string actionState;
     
@@ -14,7 +14,7 @@ public class AimAction : StateAction
 
     public AimAction(GameModeManager statesManager, string menuState, string actionState)
     {
-        this.statesManager = statesManager;
+        this.states = statesManager;
         this.menuState = menuState;
         this.actionState = actionState;
         
@@ -23,13 +23,13 @@ public class AimAction : StateAction
     {
         //ACTIVATE CROSSHAIR UI 
         
-        playerMovement = statesManager.cameraScript.playerTransform.GetComponent<PlayerMovement>();
+        playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
         playerMovement.drawcrosshair = true;
-        statesManager.cameraScript.AimView();
+        states.cameraScript.AimView();
         playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", true);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            statesManager.SetState(menuState);
+            states.SetState(menuState);
             return true;
         }
 
@@ -37,7 +37,7 @@ public class AimAction : StateAction
         {
             playerMovement.drawcrosshair = false;
             playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", false);
-            statesManager.SetState(actionState);
+            states.SetState(actionState);
             return true;
         }
 
@@ -52,7 +52,7 @@ public class AimAction : StateAction
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            statesManager.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
 
         return false;

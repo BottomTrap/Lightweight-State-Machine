@@ -6,7 +6,7 @@ using RG;
 
 public class ActionAiStateAction : StateAction
 {
-    private readonly GameModeManager enemyPhaseManager;
+    private readonly GameModeManager states;
     private readonly string tacticAiState;
     private readonly string menuState;
     
@@ -15,7 +15,7 @@ public class ActionAiStateAction : StateAction
 
     public ActionAiStateAction (GameModeManager enemyPhaseManager, string tacticAiState,string menuState)
     {
-        this.enemyPhaseManager = enemyPhaseManager;
+        this.states = enemyPhaseManager;
         this.tacticAiState = tacticAiState;
         this.menuState = menuState;
         
@@ -26,27 +26,27 @@ public class ActionAiStateAction : StateAction
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
-            enemyPhaseManager.mainMenu.gameObject.SetActive(true);
+            states.mainMenu.gameObject.SetActive(true);
         }
         Debug.Log("AI ACTION");
-        if (enemyPhaseManager.enemyUnitsScript.currentUnit != null)
+        if (states.enemyUnitsScript.currentUnit != null)
         {
             //enemyPhaseManager.cameraScript.StartCoroutine(enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit));
             //Debug.Log("command points"+enemyPhaseManager.enemyUnitsScript.commandPoints);
-            var AI = enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>();
+            var AI = states.enemyUnitsScript.currentUnit.GetComponent<AI>();
             //camera follow the action happening
             AI.Action();
             //AI.hasPlayed = true;
             
         }
-        else enemyPhaseManager.enemyUnitsScript.commandPoints = 0;
+        else states.enemyUnitsScript.commandPoints = 0;
 
         //enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().score = 0;
 
-        if (enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().hasPlayed)
+        if (states.enemyUnitsScript.currentUnit.GetComponent<AI>().hasPlayed)
         {
-            enemyPhaseManager.enemyUnitsScript.commandPoints -= 1;
-            enemyPhaseManager.SetState(tacticAiState);
+            states.enemyUnitsScript.commandPoints -= 1;
+            states.SetState(tacticAiState);
             return true;
         }
         //make sure all the actions are being made 
