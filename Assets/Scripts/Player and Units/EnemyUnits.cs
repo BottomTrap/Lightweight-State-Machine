@@ -306,7 +306,7 @@ public class EnemyUnits : MonoBehaviour
                var transformList = UnitsList[j].GetComponent<AI>().playersInView; 
                for (int i = 0; i < SeenPlayersTransforms.Count; i++)
                 {
-                    if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject))
+                    if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject) && !transformList.Contains(SeenPlayersTransforms[i]))
                     {
                         transformList.Add(SeenPlayersTransforms[i]);
                     }

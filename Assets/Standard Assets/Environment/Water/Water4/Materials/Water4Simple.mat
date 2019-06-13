@@ -68,7 +68,7 @@ Material:
     - _Foam: 0.5
     - _FresnelScale: 0.3897143
     - _GerstnerIntensity: 1
-    - _Height: 0
+    - _Height: 0.527
     - _HeightDisplacement: 2.3370318
     - _NormalsDisplacement: 72.72728
     - _Shininess: 349.13794

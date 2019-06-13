@@ -28,8 +28,8 @@ public class Skills : MonoBehaviour
     public IEnumerator Attack()
     {
         if (!ai.hasPlayed){
-            var weaponAnim = transform.GetChild(1).GetComponent<Animator>();
-            weaponAnim.SetTrigger("Attack");
+            //var weaponAnim = transform.GetChild(1).GetComponent<Animator>();
+            animator.SetTrigger("Stab");
         Debug.Log("EnemyAttack");
         yield return StartCoroutine(ai.HasPlayed(Attack())) ;
         }
@@ -42,13 +42,12 @@ public class Skills : MonoBehaviour
         if (!ai.hasPlayed && !isCreated) {
             var heading = ai.target.position - transform.position;
             var rotation = Quaternion.LookRotation(heading);
+            animator.SetTrigger("Rifle");
             var projectile =Instantiate(bullet, transform.position, rotation);
-            //bullet.transform.position = transform.position;
             //get the source of the bullet
             projectile.GetComponent<Bullet>().shooter = this.gameObject;
             projectile.transform.LookAt(ai.target);
             projectile.GetComponent<Rigidbody>().AddForce(heading*5.0f, ForceMode.Impulse);
-            //projectile.GetComponent<Rigidbody>().velocity = transform.TransformDirection(heading * 5.0f);
             Destroy(projectile, 3);
             isCreated = true;
             Debug.Log("RangedEnemyAttack"); 

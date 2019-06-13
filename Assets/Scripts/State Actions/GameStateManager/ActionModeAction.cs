@@ -53,12 +53,13 @@ public class ActionMode : StateAction
                 
             }
         }
-states.enemyUnitsScript.PlayersInViewTransforms();
-        foreach (Transform enemy in enemyUnits)
-        {
-            
-            enemy.GetComponent<AI>().PassiveActions(states.cameraScript.playerTransform);
-        }
+       states.enemyUnitsScript.PlayersInViewTransforms();
+
+       //foreach (Transform enemy in enemyUnits)
+       //{
+       //    
+       //    enemy.GetComponent<AI>().PassiveActions(states.cameraScript.playerTransform);
+       //}
        // if (gameStates.cameraScript.PlayerClicked(gameStates.commandPoints) != null)
        // {
        //     //gameStates.cameraScript.CameraMovement(gameStates.playerTransform);

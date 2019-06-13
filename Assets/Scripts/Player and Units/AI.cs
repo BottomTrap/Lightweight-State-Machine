@@ -44,6 +44,8 @@ namespace RG
             skills = GetComponent<Skills>();
             stats = GetComponent<PlayerStats>();
 
+            gameModeManager = FindObjectOfType<GameModeManager>();
+
             //target.position = Vector3.zero;
         }
 
@@ -86,14 +88,14 @@ namespace RG
                 return false;
         }
     
-        public IEnumerator Move(Transform target, IEnumerator nextMove)
+        public IEnumerator Move(Transform target, IEnumerator nextMove) //Using a corouting to wait the enemy to finish moving then attack
         {
 
             //yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
                 //offset = RandomPointOnCircleEdge(1);
-                while (transform.position != target.position - offset)
+                while (!transform.position.Equals(target.position - offset))
                 {
                     finalTarget = target.position - offset;
                     //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
@@ -103,16 +105,16 @@ namespace RG
                     navAgent.speed = GetComponent<PlayerStats>().Speed.Value*10;
                     //navAgent.destination = finalTarget;
                     //navAgent.isStopped = false;
-                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
-
+                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 /GetComponent<PlayerStats>().Speed.Value *3);
+                    GetComponent<Animator>().SetBool("Running", true);
                     
                     
                     //Quaternion rotation = Quaternion.LookRotation(direction);
                     //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     transform.LookAt(target);
-                    //yield return null;
+                    yield return null;
                 }
-                navAgent.isStopped = true;
+                //navAgent.isStopped = true;
             }
             else
             {
@@ -120,7 +122,7 @@ namespace RG
                 yield return StartCoroutine(nextMove);
             }
             //navAgent.isStopped = true;
-            yield return StartCoroutine(nextMove);
+            //yield return StartCoroutine(nextMove);
 
         }
 
@@ -219,19 +221,22 @@ namespace RG
         void Death()
         {
             isAlive = false;
-            this.GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<Animator>().SetBool("Death", true);
             this.GetComponent<CapsuleCollider>().enabled = false;
 
         }
 
-        public void PassiveActions(Transform enemy)
-        {
-            if( playersInView.Contains(enemy)){
-                    target = enemy;
-                    StartCoroutine(skills.PassiveRangedAttack());
-                }
-            
-        }
+      //public void PassiveActions(Transform enemy)
+      //{
+      //    if( playersInView.Contains(enemy)){
+      //            target = enemy;
+      //            StartCoroutine(skills.PassiveRangedAttack());
+      //        }
+      //    
+      //}
+
+
+    
       // public void PassiveActions()
       // {
       //     var cam = GetComponentInChildren<Camera>();

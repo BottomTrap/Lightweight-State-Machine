@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-//using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using RG;
 
 
-//[RequireComponent(typeof(Animator))]
 
 namespace RG
 {
@@ -27,7 +25,6 @@ namespace RG
         public float distanceTraveled;
         public bool didHit=false;
         public bool isAlive;
-        //private bool aiming = false;
 
         private PlayerStats playerstats;
         public bool isClicked=false;
@@ -53,14 +50,6 @@ namespace RG
         {
              distanceTraveled += Vector3.Distance(transform.position, lastPosition);
              lastPosition = transform.position;
-
-            //if (didHit  )
-            //{
-            //    var anim = GetComponentInChildren<Animator>();
-            //    if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            //        anim.SetBool("Attack",false);
-            //}
-            
         }
 
         public void Attack()
@@ -87,10 +76,8 @@ namespace RG
         public void RangedAttack()
         {
            
-                RaycastHit hit;
-            //Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width, Screen.height, 0));
+            RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-                //int layerMask = ~( (1 << 8) | ( 1 << 9 ) ) ;
             Debug.Log("checking for fire");
                 if (Physics.Raycast(ray,out hit))
                 {
