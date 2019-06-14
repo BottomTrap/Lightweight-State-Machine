@@ -7,16 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class GameModeManager : StateManager
 {
-    
-
-    private void Awake()
-    {
-    
-
-        
-    }
-
-
     public CameraScript cameraScript;
     public PlayerMovement playerScript;
     public EnemyUnits enemyAiScript;
@@ -36,21 +26,6 @@ public class GameModeManager : StateManager
     protected override void Init()
     {
 
-
-
-        #region TitleScreen State
-        State TitleScreenState = new State(
-            new StateAction[]
-            {
-
-            },
-            new StateAction[]
-            {
-
-            }
-
-            );
-        #endregion
 
         #region Tactics State
         //Tactics State will change all tactics state conditions
@@ -195,7 +170,7 @@ public class GameModeManager : StateManager
         allStates.Add("EnemyPhase", EnemyPhase);
         allStates.Add("tacticAiState", TacticAiState);
         allStates.Add("actionAiState", ActionAiState);
-        allStates.Add("titleScreenState", TitleScreenState);
+        
 
         //SetState("titleScreenState");
         SetState("tacticState");
@@ -210,21 +185,17 @@ public class GameModeManager : StateManager
     {
         endPhase = true;
     }
+
     public void MainMenu()
     {
         SceneManager.LoadScene(1);
     }
-  // public void StartGame()
-    //{
-      //  SceneManager.LoadScene(1);
-        //SetState("tacticState");
-      
 
-     //}
     public void Resume()
     {
         menu = false;
     }
+
     public void SetTacticsState()
     {
         SetState("tacticState");
@@ -239,6 +210,7 @@ public class GameModeManager : StateManager
     {
         Application.Quit();
     }
+
     private void FixedUpdate()
     {
         FixedTick();

@@ -94,35 +94,31 @@ namespace RG
             //yield return new WaitForSeconds(1);
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
-                //offset = RandomPointOnCircleEdge(1);
+                
                 while (transform.position!=target.position - offset)
                 {
                     finalTarget = target.position - offset;
-                    //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));
-                    //transform.Translate(target.position , Space.World);
-                    //transform.position = Vector3.MoveTowards(transform.position, finalTarget ,1/GetComponent<PlayerStats>().Speed.Value*0.02f);
-                    //Vector3 direction = target.position - transform.position;
-                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value*10;
+                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
                     //navAgent.destination = finalTarget;
                     //navAgent.isStopped = false;
-                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 /GetComponent<PlayerStats>().Speed.Value *3);
+                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, GetComponent<PlayerStats>().Speed.Value *3);
                     GetComponent<Animator>().SetBool("Running", true);
 
-                    Debug.Log("Couroutine?");
+                    //Debug.Log("Couroutine?");
                     //Quaternion rotation = Quaternion.LookRotation(direction);
                     //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     transform.LookAt(target);
                     yield return null;
                 }
-                //navAgent.isStopped = true;
+                navAgent.isStopped = true;
             }
             else
             {
                 
                 yield return StartCoroutine(nextMove);
             }
-            //navAgent.isStopped = true;
-            //yield return StartCoroutine(nextMove);
+            navAgent.isStopped = true;
+            yield return StartCoroutine(nextMove);
 
         }
 
@@ -145,7 +141,7 @@ namespace RG
                     StartCoroutine(Move(target,skills.Attack()));
                     //StartCoroutine(skills.Attack());
                     if (hasPlayed){
-                        StopCoroutine (skills.Attack());
+                        StopCoroutine(skills.Attack());
                     }
                     //StartCoroutine(HasPlayed());
                     //hasPlayed = true;
@@ -155,7 +151,7 @@ namespace RG
                     StartCoroutine(skills.Cure());
                     //StartCoroutine(HasPlayed());
                     if (hasPlayed){
-                        StopCoroutine (skills.Cure());
+                        StopAllCoroutines();
                     }
                     //hasPlayed = true;
                     score = 0;
@@ -164,7 +160,7 @@ namespace RG
                     StartCoroutine(Move(target,skills.RangedAttack()));
                     //StartCoroutine(skills.RangedAttack());
                     if (hasPlayed){
-                        StopCoroutine (skills.RangedAttack());
+                        StopAllCoroutines();
                     }
                     //hasPlayed = true;
                     score = 0;
@@ -177,7 +173,6 @@ namespace RG
         {
             var AP = GetComponent<PlayerStats>().AP.Value;
             var range = GetComponent<PlayerStats>().Range.Value;
-            //Debug.Log(AP);
             // Draw a yellow sphere at the transform's position
             Gizmos.color = new Color(255, 204, 102, 0.3f);
             Gizmos.DrawSphere(transform.position, AP + range);

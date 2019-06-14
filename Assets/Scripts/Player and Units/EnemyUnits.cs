@@ -52,7 +52,10 @@ public class EnemyUnits : MonoBehaviour
             UnitsList.Add(child);
         }
     }
-        private Vector3 RandomPointOnCircleEdge(float radius)
+
+
+
+    private Vector3 RandomPointOnCircleEdge(float radius)
 {
     var vector2 = Random.insideUnitCircle.normalized * radius;
     return new Vector3(vector2.x, 0, vector2.y);
@@ -75,14 +78,15 @@ public class EnemyUnits : MonoBehaviour
             }
         }
 
-        chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score);
+        chosenTransform = UnitsList.MaxBy(unit => unit.GetComponent<AI>().score); //Linq
         List<Transform> playerList= new List<Transform>();
         if (chosenTransform.GetComponent<AI>().playersInView.Count > 0)
         {
+            //Get players in view by all enemies
             playerList = chosenTransform.GetComponent<AI>().playersInView;
         }
         int chosenScore = chosenTransform.GetComponent<AI>().score;
-        //bool validPath = false;
+        
         if (chosenScore < 3 || playerList.Count <=0)
         {
             chosenTransform.GetComponent<AI>().target = chosenTransform;
@@ -317,7 +321,6 @@ public class EnemyUnits : MonoBehaviour
         }
        
     }
-  
 
     private bool IsInView(GameObject origin, GameObject toCheck)
     {
