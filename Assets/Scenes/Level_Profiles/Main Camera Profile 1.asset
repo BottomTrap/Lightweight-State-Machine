@@ -14,55 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114712953063218054}
-  - {fileID: 114033409169684574}
   - {fileID: 114903784235513928}
   - {fileID: 114583488841822106}
-  - {fileID: 114390017992461098}
   - {fileID: 114346854604222490}
---- !u!114 &114033409169684574
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  mode:
-    overrideState: 1
-    value: 0
-  color:
-    overrideState: 1
-    value: {r: 0, g: 0, b: 0, a: 1}
-  center:
-    overrideState: 1
-    value: {x: 3.3, y: -15.9}
-  intensity:
-    overrideState: 1
-    value: 1
-  smoothness:
-    overrideState: 1
-    value: 0.165
-  roundness:
-    overrideState: 1
-    value: 0.064
-  rounded:
-    overrideState: 1
-    value: 0
-  mask:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  opacity:
-    overrideState: 0
-    value: 1
 --- !u!114 &114346854604222490
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -110,32 +64,6 @@ MonoBehaviour:
   dirtIntensity:
     overrideState: 0
     value: 0
---- !u!114 &114390017992461098
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
-  m_Name: ChromaticAberration
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  spectralLut:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  intensity:
-    overrideState: 1
-    value: 0.419
-  fastMode:
-    overrideState: 1
-    value: 0
 --- !u!114 &114583488841822106
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -163,7 +91,7 @@ MonoBehaviour:
     value: 3
   lumContrib:
     overrideState: 1
-    value: 0.818
+    value: 0.797
 --- !u!114 &114712953063218054
 MonoBehaviour:
   m_ObjectHideFlags: 3
