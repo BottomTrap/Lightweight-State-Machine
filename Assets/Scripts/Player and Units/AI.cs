@@ -95,7 +95,7 @@ namespace RG
             if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
             {
                 //offset = RandomPointOnCircleEdge(1);
-                while (!transform.position.Equals(target.position - offset))
+                while (transform.position!=target.position - offset)
                 {
                     finalTarget = target.position - offset;
                     //transform.position = Vector3.MoveTowards(transform.position, target.position + offset, GetComponent<PlayerStats>().AP.Value / Vector3.Distance(transform.position, target.position));

@@ -4382,7 +4382,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4364
+  m_Name: pb_Mesh22160
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -5761,7 +5761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1894826926, guid: 421f66e3c79970843bb325587615b2f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.9049293
+      value: -0.719
       objectReference: {fileID: 0}
     - target: {fileID: 1894826926, guid: 421f66e3c79970843bb325587615b2f6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5811,7 +5811,17 @@ PrefabInstance:
     - target: {fileID: 953165976882632672, guid: 421f66e3c79970843bb325587615b2f6,
         type: 3}
       propertyPath: m_Center.y
-      value: 15.85
+      value: 16.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 953165976882632672, guid: 421f66e3c79970843bb325587615b2f6,
+        type: 3}
+      propertyPath: m_Radius
+      value: 6.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 953165976882632672, guid: 421f66e3c79970843bb325587615b2f6,
+        type: 3}
+      propertyPath: m_Height
+      value: 35.9
       objectReference: {fileID: 0}
     - target: {fileID: 5800605001800061628, guid: 421f66e3c79970843bb325587615b2f6,
         type: 3}
@@ -5862,6 +5872,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetDisplay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1894826922, guid: 421f66e3c79970843bb325587615b2f6, type: 3}
+      propertyPath: offset.x
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 421f66e3c79970843bb325587615b2f6, type: 3}
@@ -41523,10 +41537,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 6.3344955
-  m_Height: 25.783642
+  m_Radius: 7.0114136
+  m_Height: 28.994455
   m_Direction: 1
-  m_Center: {x: -1.1535645, y: 13.954845, z: 0}
+  m_Center: {x: -0.47664642, y: 13.248467, z: 0}
 --- !u!4 &1899181127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4133494452776908, guid: ff6f6e2bbe380e14dbfdf1220764e3fe,
