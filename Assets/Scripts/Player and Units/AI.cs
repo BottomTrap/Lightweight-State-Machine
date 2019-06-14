@@ -107,8 +107,8 @@ namespace RG
                     //navAgent.isStopped = false;
                     transform.position = Vector3.MoveTowards(transform.position, finalTarget, 1 /GetComponent<PlayerStats>().Speed.Value *3);
                     GetComponent<Animator>().SetBool("Running", true);
-                    
-                    
+
+                    Debug.Log("Couroutine?");
                     //Quaternion rotation = Quaternion.LookRotation(direction);
                     //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                     transform.LookAt(target);

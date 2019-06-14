@@ -15,7 +15,7 @@ public class PlayerUnits : MonoBehaviour
         for (int i = 0; i < playerUnitsArrayTransform.Length; i++)
         {
             if (playerUnitsArrayTransform[i] == this.transform) continue;
-            if (playerUnitsArrayTransform[i].GetComponentInChildren<PlayerMovement>().isAlive && !playerUnitsTransformList.Contains(playerUnitsArrayTransform[i]))
+            if (playerUnitsArrayTransform[i].GetComponent<PlayerMovement>().isAlive && !playerUnitsTransformList.Contains(playerUnitsArrayTransform[i]))
             {
                 playerUnitsTransformList.Add(playerUnitsArrayTransform[i]);
             }
