@@ -38,6 +38,15 @@ namespace RG
 
         private Vector3 velocity = Vector3.one;
 
+
+
+        public Vector3 RandomPointOnCircleEdge(float radius)
+        {
+            var vector2 = Random.insideUnitCircle.normalized * radius;
+            return new Vector3(vector2.x, 0, vector2.y);
+        }
+
+
         void Awake()
         {
             aiModes = AiModes.Attack; //Default AI Mode;
@@ -70,6 +79,8 @@ namespace RG
             {
                 Death();
             }
+
+            Debug.Log(Vector3.Distance(transform.position, target.position + offset) > 1.0f);
         }
 
         public bool PathComplete(Vector3 target)
@@ -88,37 +99,53 @@ namespace RG
                 return false;
         }
     
-        public IEnumerator Move(Transform target, IEnumerator nextMove) //Using a corouting to wait the enemy to finish moving then attack
+        public IEnumerator Move(Transform target, IEnumerator nextMove) //Using a coroutine to wait the enemy to finish moving then attack
         {
 
-            //yield return new WaitForSeconds(1);
-            if (distanceTraveled < GetComponent<PlayerStats>().AP.Value * 5 && gameModeManager.currentState == gameModeManager.GetState("actionAiState"))
-            {
-                
-                while (transform.position!=target.position - offset)
-                {
-                    finalTarget = target.position - offset;
-                    navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
-                    //navAgent.destination = finalTarget;
-                    //navAgent.isStopped = false;
-                    transform.position = Vector3.MoveTowards(transform.position, finalTarget, GetComponent<PlayerStats>().Speed.Value *3);
-                    GetComponent<Animator>().SetBool("Running", true);
+            yield return new WaitForSeconds(1);
 
-                    //Debug.Log("Couroutine?");
-                    //Quaternion rotation = Quaternion.LookRotation(direction);
-                    //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
-                    transform.LookAt(target);
-                    yield return null;
-                }
-                navAgent.isStopped = true;
-            }
-            else
-            {
+            
                 
-                yield return StartCoroutine(nextMove);
+                
+                finalTarget = target.position - offset;
+                navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
+                //navAgent.destination = finalTarget;
+                //navAgent.isStopped = false;
+                //transform.position = Vector3.MoveTowards(transform.position, finalTarget, 0.02f);
+                navAgent.SetDestination(finalTarget);
+            navAgent.stoppingDistance = 3.0f;
+                navAgent.isStopped = false;
+                GetComponent<Animator>().SetBool("Running", true);
+                Debug.Log("Couroutine?");
+                //Quaternion rotation = Quaternion.LookRotation(direction);
+                //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
+                transform.LookAt(target);
+            
+            
+            if (!navAgent.pathPending)
+            {
+                Debug.Log("is this" + navAgent.pathPending);
+                if (navAgent.remainingDistance <= navAgent.stoppingDistance)
+                {
+                    Debug.Log("and is this? " + (navAgent.remainingDistance <= navAgent.stoppingDistance));
+                    if (!navAgent.hasPath || navAgent.velocity.sqrMagnitude == 0f)
+                    {
+                        Debug.Log("path?" + navAgent.hasPath);
+                        Debug.Log("vel? " + (navAgent.velocity.sqrMagnitude == 0f));
+                        Debug.Log("wseltchi");
+                        GetComponent<Animator>().SetBool("Running", false);
+                        navAgent.isStopped = true;
+                        //yield return new WaitForSeconds(0.2f);
+                        yield return StartCoroutine(nextMove);
+                        
+                        
+                    }
+                    
+                }
             }
-            navAgent.isStopped = true;
-            yield return StartCoroutine(nextMove);
+
+
+            yield return null;
 
         }
 
@@ -129,6 +156,7 @@ namespace RG
                 StopCoroutine(cor);
                 yield return new WaitForSeconds(1f);
                 hasPlayed = true;
+                yield return null;
             }
             
         }
@@ -141,7 +169,7 @@ namespace RG
                     StartCoroutine(Move(target,skills.Attack()));
                     //StartCoroutine(skills.Attack());
                     if (hasPlayed){
-                        StopCoroutine(skills.Attack());
+                        StopAllCoroutines();
                     }
                     //StartCoroutine(HasPlayed());
                     //hasPlayed = true;

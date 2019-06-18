@@ -27,6 +27,7 @@ public class Skills : MonoBehaviour
     }
     public IEnumerator Attack()
     {
+        
         if (!ai.hasPlayed){
             //var weaponAnim = transform.GetChild(1).GetComponent<Animator>();
             animator.SetTrigger("Stab");

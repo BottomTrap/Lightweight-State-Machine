@@ -96,11 +96,11 @@ public class EnemyUnits : MonoBehaviour
         if (chosenScore > 3 && chosenScore < 6 && playerList.Count > 0)
         {
             chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
-            chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
+            chosenTransform.GetComponent<AI>().offset = chosenTransform.GetComponent<AI>().RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
             if (!chosenTransform.GetComponent<AI>().PathComplete(chosenTransform.GetComponent<AI>().target.position - chosenTransform.GetComponent<AI>().offset))
             {
                 chosenTransform.GetComponent<AI>().target = GetLowestHP(playerList);
-                chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
+                chosenTransform.GetComponent<AI>().offset = chosenTransform.GetComponent<AI>().RandomPointOnCircleEdge(Vector3.Distance(chosenTransform.position, chosenTransform.GetComponent<AI>().target.position) / 2);
             }
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.RangedAttack;
         }
@@ -108,11 +108,11 @@ public class EnemyUnits : MonoBehaviour
         if (chosenScore > 6 && playerList.Count >0)
         {
             chosenTransform.GetComponent<AI>().target = ClosestTarget(chosenTransform,playerList);
-            chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
+            chosenTransform.GetComponent<AI>().offset = chosenTransform.GetComponent<AI>().RandomPointOnCircleEdge(1.5f);
             if (!chosenTransform.GetComponent<AI>().PathComplete(chosenTransform.GetComponent<AI>().target.position - chosenTransform.GetComponent<AI>().offset))
             {
                 chosenTransform.GetComponent<AI>().target = ClosestTarget(chosenTransform,playerList);
-                chosenTransform.GetComponent<AI>().offset = RandomPointOnCircleEdge(1);
+                chosenTransform.GetComponent<AI>().offset = chosenTransform.GetComponent<AI>().RandomPointOnCircleEdge(1);
             }
             chosenTransform.GetComponent<AI>().aiModes = AI.AiModes.Attack;
         }
