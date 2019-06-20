@@ -31,15 +31,17 @@ public class ActionMode : StateAction
 
         states.endTurn = false;
        
-            playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
-            cameraScript = states.cameraScript;
-            playerStats = states.cameraScript.playerTransform.GetComponent<PlayerStats>();
+        playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
+        cameraScript = states.cameraScript;
+        playerStats = states.cameraScript.playerTransform.GetComponent<PlayerStats>();
 
         var enemyUnits = states.enemyUnitsScript.UnitsList;
         Debug.Log("this is actionState");
         states.cameraScript.CameraMovement(states.cameraScript.playerTransform);
         //Debug.Log(playerMovement);
         //gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>().Movement();
+       
+        
         playerMovement.Rotate();
         playerMovement.Movement();
         
@@ -55,17 +57,6 @@ public class ActionMode : StateAction
         }
        states.enemyUnitsScript.PlayersInViewTransforms();
 
-       //foreach (Transform enemy in enemyUnits)
-       //{
-       //    
-       //    enemy.GetComponent<AI>().PassiveActions(states.cameraScript.playerTransform);
-       //}
-       // if (gameStates.cameraScript.PlayerClicked(gameStates.commandPoints) != null)
-       // {
-       //     //gameStates.cameraScript.CameraMovement(gameStates.playerTransform);
-       //     //gameStates.cameraScript.CameraTransition(gameStates.playerTransform);
-       //     return true;
-       // }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

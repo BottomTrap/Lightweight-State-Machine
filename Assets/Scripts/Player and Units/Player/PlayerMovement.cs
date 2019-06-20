@@ -20,6 +20,8 @@ namespace RG
         [SerializeField] private float moveSpeed = 30;
         [SerializeField] private float turnSpeed = 3.5f;
 
+        [SerializeField] private Transform damagePopUpPrefab;
+
 
         private Vector3 lastPosition;
         public float distanceTraveled;
@@ -159,10 +161,13 @@ namespace RG
                 if (result)
                 {
                     playerstats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().GunStrength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
+                    Transform damagePopUpTransform = Instantiate(damagePopUpPrefab, transform.position, Quaternion.identity);
+                    DamagePopUp damagePopUp = damagePopUpTransform.GetComponent<DamagePopUp>();
+                    damagePopUp.Setup(1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().GunStrength.Value);
                     Debug.Log(playerstats.startHealth);
                 }
             }
-            if (other.gameObject.tag == "Weapon" && other.gameObject != this.transform.GetChild(1) && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            if (other.gameObject.tag == "Weapon" && other.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Stab"))
             {
                 playerstats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().Strength.Value; //GET THE UNIT PLAYER STATS NOT THE BULLET , DUH
                 Debug.Log(playerstats.startHealth);

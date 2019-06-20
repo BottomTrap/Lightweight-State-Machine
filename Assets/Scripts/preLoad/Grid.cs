@@ -5,6 +5,8 @@ using UnityEngine;
 static class Grid
 {
     public static Music music; //Get the scripts we will use during the whole game and in all scenes
+    public static UiManager UiManager;
+    public static Game game;
     
 
 
@@ -15,6 +17,8 @@ static class Grid
         g = safeFind("__app"); //Find the __app object that contains all managers
 
         music = (Music)SafeComponent(g, "Music"); // Get reference of all managers in a static variable, accessible from all scripts.
+        UiManager = (UiManager)SafeComponent(g, "UiManager");
+        game = (Game)SafeComponent(g, "Game");
         
     }
 

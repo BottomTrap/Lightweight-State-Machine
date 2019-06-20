@@ -12,19 +12,30 @@ public class PlayerUnits : MonoBehaviour
     public void GetChildObjectsTransforms()
     {
         playerUnitsArrayTransform = GetComponentsInChildren<Transform>();
-        for (int i = 0; i < playerUnitsArrayTransform.Length; i++)
+
+       //for (int i = 0; i < playerUnitsArrayTransform.Length; i++)
+       //{
+       //   
+       //    //if (playerUnitsArrayTransform[i] == this.transform) continue;
+       //    
+       //    if (playerUnitsArrayTransform[i].GetComponent<PlayerMovement>().isAlive && !playerUnitsTransformList.Contains(playerUnitsArrayTransform[i]))
+       //    {
+       //        playerUnitsTransformList.Add(playerUnitsArrayTransform[i]);
+       //    }
+       //    else
+       //        continue;
+       //}
+
+        foreach (Transform child in transform)
         {
-            if (playerUnitsArrayTransform[i] == this.transform) continue;
-            if (playerUnitsArrayTransform[i].GetComponent<PlayerMovement>().isAlive && !playerUnitsTransformList.Contains(playerUnitsArrayTransform[i]))
+            if(child.GetComponent<PlayerMovement>().isAlive && !playerUnitsTransformList.Contains(child))
             {
-                playerUnitsTransformList.Add(playerUnitsArrayTransform[i]);
+                playerUnitsTransformList.Add(child);
             }
-            else
-                continue;
         }
     }
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         GetChildObjectsTransforms();
     }

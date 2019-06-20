@@ -6,24 +6,10 @@ using System.Threading.Tasks;
 
 namespace RG
 {
-    [RequireComponent(typeof(NewMatrixBlender))]
+   
     public class CameraScript : MonoBehaviour
     {
-        [Header("Perspective Switcher Variables")]
-        public float fov = 60f;
-
-        public float near = .3f;
-        public float far = 1000f;
-        public float orthographicSize = 50f;
-
-        //PerspectiveSwticher Private Variables
-        Camera m_camera;
-
-        private Matrix4x4 ortho,
-            perspective;
-
-        private float aspect;
-        private NewMatrixBlender blender;
+        
         public GameModeManager statesManager;
 
 
@@ -53,7 +39,7 @@ namespace RG
         public Vector3 aimViewOffset;
 
         [SerializeField]
-        private Vector3 offset; //Private variable to store the offset distance between the player and camera
+        public Vector3 offset; //Private variable to store the offset distance between the player and camera
 
         private Transform oldTransform; // old transform to retransition back into
 
@@ -67,6 +53,8 @@ namespace RG
             
         }
 
+
+        //Get the reference of the player clicked so that we can control him later on in the Action Mode.
         public bool PlayerClicked(int commandPoints)
         {
             
@@ -104,40 +92,51 @@ namespace RG
             offset = new Vector3(-1, 1.6f, -3);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
            
-            //Perspective switcher stuff
-            aspect = (float) Screen.width / (float) Screen.height;
-            ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize,
-                orthographicSize, near, far);
-            perspective = Matrix4x4.Perspective(fov, aspect, near, far);
-            m_camera = GetComponent<Camera>();
-            m_camera.projectionMatrix = ortho;
-            blender = (NewMatrixBlender) GetComponent(typeof(NewMatrixBlender));
-            blender.BlendToMatrix(ortho, 1f, 8, true);
+           
+           
 
         }
 
-        
+
         public void CameraTransition(Transform target) // Cool looking lerp
         {
-            float currentTime = 0;
-            float totalTime = 1.0f;
-            while (currentTime < totalTime)
+            //    float currentTime = 0;
+            //    float totalTime = 5.0f;
+            //    while (currentTime < totalTime)
+            //    {
+            //        
+            //        oldTransform = transform;
+            //        float angle = target.eulerAngles.y;
+            //        Quaternion rotation = Quaternion.Euler(0, angle, 0);
+            //        Vector3 firstLerp =
+            //            new Vector3(target.position.x, target.position.y, GetComponentInParent<Transform>().position.z);
+            //        GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, firstLerp, curve.Evaluate(currentTime / totalTime));
+            //        GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, target.position + offset, curve.Evaluate(
+            //            currentTime / totalTime));
+            //        //transform.LookAt(player.transform);
+            //        Vector3 direction = target.position - GetComponentInParent<Transform>().position;
+            //        Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
+            //        GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
+            //        currentTime += Time.deltaTime;
+            //    }
+
+            //StartCoroutine(MoveObject(transform.position, playerTransform.position - offset, 1f));
+            float angle = target.eulerAngles.y;
+            Quaternion rotation = Quaternion.Euler(0, angle, 0);
+
+            GetComponentInParent<Transform>().position = Vector3.MoveTowards(GetComponentInParent<Transform>().position, target.position + rotation * offset, 10.0f);
+        }
+
+        IEnumerator MoveObject(Vector3 source, Vector3 target, float overTime)
+        {
+            float startTime = Time.time;
+            while (Time.time < startTime + overTime)
             {
-                blender.BlendToMatrix(perspective, 1f, 8, false);
-                oldTransform = transform;
-                float angle = target.eulerAngles.y;
-                Quaternion rotation = Quaternion.Euler(0, angle, 0);
-                Vector3 firstLerp =
-                    new Vector3(target.position.x, target.position.y, GetComponentInParent<Transform>().position.z);
-                GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, firstLerp, curve.Evaluate(currentTime / totalTime));
-                GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, target.position + offset, curve.Evaluate(
-                    currentTime / totalTime));
-                //transform.LookAt(player.transform);
-                Vector3 direction = target.position - GetComponentInParent<Transform>().position;
-                Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-                GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
-                currentTime += Time.deltaTime;
+                transform.position = Vector3.MoveTowards(source, target, Time.deltaTime);
+                transform.LookAt(target);
+                yield return null;
             }
+            transform.position = target;
         }
 
         public void  IsoCameraTransition()
@@ -146,9 +145,9 @@ namespace RG
             float totalTime = 1f;
             while (currentTime < totalTime)
             {
-                blender.BlendToMatrix(ortho, 1f, 8, true);
+                
                 GetComponentInParent<Transform>().position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
-                GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, oldTransform.rotation, curve.Evaluate(currentTime / totalTime));
+                GetComponentInParent<Transform>().LookAt(playerTransform);
                 currentTime += Time.deltaTime;
                 
             }
@@ -159,15 +158,9 @@ namespace RG
         {
             // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
             GetComponentInParent<Transform>().position = target.position + offset;
-            // if (Input.GetMouseButton(1))
-            // {
-            //     horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
-            // }
-            // player.transform.Rotate(0, horizontal, 0);
             float angle = target.eulerAngles.y;
             Quaternion rotation = Quaternion.Euler(0, angle, 0);
             GetComponentInParent<Transform>().position = target.position + rotation * offset;
-            //GetComponentInParent<Transform>().LookAt(target);
         }
 
         public void IsoMovement()
@@ -175,60 +168,27 @@ namespace RG
             //Keyboard Scroll
 
             float translationX = Input.GetAxis("Horizontal");
-            float translationY = Input.GetAxis("Vertical");
+            float translationY = Input.GetAxis("Vertical") ;
             float fastTranslationX = 2 * Input.GetAxis("Horizontal");
             float fastTranslationY = 2 * Input.GetAxis("Vertical");
-
+            Vector3 dir = new Vector3(translationX, translationY, translationY);
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                GetComponentInParent<Transform>().Translate(fastTranslationX, 0, fastTranslationY, Space.World);
+                GetComponentInParent<Transform>().Translate(fastTranslationX, 0, fastTranslationY, Space.Self);
             }
             else
             {
-                GetComponentInParent<Transform>().Translate(translationX, 0, translationY, Space.World);
+               transform.Translate(dir, Space.Self);
             }
 
-            //Mouse Scroll
-
-            var mousePosX = Input.mousePosition.x;
-            var mousePosY = Input.mousePosition.y;
-            int scrollDistance = 3;
-            //float scrollSpeed = 15f;
-
-            //Horizontal Camera Movement
-            if (Input.GetKey(KeyCode.Space))
-            {
-                if (mousePosX < scrollDistance)
-                {
-                    //horizontal left
-                    GetComponentInParent<Transform>().Translate(-1, 0, 1);
-                }
-
-                if (mousePosY >= Screen.width - scrollDistance)
-                {
-                    //horizontal right
-                    GetComponentInParent<Transform>().Translate(1, 0, -1);
-                }
-
-                //Vertical Camera Movement
-                if (mousePosY < scrollDistance)
-                {
-                    //scrolling down
-                    GetComponentInParent<Transform>().Translate(-1, 0, -1);
-                }
-
-                if (mousePosY >= Screen.height - scrollDistance)
-                {
-                    //scrolling up
-                    GetComponentInParent<Transform>().Translate(1, 0, 1);
-                }
-            }
 
             if (Input.GetMouseButton(1))
             {
-                translationX = Input.GetAxis("Mouse X");
+                float mouseTranslationX = Input.GetAxis("Mouse X");
+                Vector3 rot = GetComponentInParent<Transform>().forward * -mouseTranslationX * rotateSpeed;
                 //transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
-                GetComponentInParent<Transform>().Rotate(new Vector3(0, translationX, 0),Space.World);
+                //GetComponentInParent<Transform>().Rotate(new Vector3(0, translationX, 0), Space.Self);
+                transform.RotateAround(transform.position,Vector3.up, mouseTranslationX);
             }
         }
 
@@ -243,7 +203,7 @@ namespace RG
             yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
             pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
-            yaw = Mathf.Clamp(yaw, yawMinMax.x, yawMinMax.y);
+            //yaw = Mathf.Clamp(yaw, yawMinMax.x, yawMinMax.y);
             currentRotation = Vector3.Lerp(currentRotation, new Vector3(pitch, yaw,0), rotateSpeed* Time.deltaTime);
 
             GetComponentInParent<Transform>().eulerAngles = currentRotation;
@@ -253,7 +213,7 @@ namespace RG
             g.y = 0;
             rotator.eulerAngles = new Vector3(g.x, rotator.eulerAngles.y, rotator.eulerAngles.z);
 
-            playerTransform.eulerAngles = e;
+            rotator.eulerAngles = e;
             GetComponentInParent<Transform>().position = Vector3.Lerp(transform.position, playerTransform.position - aimViewOffset, rotateSpeed);
         }
        

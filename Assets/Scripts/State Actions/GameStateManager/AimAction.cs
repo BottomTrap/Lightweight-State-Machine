@@ -26,7 +26,7 @@ public class AimAction : StateAction
         playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
         playerMovement.drawcrosshair = true;
         states.cameraScript.AimView();
-        playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", true);
+        //playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", true);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             states.SetState(menuState);
@@ -36,7 +36,7 @@ public class AimAction : StateAction
         if (Input.GetKeyUp(KeyCode.Tab))
         {
             playerMovement.drawcrosshair = false;
-            playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", false);
+            //playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", false);
             states.SetState(actionState);
             return true;
         }

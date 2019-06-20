@@ -20,9 +20,24 @@ public class GameModeManager : StateManager
     public Transform playerTransform;
     public EnemyUnits enemyUnitsScript;
     public PlayerUnits playerUnitsScript;
+    public Transform CP;
 
+    private Transform[] cp;
+    public List<Transform> cpList;
+    private void Awake()
+    {
+        //cameraScript = Camera.main.GetComponent<CameraScript>();
 
-   
+        cp = CP.GetComponentsInChildren<Transform>();
+        foreach (Transform cpIcon in cp)
+        {
+            if (cpIcon != CP)
+            {
+                cpList.Add(cpIcon.transform);
+            }
+        }
+    }
+
     protected override void Init()
     {
 
@@ -211,6 +226,19 @@ public class GameModeManager : StateManager
         Application.Quit();
     }
 
+    public void UpdateCP()
+    {
+        cpList[commandPoints].gameObject.SetActive(false);
+    }
+
+    public void ResetCP()
+    {
+        foreach (Transform cpIcon in cpList)
+        {
+            cpIcon.gameObject.SetActive(true);
+        }
+    }
+
     private void FixedUpdate()
     {
         FixedTick();
@@ -223,5 +251,8 @@ public class GameModeManager : StateManager
         {
             Time.timeScale = 1;
         }
+
+        
+        
     }
 }

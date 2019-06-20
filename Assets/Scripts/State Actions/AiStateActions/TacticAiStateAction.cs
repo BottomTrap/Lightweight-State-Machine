@@ -27,6 +27,7 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
+        states.CP.gameObject.SetActive(false);
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
@@ -39,26 +40,24 @@ public class TacticAiStateAction : StateAction
             {
                 if (g)
                 g.GetComponent<AI>().hasPlayed = false;
-               // g.GetComponent<AI>().score = 0;
+               
             }
             states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
             Debug.Log(states.enemyUnitsScript.commandPoints);
         }
-        //if (enemyManager.previousState == enemyManager.GetState(actionAiState))
-        //{
-        //    foreach (Transform g in enemyManager.enemyUnitsScript.UnitsList)
-        //    {
-        //        g.GetComponent<AI>().score = 0;
-        //        Debug.Log("IS THIS WORKING???");
-        //    }
-        //   
-        //}
+     
+
+
+
+
         if (states.enemyUnitsScript.commandPoints <= 0 || AllPlayed(states.enemyUnitsScript.UnitsList))
         {
+            states.CP.gameObject.SetActive(true);
+            states.ResetCP();
             states.SetState(tacticState);
             return true;
         }
-        //enemyManager.cameraScript.IsoCameraTransition();
+        
 
 
 

@@ -12,6 +12,8 @@ namespace RG
         public List<Collider> colliders = new List<Collider>();
         public List<Transform> Visibles = new List<Transform>();
 
+        public Transform damagePopUpPrefab;
+
         private NavMeshAgent navAgent;
         public enum AiModes
         {
@@ -80,7 +82,7 @@ namespace RG
                 Death();
             }
 
-            Debug.Log(Vector3.Distance(transform.position, target.position + offset) > 1.0f);
+            
         }
 
         public bool PathComplete(Vector3 target)
@@ -210,11 +212,14 @@ namespace RG
         {
             if (other.gameObject.tag == "PlayerWeapon")
             {
-                if (other.GetComponentInParent<PlayerMovement>().didHit == true && other.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                if (other.GetComponentInParent<PlayerMovement>().didHit == true && other.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                 {
 
                     stats.startHealth -= 1 / other.GetComponentInParent<PlayerStats>().GunStrength.Value;
                     Debug.Log(stats.startHealth);
+                    Transform damagePopUpTransform = Instantiate(damagePopUpPrefab, transform.position, Quaternion.identity);
+                    DamagePopUp damagePopUp = damagePopUpTransform.GetComponent<DamagePopUp>();
+                    damagePopUp.Setup(1 / other.GetComponentInParent<PlayerStats>().GunStrength.Value);
 
                 }
             }

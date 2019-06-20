@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour
 {
+    
+    public Image[] cpImages;
+
+  
     
     // Start is called before the first frame update
     void Start()
@@ -15,6 +20,6 @@ public class UiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
