@@ -5392,6 +5392,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  khlat: 0
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16287,7 +16288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1682652466, guid: ff69276bf0e4c0d49b87ff4382be05e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.46
+      value: -0.94
       objectReference: {fileID: 0}
     - target: {fileID: 1682652466, guid: ff69276bf0e4c0d49b87ff4382be05e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19660,6 +19661,8 @@ MonoBehaviour:
   enemyUnitsScript: {fileID: 1816594651}
   playerUnitsScript: {fileID: 568715153}
   CP: {fileID: 7141862673437421209}
+  APBar: {fileID: 7141862673023080923}
+  HPBar: {fileID: 0}
   cpList: []
 --- !u!4 &6327507462517001826 stripped
 Transform:
