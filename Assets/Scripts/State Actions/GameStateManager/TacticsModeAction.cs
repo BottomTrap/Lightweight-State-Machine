@@ -24,7 +24,7 @@ public class TacticsMode : StateAction
 
     public override bool Execute()
     {
-       
+        states.cameraScript.IsoCameraTransition();
         Debug.Log("tactics");
         states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
         
@@ -35,24 +35,21 @@ public class TacticsMode : StateAction
         }
 
         //states.playerTransform = states.cameraScript.PlayerClicked(states.commandPoints);
-       states.cameraScript.IsoMovement();
+        
+        states.cameraScript.IsoMovement();
+       
         if (states.cameraScript.PlayerClicked(states.commandPoints) && states.currentState == states.GetState("tacticState") ) //change key down to player selected or something
         {
+            states.cameraScript.khlat = false;
             states.cameraScript.CameraTransition(states.cameraScript.playerTransform);
-            //states.cameraScript.CameraMovement(states.cameraScript.PlayerClicked(states.commandPoints)); //I want to update this!!
-            //Debug.Log(states.currentState);
+            states.cameraScript.CameraMovement(states.cameraScript.playerTransform); //I want to update this!!
             states.commandPoints -= 1;
             states.UpdateCP();
-
-            // §§§§ DO THE COMMAND POINTS REMOVE FROM THE UI
             states.SetState(perspectiveState);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.Escape) ) //change key down to menu input pressed
         {
-            //Debug.Log("ortho state");
-            //states.cameraScript.orthoOn = true;
-            //states.cameraScript.IsoCameraTransition();
             states.SetState(menuState);
             return true;
         }

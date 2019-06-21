@@ -91,8 +91,8 @@ namespace RG
             //Third Person Camera Stuff
             offset = new Vector3(-1, 1.6f, -3);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
-           
-           
+
+            khlat = true;
            
 
         }
@@ -121,74 +121,92 @@ namespace RG
             //    }
 
             //StartCoroutine(MoveObject(transform.position, playerTransform.position - offset, 1f));
-            float angle = target.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0, angle, 0);
 
-            GetComponentInParent<Transform>().position = Vector3.MoveTowards(GetComponentInParent<Transform>().position, target.position + rotation * offset, 10.0f);
+
+             float angle = target.eulerAngles.y;
+             Quaternion rotation = Quaternion.Euler(0, angle, 0);
+            //
+            // transform.position = Vector3.MoveTowards(GetComponentInParent<Transform>().position, target.position + rotation * offset, 10.0f);
+
+            StartCoroutine(MoveTo(this.transform, target.position +rotation* offset,15.0f)); 
         }
 
-        IEnumerator MoveObject(Vector3 source, Vector3 target, float overTime)
+        public bool khlat = true;
+        IEnumerator MoveTo(Transform mover, Vector3 destination, float speed)
         {
-            float startTime = Time.time;
-            while (Time.time < startTime + overTime)
+            // This looks unsafe, but Unity uses
+            // en epsilon when comparing vectors.
+            while (mover.position != destination)
             {
-                transform.position = Vector3.MoveTowards(source, target, Time.deltaTime);
-                transform.LookAt(target);
+                mover.position = Vector3.MoveTowards(
+                    mover.position,
+                    destination,
+                    speed * Time.deltaTime);
+                // Wait a frame and move again.
                 yield return null;
             }
-            transform.position = target;
+            yield return khlat = true;
         }
 
         public void  IsoCameraTransition()
         {
-            float currentTime=0;
-            float totalTime = 1f;
-            while (currentTime < totalTime)
-            {
-                
-                GetComponentInParent<Transform>().position = Vector3.Lerp(transform.position, oldTransform.position, curve.Evaluate(currentTime / totalTime));
-                GetComponentInParent<Transform>().LookAt(playerTransform);
-                currentTime += Time.deltaTime;
-                
-            }
+            //GetComponentInParent<Transform>().position = Vector3.MoveTowards(transform.position, oldTransform.position, Time.deltaTime);
+            //khlat = false;
+            //if (transform != oldTransform)
+            //{
+            khlat = false;
+                StartCoroutine(MoveTo(this.transform, oldTransform.position, 15.0f));
+                //GetComponentInParent<Transform>().LookAt(playerTransform);
+            //}
             
         }
 
         public void CameraMovement(Transform target) //player follow !! to make after we made camera transition
         {
-            // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
-            GetComponentInParent<Transform>().position = target.position + offset;
-            float angle = target.eulerAngles.y;
-            Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            GetComponentInParent<Transform>().position = target.position + rotation * offset;
+            if (khlat)
+            {
+                StopCoroutine("MoveTo");
+                // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
+                transform.position = target.position + offset;
+                float angle = target.eulerAngles.y;
+                Quaternion rotation = Quaternion.Euler(0, angle, 0);
+                transform.position = target.position + rotation * offset;
+            }
         }
 
         public void IsoMovement()
         {
+            Debug.Log(khlat);
             //Keyboard Scroll
-
-            float translationX = Input.GetAxis("Horizontal");
-            float translationY = Input.GetAxis("Vertical") ;
-            float fastTranslationX = 2 * Input.GetAxis("Horizontal");
-            float fastTranslationY = 2 * Input.GetAxis("Vertical");
-            Vector3 dir = new Vector3(translationX, translationY, translationY);
-            if (Input.GetKey(KeyCode.LeftShift))
+            
+            if (khlat)
             {
-                GetComponentInParent<Transform>().Translate(fastTranslationX, 0, fastTranslationY, Space.Self);
-            }
-            else
-            {
-               transform.Translate(dir, Space.Self);
-            }
+                StopCoroutine("MoveTo");
+                Debug.Log("khlat.?");
+                float translationX = Input.GetAxis("Horizontal");
+                float translationY = Input.GetAxis("Vertical");
+                float fastTranslationX = 2 * Input.GetAxis("Horizontal");
+                float fastTranslationY = 2 * Input.GetAxis("Vertical");
+                Vector3 dir = new Vector3(translationX, translationY, translationY);
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    GetComponentInParent<Transform>().Translate(fastTranslationX, 0, fastTranslationY, Space.Self);
+                }
+                else
+                {
+                    transform.Translate(dir, Space.Self);
+                }
 
 
-            if (Input.GetMouseButton(1))
-            {
-                float mouseTranslationX = Input.GetAxis("Mouse X");
-                Vector3 rot = GetComponentInParent<Transform>().forward * -mouseTranslationX * rotateSpeed;
-                //transform.Rotate(axis: new Vector3(0, 1, 0), angle: translationX * scrollSpeed * Time.deltaTime,Space.Self);
-                //GetComponentInParent<Transform>().Rotate(new Vector3(0, translationX, 0), Space.Self);
-                transform.RotateAround(transform.position,Vector3.up, mouseTranslationX);
+                if (Input.GetMouseButton(1))
+                {
+                    float mouseTranslationX = Input.GetAxis("Mouse X");
+                    float mouseTranslationY = Input.GetAxis("Mouse Y");
+                    //Vector3 rot = GetComponentInParent<Transform>().forward * -mouseTranslationX * rotateSpeed;
+                    transform.RotateAround(transform.position, Vector3.up, mouseTranslationX);
+                    //Vector3 rotY = GetComponentInParent<Transform>().up * -mouseTranslationY * rotateSpeed;
+                    transform.Rotate(Vector3.right, mouseTranslationY);
+                }
             }
         }
 

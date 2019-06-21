@@ -31,9 +31,10 @@ public class MenuAction : StateAction
             states.endTurnPrompt.gameObject.SetActive(true);
             if (states.endTurn)
             {
-            
+                states.cameraScript.khlat = false;
                 Time.timeScale = 1.0f;
-                states.cameraScript.IsoCameraTransition();
+                
+                //states.cameraScript.IsoCameraTransition();
 
                 states.SetState(isoState);
                 states.endTurnPrompt.gameObject.SetActive(false);

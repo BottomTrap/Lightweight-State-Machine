@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RG;
 
-public class ActionMode : StateAction
+public class ActionModeAction : StateAction
 {
     private GameModeManager states;
     private readonly string aimState;
@@ -16,7 +16,7 @@ public class ActionMode : StateAction
     private PlayerStats playerStats;
     
 
-    public ActionMode(GameModeManager gameStates, string aimState, string isoState, string menuState)
+    public ActionModeAction(GameModeManager gameStates, string aimState, string isoState, string menuState)
     {
         this.states = gameStates;
         this.aimState = aimState;
@@ -44,6 +44,8 @@ public class ActionMode : StateAction
         
         playerMovement.Rotate();
         playerMovement.Movement();
+
+        
         
 
         if (!playerMovement.didHit)

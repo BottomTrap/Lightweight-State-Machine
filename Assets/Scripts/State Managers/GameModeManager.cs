@@ -21,6 +21,8 @@ public class GameModeManager : StateManager
     public EnemyUnits enemyUnitsScript;
     public PlayerUnits playerUnitsScript;
     public Transform CP;
+    public Transform APBar;
+    public Transform HPBar;
 
     private Transform[] cp;
     public List<Transform> cpList;
@@ -36,6 +38,8 @@ public class GameModeManager : StateManager
                 cpList.Add(cpIcon.transform);
             }
         }
+
+
     }
 
     protected override void Init()
@@ -76,7 +80,7 @@ public class GameModeManager : StateManager
         State ActionState = new State(
             new StateAction[]
             {
-                new ActionMode(this,"aimState","tacticState","menuState")
+                new ActionModeAction(this,"aimState","tacticState","menuState")
             },
             new StateAction[]
             {
@@ -238,6 +242,16 @@ public class GameModeManager : StateManager
             cpIcon.gameObject.SetActive(true);
         }
         Debug.Log(commandPoints);
+    }
+
+    public void UpdateAP (float ap)
+    {
+
+    }
+
+    public void ResetAP()
+    {
+
     }
 
     private void FixedUpdate()
