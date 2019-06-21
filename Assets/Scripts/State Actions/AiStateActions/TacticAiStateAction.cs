@@ -80,21 +80,11 @@ public class TacticAiStateAction : StateAction
         Debug.Log("CHOSEN TRANSFORM SCORE" + " " + states.enemyUnitsScript.ChooseUnitTurn().name + " " + states.enemyUnitsScript.ChooseUnitTurn().GetComponent<AI>().score);
         states.SetState(actionAiState);
 
-
-        //choose the enemy unit
-        //do camera thing to it
-        //go to ActionAiState
+        
         return true;
 
 
-        //if esc or smth is pressed :
-        //pause game (time.timescale = 0)
-        //go to menuState (zeyda , so nooooo)
-        //show menu 
-        //return true
-
-        //if s or smth is being pressed
-        //do the speed up thing (time.timescale =1.1 or smth)
+        
 
     }
 

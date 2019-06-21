@@ -11,13 +11,11 @@ public class Skills : MonoBehaviour
     private PlayerStats playerStats;
     private AI ai;
 
+
+    //bullet related variables
     public GameObject bullet;
-
-    
-
     bool isCreated = false;
 
-    GameObject[] spawnCount;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -25,21 +23,19 @@ public class Skills : MonoBehaviour
         ai = GetComponent<AI>();
         
     }
+
+
     public IEnumerator Attack()
     {
         
         if (!ai.hasPlayed){
-            //var weaponAnim = transform.GetChild(1).GetComponent<Animator>();
             animator.SetTrigger("Stab");
-        Debug.Log("EnemyAttack");
-        yield return StartCoroutine(ai.HasPlayed(Attack())) ;
+            yield return StartCoroutine(ai.HasPlayed(Attack())) ;
         }
     }
 
-    public IEnumerator RangedAttack()
+    public IEnumerator RangedAttack() //Instantiates a bullet and projects it to the Enemy
     {
-
-        
         if (!ai.hasPlayed && !isCreated) {
             var heading = ai.target.position - transform.position;
             var rotation = Quaternion.LookRotation(heading);
@@ -59,8 +55,8 @@ public class Skills : MonoBehaviour
     public IEnumerator Cure()
     {
         if (!ai.hasPlayed){
-        Debug.Log("Enemy Casted cure on itself");
-        yield return StartCoroutine(ai.HasPlayed(Cure()));
+            playerStats.Health.BaseValue += 1.5f;
+            yield return StartCoroutine(ai.HasPlayed(Cure()));
         }
     }
 
@@ -106,22 +102,5 @@ public class Skills : MonoBehaviour
             Debug.Log("Critical Hit Up");
             yield return StartCoroutine(ai.HasPlayed(CriticalHitUp()));
         }
-    }
-
-    public IEnumerator PassiveRangedAttack()
-    {
-        Debug.Log("passive ranged attack");
-        transform.LookAt(ai.target.position);
-        var heading = ai.target.position - transform.position;
-        var rotation = Quaternion.LookRotation(heading);
-        var projectile = Instantiate(bullet, transform.position, rotation);
-        //bullet.transform.position = transform.position;
-        //get the source of the bullet
-        projectile.GetComponent<Bullet>().shooter = this.gameObject;
-        projectile.transform.LookAt(ai.target);
-        projectile.GetComponent<Rigidbody>().AddForce(heading * 5.0f, ForceMode.Impulse);
-        //projectile.GetComponent<Rigidbody>().velocity = transform.TransformDirection(heading * 5.0f);
-        Destroy(projectile, 3);
-        yield return new WaitForSeconds(1.5f);
     }
 }

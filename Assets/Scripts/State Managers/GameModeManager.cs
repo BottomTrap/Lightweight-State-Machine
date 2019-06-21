@@ -237,6 +237,7 @@ public class GameModeManager : StateManager
         {
             cpIcon.gameObject.SetActive(true);
         }
+        Debug.Log(commandPoints);
     }
 
     private void FixedUpdate()

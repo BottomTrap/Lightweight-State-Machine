@@ -54,10 +54,8 @@ namespace RG
             aiModes = AiModes.Attack; //Default AI Mode;
             skills = GetComponent<Skills>();
             stats = GetComponent<PlayerStats>();
-
             gameModeManager = FindObjectOfType<GameModeManager>();
 
-            //target.position = Vector3.zero;
         }
 
         private void Start()
@@ -74,8 +72,6 @@ namespace RG
             {
                 distanceTraveled = 0;
             }
-            //offset = Vector3.zero;
-
 
             if (stats.startHealth <= 0.0f)
             {
@@ -99,56 +95,31 @@ namespace RG
             }
             else
                 return false;
-        }
+        } //Checks if the path chosen is a valid one
     
         public IEnumerator Move(Transform target, IEnumerator nextMove) //Using a coroutine to wait the enemy to finish moving then attack
         {
-
             yield return new WaitForSeconds(1);
-
-            
-                
-                
                 finalTarget = target.position - offset;
                 navAgent.speed = GetComponent<PlayerStats>().Speed.Value;
-                //navAgent.destination = finalTarget;
-                //navAgent.isStopped = false;
-                //transform.position = Vector3.MoveTowards(transform.position, finalTarget, 0.02f);
                 navAgent.SetDestination(finalTarget);
             navAgent.stoppingDistance = 3.0f;
                 navAgent.isStopped = false;
                 GetComponent<Animator>().SetBool("Running", true);
-                Debug.Log("Couroutine?");
-                //Quaternion rotation = Quaternion.LookRotation(direction);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1 / GetComponent<PlayerStats>().Speed.Value * 0.02f);
                 transform.LookAt(target);
-            
-            
             if (!navAgent.pathPending)
             {
-                Debug.Log("is this" + navAgent.pathPending);
                 if (navAgent.remainingDistance <= navAgent.stoppingDistance)
                 {
-                    Debug.Log("and is this? " + (navAgent.remainingDistance <= navAgent.stoppingDistance));
                     if (!navAgent.hasPath || navAgent.velocity.sqrMagnitude == 0f)
                     {
-                        Debug.Log("path?" + navAgent.hasPath);
-                        Debug.Log("vel? " + (navAgent.velocity.sqrMagnitude == 0f));
-                        Debug.Log("wseltchi");
                         GetComponent<Animator>().SetBool("Running", false);
                         navAgent.isStopped = true;
-                        //yield return new WaitForSeconds(0.2f);
                         yield return StartCoroutine(nextMove);
-                        
-                        
                     }
-                    
                 }
             }
-
-
             yield return null;
-
         }
 
         public IEnumerator HasPlayed(IEnumerator cor)
@@ -160,8 +131,8 @@ namespace RG
                 hasPlayed = true;
                 yield return null;
             }
-            
-        }
+        }  // ** Checks if the unit has finished playing to set the hasPlayed bool 
+        // ** , when all has played, it goes to the next state 
 
         public void Action()
         {
@@ -169,37 +140,30 @@ namespace RG
             {
                 case AiModes.Attack:
                     StartCoroutine(Move(target,skills.Attack()));
-                    //StartCoroutine(skills.Attack());
                     if (hasPlayed){
                         StopAllCoroutines();
                     }
-                    //StartCoroutine(HasPlayed());
-                    //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.Cure:
                     StartCoroutine(skills.Cure());
-                    //StartCoroutine(HasPlayed());
                     if (hasPlayed){
                         StopAllCoroutines();
                     }
-                    //hasPlayed = true;
                     score = 0;
                     break;
                 case AiModes.RangedAttack:
                     StartCoroutine(Move(target,skills.RangedAttack()));
-                    //StartCoroutine(skills.RangedAttack());
                     if (hasPlayed){
                         StopAllCoroutines();
                     }
-                    //hasPlayed = true;
                     score = 0;
                     break;
             }
 
-        }
+        } //switch method to choose between different actions (attack, cure, ranged attack etc)
 
-        void OnDrawGizmosSelected()
+        void OnDrawGizmosSelected() //This will help show me the range of the enemy, in editor
         {
             var AP = GetComponent<PlayerStats>().AP.Value;
             var range = GetComponent<PlayerStats>().Range.Value;
@@ -231,20 +195,13 @@ namespace RG
                     {
                         stats.startHealth -= 1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().Strength.Value;
                         Debug.Log(stats.startHealth);
-                    }
+                        Transform damagePopUpTransform = Instantiate(damagePopUpPrefab, transform.position, Quaternion.identity);
+                        DamagePopUp damagePopUp = damagePopUpTransform.GetComponent<DamagePopUp>();
+                        damagePopUp.Setup(1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().Strength.Value);
+                }
             }
             
-        }
-
-
-        bool isPlaying(Animator anim, string stateName)
-        {
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName) ||
-                    anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-                return true;
-            else
-                return false;
-        }
+        } //Collision detection for damage dealt to the unit
 
         void Death()
         {
@@ -252,62 +209,7 @@ namespace RG
             GetComponent<Animator>().SetBool("Death", true);
             this.GetComponent<CapsuleCollider>().enabled = false;
 
-        }
+        } //Self Explanatory
 
-      //public void PassiveActions(Transform enemy)
-      //{
-      //    if( playersInView.Contains(enemy)){
-      //            target = enemy;
-      //            StartCoroutine(skills.PassiveRangedAttack());
-      //        }
-      //    
-      //}
-
-
-    
-      // public void PassiveActions()
-      // {
-      //     var cam = GetComponentInChildren<Camera>();
-      //     List<Vector3> pointsPlayerInView= new List<Vector3>();
-      //     foreach (Transform player in playersInView)
-      //     {
-      //         pointsPlayerInView.Add(cam.WorldToScreenPoint(player.GetComponentInChildren<Renderer>().bounds.center));
-      //
-      //     }
-      //
-      //     foreach (Vector3 pointOnScreen in pointsPlayerInView)
-      //     {
-      //         if (pointOnScreen.z < 0)
-      //         {
-      //             //Debug.Log("Behind: " + toCheck.name);
-      //             continue;
-      //         }
-      //
-      //         //Is in FOV
-      //         if ((pointOnScreen.x < 0) || (pointOnScreen.x > (float)cam.pixelWidth) ||
-      //                 (pointOnScreen.y < 0) || (pointOnScreen.y > (float)cam.pixelHeight))
-      //         {
-      //            // Debug.Log("OutOfBounds: " + toCheck.name);
-      //             continue;
-      //         }
-      //
-      //         RaycastHit hit;
-      //         Vector3 heading = pointOnScreen - transform.position;
-      //         Vector3 direction = heading.normalized;// / heading.magnitude;
-      //
-      //         if (Physics.Linecast(cam.transform.position,pointOnScreen, out hit))
-      //         {
-      //             if (hit.transform.tag == "EnemyUnit" || hit.transform.tag == "PlayerUnit" || hit.transform.tag == "Weapon" || hit.transform.tag == "PlayerWeapon")
-      //             {
-      //                 target = hit.transform;
-      //                 StartCoroutine(skills.PassiveRangedAttack());
-      //             }
-      //             else
-      //                 continue;
-      //         }
-      //     }
-      //
-      // }
-      //
     }
 }

@@ -31,12 +31,11 @@ public class ActionAiStateAction : StateAction
         Debug.Log("AI ACTION");
         if (states.enemyUnitsScript.currentUnit != null)
         {
-            //enemyPhaseManager.cameraScript.StartCoroutine(enemyPhaseManager.cameraScript.CameraTransition(enemyPhaseManager.enemyUnitsScript.currentUnit));
-            //Debug.Log("command points"+enemyPhaseManager.enemyUnitsScript.commandPoints);
+            
             var AI = states.enemyUnitsScript.currentUnit.GetComponent<AI>();
-            //camera follow the action happening
+            
             AI.Action();
-            //AI.hasPlayed = true;
+           
             
         }
         else states.enemyUnitsScript.commandPoints = 0;

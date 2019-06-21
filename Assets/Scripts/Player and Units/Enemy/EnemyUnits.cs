@@ -54,15 +54,14 @@ public class EnemyUnits : MonoBehaviour
     }
 
 
-
+    //Get a rabdom point on an endge of a circle (not inside the circle) so that the enemies will be randomly around the player
     private Vector3 RandomPointOnCircleEdge(float radius)
 {
     var vector2 = Random.insideUnitCircle.normalized * radius;
     return new Vector3(vector2.x, 0, vector2.y);
 }
 
- 
-   // }
+  
     //** A function that goes through the visible PlayerUnits of every EnemyUnit (the children)
     public Transform ChooseUnitTurn()
     {
@@ -121,6 +120,7 @@ public class EnemyUnits : MonoBehaviour
     }
 
 
+    //Functions that determine the Enemy's choice , could easily be modified
     #region EnemyAIChoiceFactors
     public int hasPlayed(Transform unit)
     {
@@ -268,11 +268,6 @@ public class EnemyUnits : MonoBehaviour
     }
     #endregion
 
-
-
-
-
-
     //TO START EVERYTIME WE WANT TO CHOOSE A UNIT TO USE // MEANING BEFORE ChooseUnitTurn() 
 
     public void GetPlayersInRange()
@@ -306,8 +301,8 @@ public class EnemyUnits : MonoBehaviour
         {
             if (UnitsList[j])
             {
-               UnitsList[j].GetComponent<AI>().playersInView = new List<Transform>();
-               var transformList = UnitsList[j].GetComponent<AI>().playersInView; 
+               UnitsList[j].GetComponent<AI>().playersInView = new List<Transform>(); // reinitializes the List of players in view
+               var transformList = UnitsList[j].GetComponent<AI>().playersInView;  
                for (int i = 0; i < SeenPlayersTransforms.Count; i++)
                 {
                     if (IsInView(UnitsList[j].gameObject, SeenPlayersTransforms[i].gameObject) && !transformList.Contains(SeenPlayersTransforms[i]))
@@ -322,6 +317,8 @@ public class EnemyUnits : MonoBehaviour
        
     }
 
+
+    //Uses the borders of the camera inside each enemy and checks between them for the player with a raycast
     private bool IsInView(GameObject origin, GameObject toCheck)
     {
         var cam = origin.GetComponentInChildren<Camera>();
