@@ -165,6 +165,7 @@ namespace RG
                     DamagePopUp damagePopUp = damagePopUpTransform.GetComponent<DamagePopUp>();
                     damagePopUp.Setup(1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().GunStrength.Value);
                     Debug.Log(playerstats.startHealth);
+                    statesManager.UpdateHp(1 / other.GetComponent<Bullet>().shooter.GetComponent<PlayerStats>().GunStrength.Value, playerstats.Health.Value);
                 }
             }
             if (other.gameObject.tag == "Weapon" && other.GetComponentInParent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Stab"))

@@ -36,6 +36,12 @@ public class MenuAction : StateAction
                 
                 //states.cameraScript.IsoCameraTransition();
 
+                foreach(Transform playerUnits in states.playerUnitsScript.playerUnitsTransformList)
+                {
+                    playerUnits.GetComponent<PlayerMovement>().distanceTraveled = 0f;
+                    
+                }
+
                 states.SetState(isoState);
                 states.endTurnPrompt.gameObject.SetActive(false);
                 return true;
@@ -48,20 +54,19 @@ public class MenuAction : StateAction
         
         }
 
-        //if (gameManager.previousState == gameManager.GetState("actionState"))
-        //{
-        //    gameManager.cameraScript.IsoCameraTransition();
-        //    
-        //    gameManager.SetState(isoState);
-        //}
         if (states.previousState == states.GetState("tacticState"))
         {
             Debug.Log("escappe");
             states.endPhasePrompt.gameObject.SetActive(true);
             //Activates the end PHASE Menu prompt, that leads the game into enemy phase
-            //Leads to "Watch State" Until GAME AI Finishes
             if (states.endPhase)
             {
+                foreach (Transform playerUnits in states.playerUnitsScript.playerUnitsTransformList)
+                {
+                    playerUnits.GetComponent<PlayerMovement>().distanceTraveled = 0f;
+                    states.ResetAP();
+                }
+                states.commandPoints = states.originalCommandPoints;
                 states.endPhasePrompt.gameObject.SetActive(false);
                 states.SetState(enemyState);
                 return true;

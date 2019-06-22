@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using RG;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameModeManager : StateManager
 {
@@ -11,6 +12,7 @@ public class GameModeManager : StateManager
     public PlayerMovement playerScript;
     public EnemyUnits enemyAiScript;
     public int commandPoints;
+    public int originalCommandPoints;
     public bool endTurn = false;
     public bool endPhase = false;
     public bool menu = false;
@@ -21,15 +23,26 @@ public class GameModeManager : StateManager
     public EnemyUnits enemyUnitsScript;
     public PlayerUnits playerUnitsScript;
     public Transform CP;
-    public Transform APBar;
-    public Transform HPBar;
+    public Image APBar;
+    public Image HPBar;
+
+    public Image RouninHead;
+    public Image KunoichiHead;
+    private RectTransform currentPlayerUiTransform;
+    private RectTransform nonPlayingUnitUiTransform;
+    private Color nonPlayingUnitUiColor;
+    private Color currentPlayerUiColor;
 
     private Transform[] cp;
     public List<Transform> cpList;
+
+    private Vector3 originalApSize;
     private void Awake()
     {
-        //cameraScript = Camera.main.GetComponent<CameraScript>();
+        //this variable to be able to reset command points after each phase
+        originalCommandPoints = commandPoints;
 
+        //Stuff to deal with CP UI
         cp = CP.GetComponentsInChildren<Transform>();
         foreach (Transform cpIcon in cp)
         {
@@ -39,6 +52,14 @@ public class GameModeManager : StateManager
             }
         }
 
+        //Stuff to deal with AP Ui
+        originalApSize = APBar.rectTransform.localScale;
+
+        //Stuff to deal with HP Ui
+        currentPlayerUiTransform = RouninHead.rectTransform;
+        currentPlayerUiColor.a = RouninHead.color.a;
+        nonPlayingUnitUiColor.a = KunoichiHead.color.a;
+        nonPlayingUnitUiTransform = KunoichiHead.rectTransform;
 
     }
 
@@ -233,7 +254,7 @@ public class GameModeManager : StateManager
     public void UpdateCP()
     {
         cpList[commandPoints].gameObject.SetActive(false);
-    }
+    } // Updates Command points during player phase
 
     public void ResetCP()
     {
@@ -242,15 +263,51 @@ public class GameModeManager : StateManager
             cpIcon.gameObject.SetActive(true);
         }
         Debug.Log(commandPoints);
-    }
+    }   // Resets Command Points after player phase is over
 
-    public void UpdateAP (float ap)
+    public void UpdateAP (float distanceTraveled, float maxAp)
     {
-
-    }
+        float currentAp = maxAp - distanceTraveled;
+        float ratio = currentAp / maxAp ;
+        APBar.rectTransform.localScale = new Vector3(ratio* APBar.rectTransform.localScale.x, APBar.rectTransform.localScale.y, APBar.rectTransform.localScale.z);
+    } //Updates AP during player turn (during movement)
 
     public void ResetAP()
     {
+        APBar.rectTransform.localScale= new Vector3(originalApSize.x, originalApSize.y, originalApSize.z);
+    } //Resets AP after player TURN is over
+
+    public void UpdateHp(float hpChange , float maxHP) //Updates player HP to show on UI during all turns
+    {
+        float currentHp = maxHP + hpChange; //NOTE FOR DAMAGE : PARAMETER MUST BE NEGATIVE
+        float ratio = currentHp / maxHP;
+        HPBar.rectTransform.localScale = new Vector3(ratio * HPBar.rectTransform.localScale.x, HPBar.rectTransform.localScale.y, HPBar.rectTransform.localScale.z);
+
+    }
+
+    public void ChangeHp(Transform currentPlayer) //Changes whose player Unit HP to show during that turn (including the head icon UI) //Change only the head, the bar changes with UpdateHP method
+    {
+        if (currentPlayer.gameObject.name == "Rounin")
+        {
+            RouninHead.rectTransform.position = currentPlayerUiTransform.position;
+            RouninHead.rectTransform.localScale = currentPlayerUiTransform.localScale;
+            RouninHead.color = currentPlayerUiColor;
+
+            KunoichiHead.rectTransform.position = nonPlayingUnitUiTransform.position;
+            KunoichiHead.rectTransform.localEulerAngles = nonPlayingUnitUiTransform.localScale;
+            KunoichiHead.color = nonPlayingUnitUiColor;
+        }
+        if (currentPlayer.gameObject.name == "Kunoichi")
+        {
+            KunoichiHead.rectTransform.position = currentPlayerUiTransform.position;
+            KunoichiHead.rectTransform.localEulerAngles = currentPlayerUiTransform.localScale;
+            KunoichiHead.color = currentPlayerUiColor;
+
+            RouninHead.rectTransform.position = nonPlayingUnitUiTransform.position;
+            RouninHead.rectTransform.localScale = nonPlayingUnitUiTransform.localScale;
+            RouninHead.color = nonPlayingUnitUiColor;
+
+        }
 
     }
 

@@ -30,22 +30,26 @@ public class ActionModeAction : StateAction
     {
 
         states.endTurn = false;
-       
+        
+        
+
         playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
         cameraScript = states.cameraScript;
         playerStats = states.cameraScript.playerTransform.GetComponent<PlayerStats>();
 
+
+        states.ChangeHp(states.cameraScript.playerTransform);
+        states.ResetAP();
         var enemyUnits = states.enemyUnitsScript.UnitsList;
         Debug.Log("this is actionState");
         states.cameraScript.CameraMovement(states.cameraScript.playerTransform);
-        //Debug.Log(playerMovement);
-        //gameStates.cameraScript.playerTransform.GetComponent<PlayerMovement>().Movement();
+        
        
         
         playerMovement.Rotate();
         playerMovement.Movement();
 
-        
+        states.UpdateAP(playerMovement.distanceTraveled , playerStats.AP.Value*10);
         
 
         if (!playerMovement.didHit)

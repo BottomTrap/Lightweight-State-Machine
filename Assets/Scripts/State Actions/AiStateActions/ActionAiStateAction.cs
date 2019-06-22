@@ -33,7 +33,6 @@ public class ActionAiStateAction : StateAction
         {
             
             var AI = states.enemyUnitsScript.currentUnit.GetComponent<AI>();
-            
             AI.Action();
            
             
