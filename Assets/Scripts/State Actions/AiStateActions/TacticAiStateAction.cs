@@ -27,13 +27,19 @@ public class TacticAiStateAction : StateAction
 
     public override bool Execute()
     {
+		//hides the player CP bar
         states.CP.gameObject.SetActive(false);
+		
+		//Activates the main menu
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
             states.mainMenu.gameObject.SetActive(true);
         }
-        Debug.Log("AI CHOICE");
+        
+		
+		//Resets the ai hasPlayed bool to flase if the previous state was the transition state
+		//also resets the ai command points 
         if (states.previousState == states.GetState(transitionState))
         {
             foreach (Transform g in states.enemyUnitsScript.UnitsList)
@@ -43,13 +49,14 @@ public class TacticAiStateAction : StateAction
                
             }
             states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
-            Debug.Log(states.enemyUnitsScript.commandPoints);
+           
         }
      
 
 
 
-
+		//Condition of exit for the TacticsAiState
+		//Condition is if all Units have played or AI command points reach zero
         if (states.enemyUnitsScript.commandPoints <= 0 || AllPlayed(states.enemyUnitsScript.UnitsList))
         {
             states.CP.gameObject.SetActive(true);
@@ -63,21 +70,21 @@ public class TacticAiStateAction : StateAction
 
 
         
-        Debug.Log("UNIT NUMBERS " + states.enemyUnitsScript.UnitsList.Count);
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Time.timeScale = 0;
-            
-            return false;
-        }
-
+        
+       
+		//Get transform from all child objects from EnemyUnits GameObject (which contains all enemy units)
         states.enemyUnitsScript.GetChildObjectsTransforms();
+		
+		//Get player units that are in range for all enemy units (in a List)
         states.enemyUnitsScript.GetPlayersInRange();
+		
+		//Get player units that are in view from all Units
         states.enemyUnitsScript.PlayersInViewTransforms();
 
-
+		//Choose Unit turn : uses the scoring system to determine which unit to use and what action to do
         states.enemyUnitsScript.currentUnit = states.enemyUnitsScript.ChooseUnitTurn();
-        Debug.Log("CHOSEN TRANSFORM SCORE" + " " + states.enemyUnitsScript.ChooseUnitTurn().name + " " + states.enemyUnitsScript.ChooseUnitTurn().GetComponent<AI>().score);
+        
+		//After unit is chosen
         states.SetState(actionAiState);
 
         
