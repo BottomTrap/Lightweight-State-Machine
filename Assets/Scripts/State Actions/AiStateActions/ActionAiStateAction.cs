@@ -23,39 +23,39 @@ public class ActionAiStateAction : StateAction
 
     public override bool Execute()
     {
+
+        //For MainMenu
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
             states.mainMenu.gameObject.SetActive(true);
         }
-        Debug.Log("AI ACTION");
+
+        //Checks if there is even a chosen Unit from the TacticsAiState
         if (states.enemyUnitsScript.currentUnit != null)
         {
             
             var AI = states.enemyUnitsScript.currentUnit.GetComponent<AI>();
+            //Do the chosen AI action based on the calculated score in the EnemyUnits script
             AI.Action();
            
             
         }
-        else states.enemyUnitsScript.commandPoints = 0;
+        else states.enemyUnitsScript.commandPoints = 0; //If there is no chosen unit, then there is not usable units so we put command points to zero so we go to playerphase
 
-        //enemyPhaseManager.enemyUnitsScript.currentUnit.GetComponent<AI>().score = 0;
-
+        
+        //If the unit has played, remove one command point and go back to TacticsAiState for the next AI choice
         if (states.enemyUnitsScript.currentUnit.GetComponent<AI>().hasPlayed)
         {
             states.enemyUnitsScript.commandPoints -= 1;
             states.SetState(tacticAiState);
             return true;
         }
-        //make sure all the actions are being made 
-        //get unto tactics state after the unit finished its actions and some half a second delay
-        //IEnumarator? Coroutine? to be determined
-        //once it finishes, setState etc 
+
+        
         return true;
 
-        //the ability to push start during that
-        //stop the game and put out a prompt
-        //that prompt might be able to put the game unto a whole other scene or restart all of this
+        
         
     }
 }

@@ -28,30 +28,32 @@ public class ActionModeAction : StateAction
 
     public override bool Execute()
     {
-
+        //Turn is not ended so it's false
         states.endTurn = false;
-        
-        
 
+        //Sets the references for main scripts
         playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
         cameraScript = states.cameraScript;
         playerStats = states.cameraScript.playerTransform.GetComponent<PlayerStats>();
 
-
+        //Change Hp when it needs to
         states.ChangeHp(states.cameraScript.playerTransform);
+
+        //Resets AP as it's a new turn
         states.ResetAP();
-        var enemyUnits = states.enemyUnitsScript.UnitsList;
-        Debug.Log("this is actionState");
-        states.cameraScript.CameraMovement(states.cameraScript.playerTransform);
-        
+
+
+        //Follow the player
+        cameraScript.CameraMovement(states.cameraScript.playerTransform);
        
-        
+        //Player Controls
         playerMovement.Rotate();
         playerMovement.Movement();
 
+        //Update AP for the current chosen unit
         states.UpdateAP(playerMovement.distanceTraveled , playerStats.AP.Value*10);
         
-
+        //Attack
         if (!playerMovement.didHit)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -61,20 +63,25 @@ public class ActionModeAction : StateAction
                 
             }
         }
+
+        //enemies update the current units that are in their field of view
        states.enemyUnitsScript.PlayersInViewTransforms();
 
-
+        //go to menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             states.SetState(menuState);
             return true;
         }
+
+        //Go to Aim state
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             states.SetState(aimState);
             return true;
         }
         
+        //Go to Main menu screen
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;

@@ -4,7 +4,7 @@ using UnityEngine;
 using RG;
 
 [RequireComponent(typeof(PlayerStats))]
-//[RequireComponent(typeof(Animator))]
+
 public class Skills : MonoBehaviour
 {
     private Animator animator;

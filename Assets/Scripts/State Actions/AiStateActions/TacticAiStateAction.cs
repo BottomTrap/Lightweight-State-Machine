@@ -95,6 +95,8 @@ public class TacticAiStateAction : StateAction
 
     }
 
+
+    //Check if all units have played so we can go back to Player Phase
     bool AllPlayed(List<Transform> unitList)
     {
         foreach (Transform g in unitList)

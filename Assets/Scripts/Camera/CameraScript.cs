@@ -11,47 +11,25 @@ namespace RG
     {
         
         public GameModeManager statesManager;
-
-
-
-
-         public Transform playerTransform; //container to current player transform to follow during its actions phase
-
+        public Transform playerTransform; //container to current player transform to follow during its actions phase
        
-
-
-
-        [Header("Camera Control Variables")] public float rotateSpeed = 5f;
+        [Header("Camera Control Variables")]
+        public float rotateSpeed = 5f;
         public float mouseSensitivity = 10f;
+        public bool didCameraArrive = true;
 
-        [Header("AimView Stuff")] private float yaw;
+        [Header("AimView Stuff")]
+        public Vector2 pitchMinMax = new Vector2(-40, 85);
+        public Vector3 aimViewOffset;
+        public Transform rotator;
+        private float yaw;
         private float pitch;
         private Vector3 currentRotation;
 
-        public Vector3 playerOffset;
-        public float distanceFromOffset;
-        public Transform rotator;
-        public Transform target;
-
-        public Vector2 pitchMinMax = new Vector2(-40, 85);
-        public Vector2 yawMinMax = new Vector2(-50, 50);
-        public float rotationSmoothTime = 8f;
-        public Vector3 aimViewOffset;
 
         [SerializeField]
         public Vector3 offset; //Private variable to store the offset distance between the player and camera
-
         private Transform oldTransform; // old transform to retransition back into
-
-        public AnimationCurve curve;
-       
-        //private Animator animator;
-
-        private void Awake()
-        {
-            //animator = GetComponent<Animator>();
-            
-        }
 
 
         //Get the reference of the player clicked so that we can control him later on in the Action Mode.
@@ -81,61 +59,32 @@ namespace RG
                 else
 
                     return false;
-            
-            
         }
 
         void Start()
         {
             oldTransform = transform;
-            //Third Person Camera Stuff
+            //Third Person Camera offset
             offset = new Vector3(-1, 1.6f, -3);
             //Calculate and store the offset value by getting the distance between the player's position and camera's position.
 
-            khlat = true;
+            didCameraArrive = true; //For the smooth camera transition , wait if it arrived to go to next state
            
 
         }
 
 
-        public void CameraTransition(Transform target) // Cool looking lerp
+        public void CameraTransition(Transform target) // Starts Coroutine to begin a smooth transition using a Coroutine and MoveTowards
         {
-            //    float currentTime = 0;
-            //    float totalTime = 5.0f;
-            //    while (currentTime < totalTime)
-            //    {
-            //        
-            //        oldTransform = transform;
-            //        float angle = target.eulerAngles.y;
-            //        Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            //        Vector3 firstLerp =
-            //            new Vector3(target.position.x, target.position.y, GetComponentInParent<Transform>().position.z);
-            //        GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, firstLerp, curve.Evaluate(currentTime / totalTime));
-            //        GetComponentInParent<Transform>().position = Vector3.Lerp(GetComponentInParent<Transform>().position, target.position + offset, curve.Evaluate(
-            //            currentTime / totalTime));
-            //        //transform.LookAt(player.transform);
-            //        Vector3 direction = target.position - GetComponentInParent<Transform>().position;
-            //        Quaternion toRotation = Quaternion.FromToRotation(transform.forward, direction);
-            //        GetComponentInParent<Transform>().rotation = Quaternion.Lerp(transform.rotation, toRotation, curve.Evaluate(currentTime / totalTime));
-            //        currentTime += Time.deltaTime;
-            //    }
-
-            //StartCoroutine(MoveObject(transform.position, playerTransform.position - offset, 1f));
-
-
              float angle = target.eulerAngles.y;
              Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            //
-            // transform.position = Vector3.MoveTowards(GetComponentInParent<Transform>().position, target.position + rotation * offset, 10.0f);
-
             StartCoroutine(MoveTo(this.transform, target.position +rotation* offset,15.0f)); 
         }
 
-        public bool khlat = true;
+        
+        //This is a moveTo method for moving things OUTSIDE an Update
         IEnumerator MoveTo(Transform mover, Vector3 destination, float speed)
         {
-            // This looks unsafe, but Unity uses
-            // en epsilon when comparing vectors.
             while (mover.position != destination)
             {
                 mover.position = Vector3.MoveTowards(
@@ -145,25 +94,18 @@ namespace RG
                 // Wait a frame and move again.
                 yield return null;
             }
-            yield return khlat = true;
+            yield return didCameraArrive = true;
         }
 
-        public void  IsoCameraTransition()
+        public void  IsoCameraTransition() //Same as CamreaTransition but for reverting back to the old view 
         {
-            //GetComponentInParent<Transform>().position = Vector3.MoveTowards(transform.position, oldTransform.position, Time.deltaTime);
-            //khlat = false;
-            //if (transform != oldTransform)
-            //{
-            khlat = false;
-                StartCoroutine(MoveTo(this.transform, oldTransform.position, 15.0f));
-                //GetComponentInParent<Transform>().LookAt(playerTransform);
-            //}
-            
+            didCameraArrive = false;
+            StartCoroutine(MoveTo(this.transform, oldTransform.position, 15.0f));
         }
 
-        public void CameraMovement(Transform target) //player follow !! to make after we made camera transition
+        public void CameraMovement(Transform target) //player follow !!
         {
-            if (khlat)
+            if (didCameraArrive) //if camera arrived to transition destination, then start moving
             {
                 StopCoroutine("MoveTo");
                 // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
@@ -174,15 +116,14 @@ namespace RG
             }
         }
 
+
+        //IsoMetric Camera Controls at the beginning
         public void IsoMovement()
         {
-            Debug.Log(khlat);
-            //Keyboard Scroll
-            
-            if (khlat)
+            if (didCameraArrive)
             {
+                //Basic movement then basic rotation
                 StopCoroutine("MoveTo");
-                Debug.Log("khlat.?");
                 float translationX = Input.GetAxis("Horizontal");
                 float translationY = Input.GetAxis("Vertical");
                 float fastTranslationX = 2 * Input.GetAxis("Horizontal");
@@ -197,14 +138,11 @@ namespace RG
                     transform.Translate(dir, Space.Self);
                 }
 
-
                 if (Input.GetMouseButton(1))
                 {
                     float mouseTranslationX = Input.GetAxis("Mouse X");
                     float mouseTranslationY = Input.GetAxis("Mouse Y");
-                    //Vector3 rot = GetComponentInParent<Transform>().forward * -mouseTranslationX * rotateSpeed;
                     transform.RotateAround(transform.position, Vector3.up, mouseTranslationX);
-                    //Vector3 rotY = GetComponentInParent<Transform>().up * -mouseTranslationY * rotateSpeed;
                     transform.Rotate(Vector3.right, mouseTranslationY);
                 }
             }
@@ -214,14 +152,11 @@ namespace RG
 
         public void AimView()
         {
-            rotator = playerTransform.GetChild(2).transform;
-            //reticle or corshair or whatever control and appearance
-            // aim and orientation animation when models ready 
-            //that's about it
+            rotator = playerTransform.GetChild(2).transform; //Rotator is a sphere collider gameObject put inside the model's head
+            //Rotator to control the view from a head side  , control the rotation
             yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
             pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
-            //yaw = Mathf.Clamp(yaw, yawMinMax.x, yawMinMax.y);
             currentRotation = Vector3.Lerp(currentRotation, new Vector3(pitch, yaw,0), rotateSpeed* Time.deltaTime);
 
             GetComponentInParent<Transform>().eulerAngles = currentRotation;

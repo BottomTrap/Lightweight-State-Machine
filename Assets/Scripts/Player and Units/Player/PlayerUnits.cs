@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using RG;
 
-public class PlayerUnits : MonoBehaviour
+public class PlayerUnits : MonoBehaviour //This short script updates the number of player ALIVE that are inside the PlayerUnits Gameobject
 {
     private Transform[] playerUnitsArrayTransform;
     public List<Transform> playerUnitsTransformList;

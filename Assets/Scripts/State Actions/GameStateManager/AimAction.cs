@@ -25,14 +25,18 @@ public class AimAction : StateAction
         
         playerMovement = states.cameraScript.playerTransform.GetComponent<PlayerMovement>();
         playerMovement.drawcrosshair = true;
+        //Setting Aim Camera
         states.cameraScript.AimView();
-        //playerMovement.transform.GetChild(2).GetComponent<Animator>().SetBool("Aiming", true);
+        
+        //To go to menu state
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             states.SetState(menuState);
             return true;
         }
 
+
+        //To deactive crosshair
         if (Input.GetKeyUp(KeyCode.Tab))
         {
             playerMovement.drawcrosshair = false;
@@ -41,6 +45,8 @@ public class AimAction : StateAction
             return true;
         }
 
+
+        //To Attack
         if (!playerMovement.didHit)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -49,6 +55,8 @@ public class AimAction : StateAction
                 playerMovement.RangedAttack();
             }
         }
+
+        //For Main Menu
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;

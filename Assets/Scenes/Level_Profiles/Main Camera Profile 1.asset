@@ -17,6 +17,7 @@ MonoBehaviour:
   - {fileID: 114903784235513928}
   - {fileID: 114583488841822106}
   - {fileID: 114346854604222490}
+  - {fileID: 114736116298298238}
 --- !u!114 &114346854604222490
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -169,7 +170,7 @@ MonoBehaviour:
     value: 36
   mixerRedOutRedIn:
     overrideState: 1
-    value: 76
+    value: 109
   mixerRedOutGreenIn:
     overrideState: 0
     value: -28
@@ -177,8 +178,8 @@ MonoBehaviour:
     overrideState: 0
     value: 69
   mixerGreenOutRedIn:
-    overrideState: 0
-    value: 5
+    overrideState: 1
+    value: 9
   mixerGreenOutGreenIn:
     overrideState: 0
     value: -51
@@ -186,8 +187,8 @@ MonoBehaviour:
     overrideState: 0
     value: 93
   mixerBlueOutRedIn:
-    overrideState: 0
-    value: 47
+    overrideState: 1
+    value: 55
   mixerBlueOutGreenIn:
     overrideState: 0
     value: 20
@@ -196,13 +197,13 @@ MonoBehaviour:
     value: 65
   lift:
     overrideState: 1
-    value: {x: 0.82945144, y: 0.88138545, z: 1, w: 0}
+    value: {x: 1, y: 0.88986754, z: 0.9608298, w: 0}
   gamma:
     overrideState: 1
-    value: {x: 0.7373349, y: 0.76052743, z: 1, w: 0}
+    value: {x: 0.5218173, y: 0.59202653, z: 1, w: 0}
   gain:
     overrideState: 1
-    value: {x: 1, y: 0.61755264, z: 0.64791715, w: 0}
+    value: {x: 1, y: 0.7509635, z: 0.8149096, w: 0}
   masterCurve:
     overrideState: 0
     value:
@@ -1403,6 +1404,43 @@ MonoBehaviour:
       - 0.5
       - 0.5
       - 0.5
+--- !u!114 &114736116298298238
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f6f3f7c722b4544b97e3c75840aa33, type: 3}
+  m_Name: AutoExposure
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  filtering:
+    overrideState: 1
+    value: {x: 44.47434, y: 89.474365}
+  minLuminance:
+    overrideState: 1
+    value: 3.27
+  maxLuminance:
+    overrideState: 1
+    value: 9
+  keyValue:
+    overrideState: 0
+    value: 1
+  eyeAdaptation:
+    overrideState: 0
+    value: 0
+  speedUp:
+    overrideState: 0
+    value: 2
+  speedDown:
+    overrideState: 0
+    value: 1
 --- !u!114 &114903784235513928
 MonoBehaviour:
   m_ObjectHideFlags: 3

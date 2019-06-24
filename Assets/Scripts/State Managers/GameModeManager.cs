@@ -151,7 +151,7 @@ public class GameModeManager : StateManager
             );
         #endregion
 
-        #region  Menu State
+        #region  Menu States
         //This state is for menu prompts 
         State MenuState = new State(
             new StateAction[]
@@ -163,6 +163,7 @@ public class GameModeManager : StateManager
                 new MenuAction(this,"tacticState","actionState","aimState","EnemyPhase")
             }
             );
+        
 
         #endregion
 

@@ -20,7 +20,7 @@ namespace RG
         [SerializeField] private float moveSpeed = 30;
         [SerializeField] private float turnSpeed = 3.5f;
 
-        [SerializeField] private Transform damagePopUpPrefab;
+        public Transform damagePopUpPrefab;
 
 
         private Vector3 lastPosition;
@@ -54,15 +54,18 @@ namespace RG
              lastPosition = transform.position;
         }
 
+
+
         public void Attack()
         {
            
             animator.SetTrigger("Attack");
-            Debug.Log("Attack");
             if (!animator.IsInTransition(0))
             didHit = true;
         }
 
+
+        //For the Ranged attack crosshair
         void OnGUI()
         {
             if (drawcrosshair)
@@ -80,10 +83,10 @@ namespace RG
            
             RaycastHit hit;
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            Debug.Log("checking for fire");
+            
                 if (Physics.Raycast(ray,out hit))
                 {
-                Debug.Log("checking for ray");
+                //If ray hits the enemy unit, then it would fire
                     if (hit.transform.tag == "EnemyUnit")
                     {
                         var heading = hit.transform.position - transform.GetChild(2).position;
@@ -111,6 +114,8 @@ namespace RG
             //if there is no raycast hit, what do? DO NOTHING , that'd be too dumb, let the enemies be hit or hitable targets only
         }
 
+
+        //Simple Movement using character controller
         public void Movement()
         {
             if (distanceTraveled < playerstats.AP.Value * 10)
@@ -133,6 +138,8 @@ namespace RG
             }
         }
 
+
+        //Rotation
         public void Rotate()
         {
             var horizontal = Input.GetAxis("Horizontal");
@@ -150,7 +157,7 @@ namespace RG
         }
 
 
-
+        //Hit Detection and damage
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "WeaponBullet" && other.gameObject != this.GetComponentInChildren<Transform>().gameObject && other.GetComponent<Bullet>().shooter.tag != "PlayerUnit")

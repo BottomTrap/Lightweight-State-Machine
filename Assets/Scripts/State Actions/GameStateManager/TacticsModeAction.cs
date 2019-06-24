@@ -28,29 +28,39 @@ public class TacticsMode : StateAction
     }
     public override bool Execute()
     {
+        //Cool Camera Transition
         states.cameraScript.IsoCameraTransition();
-        Debug.Log("tactics");
+        //Reset the enemy's command points 
         states.enemyUnitsScript.commandPoints = states.enemyUnitsScript.originalCommandPoints;
+        //endPhase is false which means the user did not chose to end his phase yet
         states.endPhase = false;
-        Debug.Log("Count is" + states.playerUnitsScript.playerUnitsTransformList.Count);
+        
+        //Resets both didHit and distanceTraveled variables , didHit to show that he can still hit and distanceTraveled to recover the AP bar
         states.playerUnitsScript.playerUnitsTransformList.ForEach(Reset);
      
 
-        //states.playerTransform = states.cameraScript.PlayerClicked(states.commandPoints);
-
+        
+        //Camera Control
         states.cameraScript.IsoMovement();
        
+
+        //Sets the ActionState after a player is clicked
         if (states.cameraScript.PlayerClicked(states.commandPoints) && states.currentState == states.GetState("tacticState") ) //change key down to player selected or something
         {
-            states.cameraScript.khlat = false;
+            //Deals with the camera transitionning
+            //Removes one CP since the player is playing
+            //Updates CP UI
+            //Sets the state to action State
+            states.cameraScript.didCameraArrive = false;
             states.cameraScript.CameraTransition(states.cameraScript.playerTransform);
-            states.cameraScript.CameraMovement(states.cameraScript.playerTransform); //I want to update this!!
             states.commandPoints -= 1;
             states.UpdateCP();
             states.SetState(perspectiveState);
             return true;
         }
 
+
+        //Resets the distance traveled and didHit Values and resets the AP for the UI (if the previous state was a menu State
         if (states.previousState == states.GetState("menuState"))
         {
             foreach (Transform playerUnits in states.playerUnitsScript.playerUnitsTransformList)
@@ -62,21 +72,28 @@ public class TacticsMode : StateAction
             }
         }
        
-        if (Input.GetKeyDown(KeyCode.Escape) ) //change key down to menu input pressed
+        //Go to Menu state
+        if (Input.GetKeyDown(KeyCode.Escape) ) 
         {
             states.SetState(menuState);
             return true;
         }
+
+        //go automatically to menu state after command points reach zero
         if (states.commandPoints <= 0)
         {
             states.SetState(menuState);
             return true;
         }
+
+        //Go to mainMenu (without UI as it is general)
         if (Input.GetKeyDown(KeyCode.M))
         {
             Time.timeScale = 0;
             states.mainMenu.gameObject.SetActive(true);
         }
+
+        //if endPhase (from the UI) then it resets the command Points
        if (states.endPhase)
         {
             states.commandPoints = states.originalCommandPoints;

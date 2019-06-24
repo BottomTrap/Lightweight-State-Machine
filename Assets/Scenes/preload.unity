@@ -125,7 +125,6 @@ GameObject:
   - component: {fileID: 592411401}
   - component: {fileID: 592411404}
   - component: {fileID: 592411405}
-  - component: {fileID: 592411406}
   m_Layer: 0
   m_Name: __app
   m_TagString: Untagged
@@ -185,8 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a443f06f6291540992f64233468a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 6281834857999028816, guid: b77b50eae832b4c48be45bbf50b3b625,
-    type: 3}
 --- !u!82 &592411405
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,17 +280,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &592411406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592411400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f998241d7b6aec41adec379ebd637d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvas: {fileID: 2758198110003185550, guid: 098284682d6f44a478052736b20e494d, type: 3}
-  cpImages: []
